@@ -10,9 +10,9 @@ public class BinaryTreePrintAllPaths {
 		}
 
 		// storing data in array
-		path[len] = node.val;
+		path[len] = node.value;
 		len++;
-		System.out.println(node.val);
+		System.out.println(node.value);
 		if(node.left == null && node.right == null) {
 			// leaf node is reached
 			printArray(path,len);

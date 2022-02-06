@@ -19,7 +19,7 @@ public class BinaryTreeBalanced {
 		if (root == null) {
 			return 0;
 		}
-		System.out.println(root.val);
+		System.out.println(root.value);
 		int left = getHeight(root.left);
 		int right = getHeight(root.right);
 		if (left == -1 || right == -1) {

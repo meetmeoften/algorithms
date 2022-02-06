@@ -10,7 +10,7 @@ public class BinaryTreeGetLevelNode {
 		if(root==null) {
 			return 0;
 		}
-		if(root.val==key) {
+		if(root.value==key) {
 			return level;
 		}
 

@@ -1,5 +1,7 @@
 package com.test.general;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class CheckBalancedParentesisMain {
@@ -15,6 +17,9 @@ public class CheckBalancedParentesisMain {
 		if (expr.isEmpty()) {
 			return "Balanced";
 		}
+
+		Map<Integer, Integer> map = new HashMap<>();
+		var value = map.get(1);
 
 		Stack<Character> stack = new Stack<Character>();
 		for (int i = 0; i < expr.length(); i++)

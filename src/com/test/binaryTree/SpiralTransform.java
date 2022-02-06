@@ -19,7 +19,7 @@ public class SpiralTransform {
 			while(!stack.isEmpty())
 			{
 				TreeNode tempNode=stack.pop();
-				System.out.printf("%d ",tempNode.val);
+				System.out.printf("%d ",tempNode.value);
 				if(!directionflag)
 				{
 					if(tempNode.left!=null) {

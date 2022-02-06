@@ -15,6 +15,12 @@ public class LinkedListNode {
 	}
 
 	/**
+	 * suga
+	 *
+	 */
+
+
+	/**
 	 * add to the end of the Node
 	 *
 	 * @param node
@@ -69,6 +75,17 @@ public class LinkedListNode {
 			currentNode = nextNode;
 		}
 		return previousNode;
+	}
+
+	public static Node reverseLinkedListRecursive(Node node) {
+		if (node == null || node.next == null) {
+			return node;
+		}
+
+		Node remaining = reverseLinkedListRecursive(node.next);
+		node.next.next = node;
+		node.next = null;
+		return remaining;
 	}
 
 	public int lengthOfLinkedList() {
@@ -151,6 +168,7 @@ public class LinkedListNode {
 		return true;
 	}
 
+
 	public void deleteNode(int position)
 	{
 		// If linked list is empty
@@ -214,41 +232,41 @@ public class LinkedListNode {
 	public static void main(String[] args) {
 		LinkedListNode list = new LinkedListNode();
 		// Creating a linked list
-		Node head = new Node(1);
-		list.addToTheLast(head);
-		Node node2 = new Node(2);
-		list.addToTheLast(node2);
-		Node node3 = new Node(3);
-		list.addToTheLast(node3);
-		list.addToTheLast(new Node(4));
-		list.addToTheLast(node2);
-		//		list.printList(head);
-		list.startNodeOfLoop();
-		//		// Reversing LinkedList
-		//		Node reverseHead = reverseLinkedList(head);
-		//		System.out.println("After reversing");
-		//		//		list.printList(reverseHead);
+		//		Node head = new Node(1);
+		//		list.addToTheLast(head);
+		//		Node node2 = new Node(2);
+		//		list.addToTheLast(node2);
+		//		Node node3 = new Node(3);
+		//		list.addToTheLast(node3);
+		//		//		list.addToTheLast(new Node(4));
+		//		//		list.addToTheLast(node2);
+		//		//		list.printList(head);
+		//		//		list.startNodeOfLoop();
+		//		//		// Reversing LinkedList
+		//		Node reverseHead = reverseLinkedListRecursive(head);
+		//		System.out.println(reverseHead);
+		//		//		System.out.println("After reversing");
+		//		//		//		list.printList(reverseHead);
+		//		//
+		//		//		list.nthFromLastNode(head, 2);
 		//
-		//		list.nthFromLastNode(head, 2);
+		//		//		System.out.println("Linked list palidrome: "+checkPalindrome(head));
+		//		//		reverseLinkedListInPairItr(head);
 
-		//		System.out.println("Linked list palidrome: "+checkPalindrome(head));
-		//		reverseLinkedListInPairItr(head);
+		Node loopNode=new Node(4);
+		list.addToTheLast(new Node(1));
+		list.addToTheLast(new Node(2));
+		list.addToTheLast(loopNode);
+		list.addToTheLast(new Node(3));
 
-		//		Node loopNode=new Node(7);
-		//		list.addToTheLast(new Node(5));
-		//		list.addToTheLast(new Node(6));
-		//		list.addToTheLast(loopNode);
-		//		list.addToTheLast(new Node(1));
-		//		list.addToTheLast(new Node(2));
-		//		list.addToTheLast(new Node(3));
-		//		list.addToTheLast(loopNode);
-		//
-		//		// creating a loop
-		//
-		//		// Test if loop existed or not
-		//		System.out.println("Loop existed-->" + list.startNodeOfLoop());
+		list.addToTheLast(loopNode);
 
-		list.deleteNode(3);
+		// creating a loop
+
+		// Test if loop existed or not
+		System.out.println("Loop existed-->" + list.startNodeOfLoop());
+
+		//		list.deleteNode(3);
 	}
 
 }
