@@ -12,11 +12,11 @@ public class Combinations {
 		}
 
 		List<List<Integer>> result = new ArrayList<>();
-		helper(n, k, 1, result, new ArrayList<>());
+		helper(1, n, k, result, new ArrayList<>());
 		return result;
 	}
 
-	private void helper(int end, int numbersLeft, int start, List<List<Integer>> result, List<Integer> temp) {
+	private void helper(int start, int end, int numbersLeft, List<List<Integer>> result, List<Integer> temp) {
 		if (numbersLeft == 0) {
 			result.add(new ArrayList<>(temp));
 			return;
@@ -24,7 +24,7 @@ public class Combinations {
 
 		for (int i = start; i <= end; i++) {
 			temp.add(i);
-			helper(end, numbersLeft - 1, i + 1, result, temp);
+			helper(i + 1, end, numbersLeft - 1,  result, temp);
 			temp.remove(temp.size() - 1);
 		}
 	}

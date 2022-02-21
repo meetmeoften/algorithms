@@ -14,7 +14,6 @@ public class BranchSums {
 	}
 
 	private static void calculate(BinaryTree root, int runningSum, List<Integer> sums) {
-		// TODO Auto-generated method stub
 		if(root == null) {
 			return;
 		}

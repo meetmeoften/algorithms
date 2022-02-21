@@ -39,6 +39,19 @@ public class ReverseKGroup {
 		return prev;
 	}
 
+	private static LinkedList reverse2(LinkedList head) {
+		LinkedList prev = null;
+
+		while(head != null) {
+			LinkedList next = head.next;
+			head.next = prev;
+			prev = head;
+			head = next;
+		}
+		return prev;
+	}
+
+
 	static class LinkedList {
 		int value;
 		LinkedList next = null;
@@ -49,8 +62,8 @@ public class ReverseKGroup {
 	}
 
 	public static void main(String[] args) {
-		LinkedList test = newLinkedList(new int[] {0, 1, 2, 3, 4, 5});
-		var result = reverseKGroup(test, 2);
+		LinkedList test = newLinkedList(new int[] {0, 1, 2, 3, 4});
+		var result = reverseKGroup(test, 3);
 		System.out.println(result);
 	}
 

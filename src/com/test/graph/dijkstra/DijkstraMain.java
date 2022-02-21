@@ -11,28 +11,28 @@ public class DijkstraMain {
 		Vertex vertexE = new Vertex("E");
 
 
-		vertexA.addNeighbour(new Edge(6,vertexA,vertexC));
-		vertexA.addNeighbour(new Edge(5,vertexA,vertexB));
-		vertexB.addNeighbour(new Edge(-1,vertexB,vertexC));
-
-		DijkstraShortestPath shortestPath = new DijkstraShortestPath();
-		shortestPath.computeShortestPaths(vertexA);
-
-		System.out.println("Minimum distance from A to B: "+vertexB.getDistance());
-		System.out.println("Minimum distance from A to C: "+vertexC.getDistance());
-		System.out.println("Shortest Path from A to B: "+shortestPath.getShortestPathTo(vertexB));
-		System.out.println("Shortest Path from A to C: "+shortestPath.getShortestPathTo(vertexC));
-
-		//		vertexA.addNeighbour(new Edge(10,vertexA,vertexC));
-		//		vertexA.addNeighbour(new Edge(17,vertexA,vertexB));
-		//		vertexC.addNeighbour(new Edge(5,vertexC,vertexB));
-		//		vertexC.addNeighbour(new Edge(9,vertexC,vertexD));
-		//		vertexC.addNeighbour(new Edge(11,vertexC,vertexE));
-		//		vertexB.addNeighbour(new Edge(1,vertexB,vertexD));
-		//		vertexD.addNeighbour(new Edge(6,vertexD,vertexE));
+		//		vertexA.addNeighbour(new Edge(6,vertexA,vertexC));
+		//		vertexA.addNeighbour(new Edge(5,vertexA,vertexB));
+		//		vertexB.addNeighbour(new Edge(-1,vertexB,vertexC));
 		//
 		//		DijkstraShortestPath shortestPath = new DijkstraShortestPath();
 		//		shortestPath.computeShortestPaths(vertexA);
+		//
+		//		System.out.println("Minimum distance from A to B: "+vertexB.getDistance());
+		//		System.out.println("Minimum distance from A to C: "+vertexC.getDistance());
+		//		System.out.println("Shortest Path from A to B: "+shortestPath.getShortestPathTo(vertexB));
+		//		System.out.println("Shortest Path from A to C: "+shortestPath.getShortestPathTo(vertexC));
+
+		vertexA.addNeighbour(new Edge(10,vertexA,vertexC));
+		vertexA.addNeighbour(new Edge(17,vertexA,vertexB));
+		vertexC.addNeighbour(new Edge(5,vertexC,vertexB));
+		vertexC.addNeighbour(new Edge(9,vertexC,vertexD));
+		vertexC.addNeighbour(new Edge(11,vertexC,vertexE));
+		vertexB.addNeighbour(new Edge(1,vertexB,vertexD));
+		vertexD.addNeighbour(new Edge(6,vertexD,vertexE));
+
+		DijkstraShortestPath shortestPath = new DijkstraShortestPath();
+		shortestPath.computeShortestPaths(vertexA);
 		//
 		//		System.out.println("======================================");
 		//		System.out.println("Calculating minimum distance");

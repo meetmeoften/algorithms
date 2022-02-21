@@ -32,6 +32,7 @@ public class MinimumNumberOfJumps {
 
 		for(int i=1; i < array.length-1; i++){
 			maxReach = Math.max(maxReach, i+ array[i]);
+			System.out.println(maxReach);
 			steps--;
 			if(steps == 0) {
 				jumps++;

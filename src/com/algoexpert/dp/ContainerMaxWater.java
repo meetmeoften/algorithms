@@ -15,7 +15,8 @@ public class ContainerMaxWater {
 		while(leftIndex < rightIndex) {
 			var lh = heights[leftIndex];
 			var rh = heights[rightIndex];
-			if(heights[leftIndex] < heights[rightIndex]) {
+			System.out.println(lh + " | " + rh);
+			if(lh < rh) {
 				leftIndex++;
 				leftMax = Math.max(leftMax, heights[leftIndex]);
 				surfaceArea += leftMax- heights[leftIndex];
@@ -27,6 +28,40 @@ public class ContainerMaxWater {
 			}
 		}
 		return surfaceArea;
+	}
+
+	public static int waterArea2(int[] heights) {
+		// Write your code here.
+		int[] leftMaxes = new int[heights.length];
+		int leftMax = 0;
+		for(int i=0; i < heights.length; i++) {
+			int height = heights[i];
+			leftMaxes[i] = leftMax;
+			leftMax = Math.max(leftMax, height);
+		}
+
+		int[] rightMaxes = new int[heights.length];
+		int rightMax = 0;
+		for(int i= heights.length-1; i>=0; i--) {
+			int height = heights[i];
+			rightMaxes[i] = rightMax;
+			rightMax = Math.max(rightMax, height);
+		}
+
+		int[] maxes = new int[heights.length];
+		for(int i= 0; i< heights.length; i++) {
+			if(heights[i] < Math.min(leftMaxes[i], rightMaxes[i])) {
+				maxes[i] = Math.min(leftMaxes[i], rightMaxes[i]) - heights[i];
+			} else {
+				maxes[i] = 0;
+			}
+		}
+
+		int total = 0;
+		for(int i= 0; i < heights.length; i++) {
+			total = total+ maxes[i];
+		}
+		return total;
 	}
 
 	public static void main(String[] args) {

@@ -3,21 +3,21 @@ package com.algoexpert.binarysearch;
 public class SearchForRange {
 
 	static int findStartingIndex(int arr[], int n, int target) {
-		int low = 0;
-		int high = n - 1;
+		int left = 0;
+		int right = n - 1;
 		int index = -1;
 
-		while (low <= high) {
+		while (left <= right) {
 			// Calculate mid value.
-			int mid = (low + high) / 2;
+			int mid = (left + right) / 2;
 
 			// Condition 1
 			if (arr[mid] >= target) {
-				high = mid - 1;
+				right = mid - 1;
 			}
 			// Condition 2 : When arr[mid] < target
 			else {
-				low = mid + 1;
+				left = mid + 1;
 			}
 			// Condition 3
 			if (arr[mid] == target) {
@@ -31,21 +31,21 @@ public class SearchForRange {
 
 	// finds Last occurrence of target.
 	static int findEndingIndex(int arr[], int n, int target) {
-		int low = 0;
-		int high = n - 1;
+		int left = 0;
+		int right = n - 1;
 		int index = -1;
 
-		while (low <= high) {
+		while (left <= right) {
 			// Calculate mid value.
-			int mid = (low + high) / 2;
+			int mid = (left + right) / 2;
 
 			// Condition 1
 			if (arr[mid] <= target) {
-				low = mid + 1;
+				left = mid + 1;
 			}
 			// Condition 2 : When arr[mid] > target
 			else {
-				high = mid - 1;
+				right = mid - 1;
 			}
 			// Condition 3
 			if (arr[mid] == target) {
