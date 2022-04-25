@@ -1,9 +1,11 @@
-package com.leetcodepatterns;
+package com.algoexpert.matrix;
 
-public class Rotate {
+public class RotateImage {
 
 	public void rotate(int[][] matrix) {
-		int start = 0, end = matrix.length - 1;
+		int start = 0;
+		int end = matrix.length - 1;
+
 		int[] temp;
 
 		while (start < end) {
@@ -15,6 +17,7 @@ public class Rotate {
 		}
 
 		transpose(matrix);
+
 	}
 
 	private void transpose(int[][] matrix) {
@@ -27,5 +30,9 @@ public class Rotate {
 		}
 	}
 
+	public static void main(String[] args) {
+		int[][] edges = new int[][] { {1, 2, 3 }, {4, 5, 6 }, { 7, 8, 9 }};
+		new RotateImage().rotate(edges);
+	}
 
 }

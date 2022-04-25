@@ -1,4 +1,4 @@
-package com.algoexpert.permutations;
+package com.algoexpert.backtracking;
 
 public class NextPermutation {
 

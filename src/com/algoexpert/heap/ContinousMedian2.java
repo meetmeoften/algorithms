@@ -35,11 +35,13 @@ public class ContinousMedian2 {
 		ContinousMedian2.ContinuousMedianHandler handler = new ContinousMedian2.ContinuousMedianHandler();
 		handler.insert(5);
 		handler.insert(10);
-		handler.getMedian();
+		System.out.println(handler.getMedian());
 		handler.insert(100);
-		handler.getMedian();
+		System.out.println(handler.getMedian());
 		handler.insert(200);
-		handler.getMedian();
+		System.out.println(handler.getMedian());
 	}
+
+
 
 }

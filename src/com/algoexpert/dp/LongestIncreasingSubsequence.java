@@ -40,4 +40,8 @@ public class LongestIncreasingSubsequence {
 		return sequence;
 	}
 
+	public static void main(String[] args) {
+		longestIncreasingSubsequence(new int[] {5, 7, -24, 12, 10, 2, 3, 12, 5, 6, 35});
+	}
+
 }

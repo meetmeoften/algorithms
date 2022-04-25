@@ -28,6 +28,7 @@ public class QuickSelect {
 				}
 			}
 			swap(pivotIndex, rightIndex, array);
+
 			if(rightIndex == position) {
 				return array[rightIndex];
 			} else if(rightIndex < position) {

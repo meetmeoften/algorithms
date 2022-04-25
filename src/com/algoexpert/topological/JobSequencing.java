@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class JobSequencing {
 
 	static class Job {
-		int id, profit, deadline;
+		int id, deadline, profit;
 
 		Job(int x, int y, int z) {
 			this.id = x;

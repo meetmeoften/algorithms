@@ -1,4 +1,4 @@
-package com.algoexpert.permutations;
+package com.algoexpert.backtracking;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ public class Permutations2 {
 
 		for (int i = 0; i < nums.length; i++) {
 			System.out.println(i + " " + temp + "  " + used[i]);
-			if (used[i] || i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {
+			if (used[i] || i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {  // should not change order
 				continue;
 			}
 

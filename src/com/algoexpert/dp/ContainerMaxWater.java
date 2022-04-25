@@ -12,6 +12,7 @@ public class ContainerMaxWater {
 		var leftMax = heights[leftIndex];
 		var rightMax = heights[rightIndex];
 		var surfaceArea = 0;
+
 		while(leftIndex < rightIndex) {
 			var lh = heights[leftIndex];
 			var rh = heights[rightIndex];

@@ -1,4 +1,4 @@
-package com.algoexpert.permutations;
+package com.algoexpert.backtracking;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +16,7 @@ public class Permutations {
 
 		return result;
 	}
+
 
 	private void helper(int[] nums, List<List<Integer>> result, List<Integer> temp) {
 		//		System.out.println(temp);

@@ -1,8 +1,10 @@
 package com.algoexpert.arrays;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TwoNumberSum {
 
@@ -49,6 +51,40 @@ public class TwoNumberSum {
 		}
 		return twosumList;
 
+	}
+
+
+	// Two Number sum, array contains duplicates, answer should be unique
+
+	public List<List<Integer>> twoSum(int[] num, int target) {
+		List<List<Integer>> listSet = new ArrayList<List<Integer>>();
+		Map<Integer, Integer> map = new HashMap<>();
+		if (num.length < 2) {
+			return listSet;
+		}
+		for (int i = 0; i < num.length; i++) {
+			int key1 = num[i], key2 = target - num[i];
+			if (map.containsKey(key2) && map.get(key2) > 0) {
+				List<Integer> list = new ArrayList<Integer>();
+				if (key1 < key2) {
+					list = Arrays.asList(key1, key2);
+				} else {
+					list = Arrays.asList(key2, key1);
+				}
+
+				if (!listSet.contains(list)) {
+					listSet.add(list);
+				}
+				map.put(key2, map.get(key2) - 1);
+			} else {
+				if (!map.containsKey(key1)) {
+					map.put(key1, 1);
+				} else {
+					map.put(key1, map.get(key1) + 1);
+				}
+			}
+		}
+		return listSet;
 	}
 
 

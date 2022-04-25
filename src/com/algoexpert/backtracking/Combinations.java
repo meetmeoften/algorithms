@@ -1,4 +1,4 @@
-package com.algoexpert.permutations;
+package com.algoexpert.backtracking;
 
 import java.util.ArrayList;
 import java.util.Collections;

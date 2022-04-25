@@ -1,4 +1,4 @@
-package com.algoexpert.permutations;
+package com.algoexpert.backtracking;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,14 +18,12 @@ public class CombinationSum {
 	private void dfs(int[] candidates, int target, int idx, List<Integer> tempResult, List<List<Integer>> result) {
 		if(target < 0) {
 			return;
-
 		}
 
 		if(target == 0) {
 			result.add(new ArrayList<>(tempResult));
 			return;
 		}
-
 
 		for(int i= idx; i < candidates.length; i++) {
 			tempResult.add(candidates[i]);
