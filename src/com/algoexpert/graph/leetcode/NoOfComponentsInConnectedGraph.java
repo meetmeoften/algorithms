@@ -37,8 +37,26 @@ public class NoOfComponentsInConnectedGraph {
 	}
 
 	public static void main(String[] args) {
-		int[][] edges = new int[][] { { 0, 1 }, { 0, 2 }, { 3, 5 }, { 3, 4 }, { 4, 5 }};
+		int[][] edges = new int[][] {  { 3, 5 }, { 3, 4 }, {3, 5}, { 0, 1 }, { 1, 2 }};
 		System.out.println(countComponents(6, edges));
+	}
+
+
+	public int recur(int[] h, int pos, int x, int y, int n) {
+		if (pos >= n) {
+			return 0;
+		}
+		int v1 = 0, v2 = 0, v3 = 0;
+		if (x >= h[pos]) {
+			v1++;
+			v1 += recur(h, pos + 1, x - h[pos], y, n);
+		}
+		if (y >= h[pos]) {
+			v2++;
+			v2 += recur(h, pos + 1, x, y - h[pos], n);
+		}
+		v3 = recur(h, pos + 1, x, y, n);
+		return Math.max(v1, Math.max(v2, v3));
 	}
 
 }

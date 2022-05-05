@@ -13,13 +13,14 @@ public class MaxSumIncreasingSequence {
 		Arrays.fill(sequences, Integer.MIN_VALUE);
 		int maxSumIdx = 0;
 
+
 		for(int i= 0; i< array.length; i++) {
 			int currentNum = array[i];
 			for(int j=0; j<i; j++) {
 				int otherNum = array[j];
 				int sumsValue = currentNum + sums[j];
 
-				if(sumsValue >= sums[i] &&  currentNum > otherNum) {
+				if(sumsValue >= sums[i] && otherNum < currentNum) {
 					sums[i] = sumsValue;
 					sequences[i] = j;
 				}

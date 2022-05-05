@@ -15,7 +15,8 @@ public class LinkedListSum {
 	}
 
 	public LinkedList sumOfLinkedLists(LinkedList l1, LinkedList l2) {
-		LinkedList dummy = new LinkedList(-1), head = dummy;
+		LinkedList dummy = new LinkedList(-1);
+		LinkedList head = dummy;
 		int remainder = 0;
 
 		while (l1 != null || l2 != null || remainder > 0) {

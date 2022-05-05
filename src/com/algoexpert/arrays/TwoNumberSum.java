@@ -56,14 +56,15 @@ public class TwoNumberSum {
 
 	// Two Number sum, array contains duplicates, answer should be unique
 
-	public List<List<Integer>> twoSum(int[] num, int target) {
+	public static List<List<Integer>> twoSum(int[] num, int target) {
 		List<List<Integer>> listSet = new ArrayList<List<Integer>>();
 		Map<Integer, Integer> map = new HashMap<>();
 		if (num.length < 2) {
 			return listSet;
 		}
 		for (int i = 0; i < num.length; i++) {
-			int key1 = num[i], key2 = target - num[i];
+			int key1 = num[i];
+			int key2 = target - num[i];
 			if (map.containsKey(key2) && map.get(key2) > 0) {
 				List<Integer> list = new ArrayList<Integer>();
 				if (key1 < key2) {
@@ -87,9 +88,11 @@ public class TwoNumberSum {
 		return listSet;
 	}
 
-
 	public static void main(String[] args) {
 		twoNumberSum(new int[] {3, 5, -4, 8, 11, 1, -1, 6}, 10);
+		List<List<Integer>> res = twoSum(new int[] {8, 7, 5, 6, 5, 7}, 0, 5, 13);
+		List<List<Integer>> result = twoSum(new int[] {8, 7, 5, 6, 5, 7}, 13);
+		System.out.println(result);
 	}
 
 }

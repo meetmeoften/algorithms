@@ -7,6 +7,7 @@ public class DiskStacking {
 
 	public static List<Integer[]> diskStacking(List<Integer[]> disks) {
 		disks.sort((d1, d2) -> d1[2].compareTo(d2[2]));
+
 		int[] heights = new int[disks.size()];
 		for(int i=0; i < disks.size(); i++) {
 			heights[i] = disks.get(i)[2];
@@ -22,6 +23,7 @@ public class DiskStacking {
 			Integer[] current = disks.get(i);
 			for(int j= 0; j<i; j++) {
 				Integer[] other = disks.get(j);
+
 				if(valid(other, current)) {
 					int currHeight = current[2] + heights[j];
 					if(currHeight >= heights[i]) {
@@ -39,6 +41,7 @@ public class DiskStacking {
 
 	private static List<Integer[]> buildSequence(List<Integer[]> array, int[] sequences, int currentIndex) {
 		List<Integer[]> sequence = new ArrayList<>();
+
 		while(currentIndex != Integer.MIN_VALUE) {
 			sequence.add(0, array.get(currentIndex));
 			currentIndex = sequences[currentIndex];

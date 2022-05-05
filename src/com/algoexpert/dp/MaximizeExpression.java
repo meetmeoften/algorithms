@@ -12,6 +12,7 @@ public class MaximizeExpression {
 		}
 
 		ArrayList<Integer> maxOfA = new ArrayList<Integer>(Arrays.asList(array[0]));
+
 		ArrayList<Integer> maxOfAMinusB = new ArrayList<Integer>(Arrays.asList(Integer.MIN_VALUE));
 
 		ArrayList<Integer> maxOfAMinusBPlusC = new ArrayList<Integer>(

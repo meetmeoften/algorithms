@@ -52,6 +52,7 @@ public class MergeSortJava2Blog {
 		}
 
 		System.out.print("After merging:   ");
+		printArray(tempArray, start, end);
 		System.out.println();
 	}
 
@@ -60,6 +61,10 @@ public class MergeSortJava2Blog {
 			System.out.print(arr[i] + " ");
 		}
 		System.out.println();
+	}
+
+	public static void main(String[] args) {
+		mergeSort(0,arr.length-1);
 	}
 
 }

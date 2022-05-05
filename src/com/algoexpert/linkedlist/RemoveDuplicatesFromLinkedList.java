@@ -21,6 +21,7 @@ public class RemoveDuplicatesFromLinkedList {
 		LinkedList currentNode = linkedList;
 
 		while(currentNode != null) {
+
 			LinkedList next = currentNode.next;
 			while(next != null && currentNode.value == next.value) {
 				next = next.next;

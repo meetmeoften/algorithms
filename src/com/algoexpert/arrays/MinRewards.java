@@ -1,6 +1,8 @@
 package com.algoexpert.arrays;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class MinRewards {
@@ -42,11 +44,18 @@ public class MinRewards {
 			}
 		}
 
+		List<List<Integer>> queries = new ArrayList<>();
+
+		for(List<Integer> query :queries) {
+
+		}
+
 		return IntStream.of(rewards).sum();
 	}
 
 	public static void main(String[] args) {
-		minRewards(new int[] {8, 4, 2, 1, 3, 6, 7, 9, 5});
+		//		minRewards(new int[] {8, 4, 2, 1, 3, 6, 7, 9, 5});
+		minRewards(new int[] {4, 6, 4, 5, 6, 2});
 	}
 
 }
