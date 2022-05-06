@@ -16,6 +16,7 @@ public class SubArraySumEqualsK {
 
 		for (int num : nums) {
 			currSum += num;
+
 			int value = currSum - k;
 			if (map.containsKey(value)) {
 				result += map.get(value);
