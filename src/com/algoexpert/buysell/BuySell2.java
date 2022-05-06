@@ -2,6 +2,23 @@ package com.algoexpert.buysell;
 
 public class BuySell2 {
 
+	public static int maxProfit1(int[] prices) {
+		if (prices == null || prices.length == 0) {
+			return 0;
+		}
+
+		int minPrices = prices[0], profit = 0;
+		for (int i = 1; i < prices.length; i++) {
+			int cost = prices[i] - minPrices;
+			profit = Math.max(profit, cost);
+			minPrices = Math.min(minPrices, prices[i]);
+
+
+		}
+
+		return profit;
+	}
+
 	public static int maxProfit(int[] prices) {
 		if(prices == null || prices.length == 0) {
 			return 0;

@@ -19,12 +19,12 @@ public class EggDropping {
 				}
 			}
 		}
-		for (int j = 0; j <= n; ++j) {
-			for (int i = 0; i <= k; ++i) {
-				System.out.print(dp[i][j] + " ");
-			}
-			System.out.println("");
-		}
+		//		for (int j = 0; j <= n; ++j) {
+		//			for (int i = 0; i <= k; ++i) {
+		//				System.out.print(dp[i][j] + " ");
+		//			}
+		//			System.out.println("");
+		//		}
 		return dp[k][n];
 	}
 

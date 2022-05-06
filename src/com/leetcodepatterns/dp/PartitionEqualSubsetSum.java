@@ -1,4 +1,4 @@
-package com.algoexpert.buysell;
+package com.leetcodepatterns.dp;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,12 +28,13 @@ public class PartitionEqualSubsetSum {
 			for (int j = 1; j <= sum; j++) {
 				if (j >= nums[i - 1]) {
 					dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];
+					System.out.println(i  + " " + j + " "  +dp[i][j]);
 				}
 			}
 		}
-
 		return dp[nums.length][sum];
 	}
+
 
 	public boolean canPartition2(int[] nums) {
 		int sum = 0;

@@ -47,6 +47,7 @@ public class PalindromePartioning {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("abc".substring(0, 1));
 		new PalindromePartioning().partition("aab");
 	}
 

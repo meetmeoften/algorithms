@@ -14,13 +14,17 @@ public class PartitionSubset {
 		if (i == 0 || sum == 0) {
 			return false;
 		}
-		if (sum == items[i - 1]) {
+		int value = items[i - 1];
+		if (sum == value) {
 			return true;
 		}
-		if (sum < items[i - 1]) {
+		if (sum < value) {
 			return helper(items, sum, i - 1);
 		}
-		return helper(items, sum, i - 1) || helper(items, sum - items[i - 1], i - 1);
+		boolean r1 = helper(items, sum, i - 1);
+		boolean r2 = helper(items, sum - value, i - 1);
+
+		return r1 || r2;
 	}
 
 	public static boolean topDownDP(int[] items) {
@@ -78,8 +82,28 @@ public class PartitionSubset {
 		return res;
 	}
 
-	public static void main(String[] args) {
-		bruteForce(new int[] { 1, 2, 5, 2 });
+	public static void method(float f) {
+		System.out.println("float " + f);
 	}
+
+	public static void method(int f) {
+		System.out.println("int " + f);
+	}
+
+	public static void method(double f) {
+		System.out.println("double " + f);
+	}
+
+	public static void main(String[] args) {
+		//		bruteForce(new int[] { 1, 2, 5, 2 });
+
+		method(2.0);
+		method(2.1);
+		method(2.5);
+		method(2);
+	}
+
+
+
 }
 
