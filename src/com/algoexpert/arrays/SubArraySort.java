@@ -9,7 +9,7 @@ public class SubArraySort {
 
 		for (int i = 0; i < array.length; i++) {
 			int num = array[i];
-
+			System.out.println(num);
 			if (isOutOfOrder(i, num, array)) {
 				min = Math.min(min, num);
 				max = Math.max(max, num);

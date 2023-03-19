@@ -63,7 +63,7 @@ public class IntersectionYElement {
 		}
 
 		// link tail of the second list to the fourth node of the first list
-		second.next.next.next = first.next.next.next;
+		//second.next.next.next = first.next.next.next;
 
 		Integer addr = intersectPoint(first, second);
 		if (addr != null) {

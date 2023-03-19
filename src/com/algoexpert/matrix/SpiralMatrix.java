@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SpiralMatrix {
 
-	public List<Integer> spiralOrder(int[][] array) {
+	public static List<Integer> spiralOrder(int[][] array) {
 		List<Integer> results = new ArrayList<>();
 		if (array.length == 0) {
 			return results;
@@ -47,6 +47,12 @@ public class SpiralMatrix {
 
 		return results;
 
+	}
+
+
+	public static void main(String[] args) {
+		int matrix[][] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+		spiralOrder(matrix);
 	}
 
 }

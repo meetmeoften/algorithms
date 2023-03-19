@@ -8,6 +8,51 @@ import java.util.Map;
 
 public class Topological {
 
+	static class JobNode {
+		public Integer job;
+		public List<JobNode> prereqs;
+		public boolean visited;
+		public boolean visiting;
+
+		public JobNode(Integer job) {
+			this.job = job;
+			prereqs = new ArrayList<>();
+			visited = false;
+			visiting = false;
+		}
+	}
+
+	static class JobGraph {
+		public List<JobNode> nodes;
+		public Map<Integer, JobNode> graph;
+
+		public JobGraph(List<Integer> jobs) {
+			nodes = new ArrayList<>();
+			graph = new HashMap<>();
+			for (Integer job : jobs) {
+				addNode(job);
+			}
+		}
+
+		public void addPrereq(Integer job, Integer prereq) {
+			JobNode jobNode = getNode(job);
+			JobNode prereqNode = getNode(prereq);
+			jobNode.prereqs.add(prereqNode);
+		}
+
+		public void addNode(Integer job) {
+			graph.put(job, new JobNode(job));
+			nodes.add(graph.get(job));
+		}
+
+		public JobNode getNode(Integer job) {
+			if (!graph.containsKey(job)) {
+				addNode(job);
+			}
+			return graph.get(job);
+		}
+	}
+
 	public static List<Integer> topologicalSort(List<Integer> jobs, List<Integer[]> deps) {
 		JobGraph jobGraph = createJobGraph(jobs, deps);
 		return getOrderedJobs(jobGraph);
@@ -59,50 +104,9 @@ public class Topological {
 		return false;
 	}
 
-	static class JobGraph {
-		public List<JobNode> nodes;
-		public Map<Integer, JobNode> graph;
 
-		public JobGraph(List<Integer> jobs) {
-			nodes = new ArrayList<>();
-			graph = new HashMap<>();
-			for (Integer job : jobs) {
-				addNode(job);
-			}
-		}
 
-		public void addPrereq(Integer job, Integer prereq) {
-			JobNode jobNode = getNode(job);
-			JobNode prereqNode = getNode(prereq);
-			jobNode.prereqs.add(prereqNode);
-		}
 
-		public void addNode(Integer job) {
-			graph.put(job, new JobNode(job));
-			nodes.add(graph.get(job));
-		}
-
-		public JobNode getNode(Integer job) {
-			if (!graph.containsKey(job)) {
-				addNode(job);
-			}
-			return graph.get(job);
-		}
-	}
-
-	static class JobNode {
-		public Integer job;
-		public List<JobNode> prereqs;
-		public boolean visited;
-		public boolean visiting;
-
-		public JobNode(Integer job) {
-			this.job = job;
-			prereqs = new ArrayList<>();
-			visited = false;
-			visiting = false;
-		}
-	}
 
 	public static void main(String[] args) {
 		List<Integer> jobs = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
@@ -110,6 +114,7 @@ public class Topological {
 		List<Integer[]> deps = new ArrayList<Integer[]>();
 		fillDeps(depsArray, deps);
 		List<Integer> order = topologicalSort(jobs, deps);
+		System.out.println(order);
 	}
 
 	static void fillDeps(Integer[][] depsArray, List<Integer[]> deps) {

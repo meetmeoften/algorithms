@@ -31,7 +31,8 @@ public class SlidingWindowMaximum {
 	}
 
 	public static void main(String[] args) {
-		maxSlidingWindow(new int[] {3, 8, 5, 6, 7, 11}, 4);
+		// maxSlidingWindow(new int[] {3, 8, 5, 6, 7, 11}, 4);
+		maxSlidingWindow(new int[] { 1, 3, -1, -3, 5, 3, 6, 7 }, 3);
 	}
 
 }

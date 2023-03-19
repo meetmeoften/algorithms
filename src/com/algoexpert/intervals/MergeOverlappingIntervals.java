@@ -6,7 +6,6 @@ import java.util.List;
 
 public class MergeOverlappingIntervals {
 
-
 	public static int[][] mergeOverlappingIntervals(int[][] intervals) {
 
 		int[][] sortedIntervals = intervals.clone();
@@ -16,13 +15,13 @@ public class MergeOverlappingIntervals {
 		int[] currentInterval = sortedIntervals[0];
 		mergedIntervals.add(currentInterval);
 
-		for(int i= 1; i < sortedIntervals.length; i++) {
+		for (int i = 1; i < sortedIntervals.length; i++) {
 
 			int currentIntervalEnd = currentInterval[1];
 			int nextIntervalStart = sortedIntervals[i][0];
 			int nextIntervalEnd = sortedIntervals[i][1];
 
-			if(currentIntervalEnd >= nextIntervalStart) {
+			if (currentIntervalEnd >= nextIntervalStart) {
 				currentInterval[1] = Math.max(currentIntervalEnd, nextIntervalEnd);
 			} else {
 				currentInterval = sortedIntervals[i];
@@ -33,17 +32,8 @@ public class MergeOverlappingIntervals {
 	}
 
 	public static void main(String[] args) {
-		int[][] intervals =
-				new int[][] {
-			{100, 105},
-			{1, 104}
-		};
-		int[][] expected =
-				new int[][] {
-			{1, 2},
-			{3, 8},
-			{9, 10}
-		};
+		int[][] intervals = new int[][] { { 100, 105 }, { 1, 104 } };
+		int[][] expected = new int[][] { { 1, 2 }, { 3, 8 }, { 9, 10 } };
 		int[][] actual = mergeOverlappingIntervals(intervals);
 	}
 }

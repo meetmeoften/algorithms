@@ -19,12 +19,13 @@ public class PalindromePartioning {
 
 	private void helper(String s, int idx, List<List<String>> result, List<String> temp) {
 		if (idx == s.length()) {
+			System.out.println(temp);
 			result.add(new ArrayList<>(temp));
 			return;
 		}
 
 		for (int i = idx; i < s.length(); i++) {
-			System.out.println(idx + " " + i);
+			// System.out.println(idx + " " + i);
 			if (isPalindrome(s, idx, i)) {
 				temp.add(s.substring(idx, i + 1));
 				helper(s, i + 1, result, temp);
@@ -32,6 +33,9 @@ public class PalindromePartioning {
 			}
 		}
 	}
+
+
+
 
 	private boolean isPalindrome(String s, int left, int right) {
 		while (left < right) {

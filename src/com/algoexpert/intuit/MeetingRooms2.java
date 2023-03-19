@@ -38,7 +38,7 @@ public class MeetingRooms2 {
 
 
 	public static void main(String[] args ) {
-		int[][] arr = new int[][]{{0,30},{5,10},{15,20}};
+		int[][] arr = new int[][]{{0,30},{0, 45}, {5,10},{15,20}};
 		minMeetingRooms(arr);
 	}
 }

@@ -15,10 +15,10 @@ public class LargestRectangleUnderSkyLine {
 		copy.add(0);
 
 		for (int i = 0; i < copy.size(); i++) {
-			//			int height = copy.get(i);
+			int height = copy.get(i);
 			//			System.out.println(i + " , " + height);
 
-			while (!stack.isEmpty() && copy.get(stack.peek()) >= copy.get(i)) {
+			while (!stack.isEmpty() && copy.get(stack.peek()) >= height) {
 				int pillarHeight = copy.get(stack.pop());
 				int width;
 				if (stack.isEmpty()) {

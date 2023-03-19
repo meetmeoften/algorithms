@@ -64,10 +64,11 @@ public class SearchForRange {
 	}
 
 	public static void main(String args[]) {
-		int arr[] = new int[] { 5, 6, 6, 6, 6, 6, 7, 8, 8, 10 };
+		// int arr[] = new int[] { 5, 6, 6, 6, 6, 6, 7, 8, 8, 10 };
+		int arr[] = new int[] { 5, 7, 7, 8, 8, 10 };
 		int n = arr.length;
 
-		int target = 6;
+		int target = 8;
 		findFirstAndLastPosition(arr, n, target);
 
 	}

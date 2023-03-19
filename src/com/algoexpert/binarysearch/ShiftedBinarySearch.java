@@ -46,7 +46,8 @@ public class ShiftedBinarySearch {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(shiftedBinarySearch(new int[] { 45, 61, 71, 72, 73, 0, 1, 21, 33, 37 }, 33));
+		//System.out.println(shiftedBinarySearch(new int[] { 45, 61, 71, 72, 73, 0, 1, 21, 33, 37 }, 71));
+		System.out.println(shiftedBinarySearch(new int[] { 45, 61, 71, 72, 0, 1, 21, 33, 37 }, 71));
 	}
 
 }

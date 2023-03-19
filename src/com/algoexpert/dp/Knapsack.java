@@ -27,6 +27,8 @@ public class Knapsack {
 		return getKnapsackItems(values, items, values[items.length][capacity]);
 	}
 
+
+
 	public static List<List<Integer>> getKnapsackItems(int[][] values, int[][] items, int weight) {
 		List<List<Integer>> sequence = new ArrayList<>();
 		List<Integer> totalWeight = new ArrayList<>();
@@ -38,7 +40,6 @@ public class Knapsack {
 		int c = values[0].length -1;
 		while (i > 0) {
 			if(values[i][c] == values[i-1][c]) {
-
 				i--;
 			} else {
 				sequence.get(1).add(0, i-1);
@@ -54,9 +55,14 @@ public class Knapsack {
 
 
 	public static void main(String[] args) {
-		int[][] input = {{1, 2}, {4, 3}, {5, 6}, {6, 7}};
+		//		int[][] input = {{1, 2}, {4, 3}, {5, 6}, {6, 7}};
+		//		int[][] expected = {{10}, {1, 3}};
+
+		int[][] input = {{1, 2}, {4, 3}};
 		int[][] expected = {{10}, {1, 3}};
-		List<List<Integer>> result = knapsackProblem(input, 10);
+
+		// List<List<Integer>> result = knapsackProblem(input, 10);
+		List<List<Integer>> result = knapsackProblem(input, 5);
 		System.out.println(result);
 	}
 }

@@ -2,6 +2,7 @@ package com.algoexpert.dp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LongestCommonSubsequence {
 
@@ -40,6 +41,37 @@ public class LongestCommonSubsequence {
 		return sequence;
 
 	}
+
+	// CHECK IN TECHIE DELIGHT
+
+	public static int LCSLength2(String X, String Y, int m, int n) {
+		if(m == 0|| n == 0) {
+			return 0;
+		}
+		if(X.charAt(m-1) == Y.charAt(n-1)) {
+			return 1 + LCSLength2(X, Y, m-1, n-1);
+		}
+		return Integer.max(LCSLength2(X, Y, m-1, n) , LCSLength2(X, Y, m, n-1));
+	}
+
+
+
+	public static int LCSLength(String X, String Y, int m, int n, Map<String, Integer> lookup) {
+
+		if(m == 0|| n == 0) {
+			return 0;
+		}
+		String key = m + "|" + n;
+		if(!lookup.containsKey(key)) {
+			if(X.charAt(m-1) == Y.charAt(n-1)) {
+				lookup.put(key,  1 + LCSLength(X, Y, m-1, n-1, lookup));
+			} else {
+				lookup.put(key, Integer.max(LCSLength(X, Y, m-1, n, lookup) , LCSLength(X, Y, m, n-1, lookup)));
+			}
+		}
+		return lookup.get(key);
+	}
+
 
 	public static void main(String[] args) {
 		longestCommonSubsequence("ZXVVYZW", "XKYKZPW");

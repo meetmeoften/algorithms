@@ -13,7 +13,6 @@ public class Permutations {
 
 		List<List<Integer>> result = new ArrayList<>();
 		helper(nums, result, new ArrayList<>());
-
 		return result;
 	}
 
@@ -21,7 +20,7 @@ public class Permutations {
 	private void helper(int[] nums, List<List<Integer>> result, List<Integer> temp) {
 		//		System.out.println(temp);
 		if (temp.size() == nums.length) {
-			//			System.out.println(temp);
+			System.out.println(temp);
 			result.add(new ArrayList<>(temp));
 			return;
 		}

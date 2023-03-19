@@ -28,11 +28,8 @@ public class EncodeDecode {
 		while (idx < s.length()) {
 			int colonIdx = s.indexOf(":", idx);
 			int strLen = Integer.valueOf(s.substring(idx, colonIdx));
-
 			idx = colonIdx + 1;
-
 			result.add(s.substring(idx, idx + strLen));
-
 			idx += strLen;
 		}
 

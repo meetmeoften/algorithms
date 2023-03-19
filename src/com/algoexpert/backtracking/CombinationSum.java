@@ -21,13 +21,13 @@ public class CombinationSum {
 		}
 
 		if(target == 0) {
+			System.out.println(tempResult);
 			result.add(new ArrayList<>(tempResult));
 			return;
 		}
 
 		for(int i= idx; i < candidates.length; i++) {
 			tempResult.add(candidates[i]);
-			System.out.println(tempResult);
 			dfs(candidates, target- candidates[i], i, tempResult, result);
 			tempResult.remove(tempResult.size()-1);
 		}

@@ -15,19 +15,19 @@ public class CourseSchedule {
 		}
 
 		Map<Integer, Set<Integer>> graph = new HashMap<>();
-		int[] indegrees = new int[numCourses];
+		int[] dependants = new int[numCourses];
 
 		for (int[] p : prerequisites) {
 			graph.putIfAbsent(p[1], new HashSet<>());
 			graph.get(p[1]).add(p[0]);
 
-			indegrees[p[0]]++;
+			dependants[p[0]]++;
 		}
 
 		Queue<Integer> q = new LinkedList<>();
 
-		for (int i = 0; i < indegrees.length; i++) {
-			if (indegrees[i] == 0) {
+		for (int i = 0; i < dependants.length; i++) {
+			if (dependants[i] == 0) {
 				q.offer(i);
 			}
 		}
@@ -36,7 +36,7 @@ public class CourseSchedule {
 		while (!q.isEmpty()) {
 			int curr = q.poll();
 
-			if (indegrees[curr] == 0) {
+			if (dependants[curr] == 0) {
 				++count;
 			}
 			if (!graph.containsKey(curr)) {
@@ -44,8 +44,8 @@ public class CourseSchedule {
 			}
 
 			for (int neighbour : graph.get(curr)) {
-				indegrees[neighbour]--;
-				if (indegrees[neighbour] == 0) {
+				dependants[neighbour]--;
+				if (dependants[neighbour] == 0) {
 					q.offer(neighbour);
 				}
 			}
@@ -55,8 +55,8 @@ public class CourseSchedule {
 	}
 
 	public static void main(String[] args) {
-		int[][] values = {{0, 1}};
-		new CourseSchedule().canFinish(2, values);
+		int[][] values = {{1, 0}, {2, 0}, {3, 1}, {3, 2}};
+		System.out.println(new CourseSchedule().canFinish(4, values));
 	}
 
 }

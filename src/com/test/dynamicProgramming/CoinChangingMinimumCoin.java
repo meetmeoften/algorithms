@@ -1,6 +1,7 @@
 package com.test.dynamicProgramming;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class CoinChangingMinimumCoin implements Serializable {
 		//iterate through all coins and see which one gives best result.
 		int min = Integer.MAX_VALUE;
 		for (int coin : coins) {
-			
+
 			//if value of coin is greater than total we are looking for just continue.
 			if( coin > total ) {
 				continue;
@@ -119,14 +120,42 @@ public class CoinChangingMinimumCoin implements Serializable {
 		System.out.print("\n");
 	}
 
+
+	public static int minNumberOfCoinsForChange(int n, int[] denoms) {
+		// Write your code here.
+
+		int[] numOfCoins = new int[n+1];
+		Arrays.fill(numOfCoins, Integer.MAX_VALUE);
+		numOfCoins[0] = 0;
+		int toCompare = 0;
+		for(int denom: denoms) {
+			for(int amount = 1; amount < numOfCoins.length; amount++) {
+				if(amount >= denom) {
+					int value = numOfCoins[amount - denom];
+					if(value == Integer.MAX_VALUE) {
+						toCompare = value;
+					} else {
+						toCompare = value +1;
+					}
+					numOfCoins[amount] = Math.min(numOfCoins[amount], toCompare);
+				}
+			}
+		}
+		return -1;
+	}
+
 	public static void main ( String args[] ) {
-		int total = 16;
-		int coins[] = {7, 10, 3, 3, 6};
+		// int total = 16;
+		// int coins[] = {7, 10, 3, 3, 6};
+		int total = 7;
+		int coins[] = {2, 5, 10};
 		CoinChangingMinimumCoin cc = new CoinChangingMinimumCoin();
 		System.out.println(cc.coinChange(coins, total));
 		Map<Integer, Integer> map = new HashMap<>();
 		int topDownValue = cc.minimumCoinTopDown(total, coins, map);
 		int bottomUpValue = cc.minimumCoinBottomUp(total, coins);
+
+		minNumberOfCoinsForChange(total, coins);
 
 		System.out.print(String.format("Bottom up and top down result %s %s", bottomUpValue, topDownValue));
 

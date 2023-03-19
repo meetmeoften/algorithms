@@ -28,17 +28,18 @@ public class PartitionEqualSubsetSum {
 			for (int j = 1; j <= sum; j++) {
 				if (j >= nums[i - 1]) {
 					dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];
-					System.out.println(i  + " " + j + " "  +dp[i][j]);
+					// System.out.println(i + " " + j + " " +dp[i][j]);
+				} else {
+					dp[i][j] = dp[i - 1][j];
 				}
 			}
 		}
 		return dp[nums.length][sum];
 	}
 
-
-	public boolean canPartition2(int[] nums) {
+	public static boolean canPartition2(int[] nums) {
 		int sum = 0;
-		for (int n: nums) {
+		for (int n : nums) {
 			sum += n;
 		}
 		if (sum % 2 == 1) {
@@ -48,7 +49,7 @@ public class PartitionEqualSubsetSum {
 		return backtracking(sum, nums, 0, 0, new HashSet<>());
 	}
 
-	public boolean backtracking(int sum, int[] nums, int cur, int i, Set<Integer> visited) {
+	public static boolean backtracking(int sum, int[] nums, int cur, int i, Set<Integer> visited) {
 		if (cur == sum / 2) {
 			return true;
 		}
@@ -67,7 +68,7 @@ public class PartitionEqualSubsetSum {
 	}
 
 	public static void main(String[] args) {
-		canPartition(new int[] { 1, 2, 5, 2 });
+		canPartition(new int[] { 1, 5, 10, 6 });
 	}
 
 }

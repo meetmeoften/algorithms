@@ -5,7 +5,7 @@ import java.util.List;
 
 public class InsertIntervals {
 
-	public int[][] insert(int[][] intervals, int[] newInterval) {
+	public static int[][] insert(int[][] intervals, int[] newInterval) {
 		List<int[]> result = new ArrayList<>();
 		int idx = 0;
 
@@ -29,4 +29,10 @@ public class InsertIntervals {
 		return result.toArray(new int[0][]);
 	}
 
+
+	public static void main(String[] args) {
+		int intervals[][] = {{3,4},{6,9}}, newInterval[] = {2,5};
+		insert(intervals, newInterval);
+
+	}
 }

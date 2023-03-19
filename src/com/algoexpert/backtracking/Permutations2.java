@@ -28,7 +28,7 @@ public class Permutations2 {
 		}
 
 		for (int i = 0; i < nums.length; i++) {
-			System.out.println(i + " " + temp + "  " + used[i]);
+			//System.out.println(i + " " + temp + "  " + used[i]);
 			if (used[i] || i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {  // should not change order
 				continue;
 			}
@@ -46,6 +46,7 @@ public class Permutations2 {
 			//			}
 		}
 	}
+
 
 	public static void main(String[] args) {
 		new Permutations2().permuteUnique(new int[] {1,2,1});

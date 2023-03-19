@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Combinations {
 
-	public List<List<Integer>> combine(int n, int k) {
+	public static List<List<Integer>> combine(int n, int k) {
 		if (n == 0 || k > n) {
 			return Collections.emptyList();
 		}
@@ -16,7 +16,7 @@ public class Combinations {
 		return result;
 	}
 
-	private void helper(int start, int end, int numbersLeft, List<List<Integer>> result, List<Integer> temp) {
+	private static void helper(int start, int end, int numbersLeft, List<List<Integer>> result, List<Integer> temp) {
 		if (numbersLeft == 0) {
 			result.add(new ArrayList<>(temp));
 			return;
@@ -24,8 +24,12 @@ public class Combinations {
 
 		for (int i = start; i <= end; i++) {
 			temp.add(i);
-			helper(i + 1, end, numbersLeft - 1,  result, temp);
+			helper(i + 1, end, numbersLeft - 1, result, temp);
 			temp.remove(temp.size() - 1);
 		}
+	}
+
+	public static void main(String[] args) {
+		combine(4, 2);
 	}
 }

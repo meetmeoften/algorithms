@@ -36,6 +36,24 @@ public class NumberOfWaysToTraverseGraph {
 		return numberOfWays[height-1][width-1];
 	}
 
+	public int numberOfWaysToTraverseGraph3(int width, int height) {
+		// Write your code here.
+
+		int[][] ways = new int[width][height];
+
+		for(int i= 0; i < width; i++){
+			for(int j= 0; j < height; j++) {
+				if(i== 0 || j== 0) {
+					ways[i][j] = 1;
+				} else {
+					ways[i][j] = ways[i][j-1] + ways[i-1][j];
+				}
+			}
+		}
+
+		return ways[width-1][height-1];
+	}
+
 	public static void main(String[] args) {
 		int width = 4;
 		int height = 3;

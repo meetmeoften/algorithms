@@ -51,6 +51,24 @@ public class ReverseKGroup {
 		return prev;
 	}
 
+	static LinkedList reverseRecursion(LinkedList head)
+	{
+		if (head == null || head.next == null) {
+			return head;
+		}
+
+		/* reverse the rest list and put
+        the first element at the end */
+		LinkedList rest = reverseRecursion(head.next);
+		head.next.next = head;
+
+		/* tricky step -- see the diagram */
+		head.next = null;
+
+		/* fix the head pointer */
+		return rest;
+	}
+
 
 	static class LinkedList {
 		int value;

@@ -23,7 +23,7 @@ public class LongestCharacterReplacement {
 	}
 
 	public static void main(String[] args) {
-		characterReplacement("ABAB", 2);
+		characterReplacement("AABABBA", 2);
 	}
 
 }
