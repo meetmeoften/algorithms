@@ -1,11 +1,12 @@
 package com.algoexpert.matrix;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SpiralMatrix {
 
-	public static List<Integer> spiralOrder(int[][] array) {
+	public static List<Integer> spiralTraverse(int[][] array) {
 		List<Integer> results = new ArrayList<>();
 		if (array.length == 0) {
 			return results;
@@ -51,8 +52,17 @@ public class SpiralMatrix {
 
 
 	public static void main(String[] args) {
-		int matrix[][] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
-		spiralOrder(matrix);
+		var input =
+				new int[][] {
+			{1, 2, 3, 4},
+			{12, 13, 14, 5},
+			{11, 16, 15, 6},
+			{10, 9, 8, 7},
+		};
+		var expected = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+		var actual = spiralTraverse(input);
+		System.out.println(actual);
+		// Utils.assertTrue(expected.equals(actual));
 	}
 
 }

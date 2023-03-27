@@ -46,7 +46,7 @@ public class CourseSchedule4 {
 					queue.add(child);
 				}
 				for (int i = 0; i < numCourses; i++) {
-					dependency[child][i] |= dependency[node][i];
+					dependency[child][i] |= dependency[node][i]; // bitwise OR operator
 				}
 			}
 		}

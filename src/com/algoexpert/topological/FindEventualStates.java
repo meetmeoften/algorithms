@@ -81,4 +81,9 @@ public class FindEventualStates {
 		return l;
 	}
 
+	public static void main(String[] args) {
+		int[][] graph = { { 1, 2 }, { 2, 3 }, { 5 }, { 0 }, { 5 }, {}, {} };
+		new FindEventualStates().eventualSafeNodes(graph);
+	}
+
 }

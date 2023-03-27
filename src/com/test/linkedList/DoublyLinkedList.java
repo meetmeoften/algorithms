@@ -25,13 +25,13 @@ public class DoublyLinkedList {
 		Node newNode = new Node();
 		newNode.data = data;
 		newNode.next = head;
-		newNode.prev=null;
-		if(head!=null) {
-			head.prev=newNode;
+		newNode.prev = null;
+		if (head != null) {
+			head.prev = newNode;
 		}
 		head = newNode;
-		if(tail==null) {
-			tail=newNode;
+		if (tail == null) {
+			tail = newNode;
 		}
 		size++;
 	}
@@ -41,16 +41,17 @@ public class DoublyLinkedList {
 		Node newNode = new Node();
 		newNode.data = data;
 		newNode.next = null;
-		newNode.prev=tail;
-		if(tail!=null) {
-			tail.next=newNode;
+		newNode.prev = tail;
+		if (tail != null) {
+			tail.next = newNode;
 		}
 		tail = newNode;
-		if(head==null) {
-			head=newNode;
+		if (head == null) {
+			head = newNode;
 		}
 		size++;
 	}
+
 	// used to delete node from start of Doubly linked list
 	public Node deleteFirst() {
 
@@ -69,11 +70,10 @@ public class DoublyLinkedList {
 
 		Node temp = tail;
 		tail = tail.prev;
-		tail.next=null;
+		tail.next = null;
 		size--;
 		return temp;
 	}
-
 
 	// Use to delete node after particular node
 	public void deleteAfter(Node after) {
@@ -82,7 +82,7 @@ public class DoublyLinkedList {
 			temp = temp.next;
 		}
 		if (temp.next != null) {
-			temp.next.next.prev=temp;
+			temp.next.next.prev = temp;
 		}
 		temp.next = temp.next.next;
 
@@ -122,10 +122,10 @@ public class DoublyLinkedList {
 
 		System.out.println("================");
 		// Doubly Linked list will be
-		// 1 ->  7 -> 6 -> 5 -> 2
+		// 1 -> 7 -> 6 -> 5 -> 2
 
-		Node node=new Node();
-		node.data=1;
+		Node node = new Node();
+		node.data = 1;
 		myLinkedlist.deleteAfter(node);
 		myLinkedlist.printLinkedListForward();
 		myLinkedlist.printLinkedListBackward();
@@ -136,7 +136,7 @@ public class DoublyLinkedList {
 		myLinkedlist.deleteLast();
 
 		// After performing above operation, doubly Linked list will be
-		//  6 -> 5
+		// 6 -> 5
 		myLinkedlist.printLinkedListForward();
 		myLinkedlist.printLinkedListBackward();
 

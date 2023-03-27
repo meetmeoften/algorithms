@@ -13,6 +13,7 @@ public class VerifyAlienDictionary {
 			String word1 = words[i];
 			String word2 = words[i + 1];
 			int len = Math.min(word1.length(), word2.length());
+
 			for (int j = 0; j < len; j++) {
 				if (word1.charAt(j) != word2.charAt(j)) {
 					if (index[word1.charAt(j) - 'a'] > index[word2.charAt(j) - 'a']) {

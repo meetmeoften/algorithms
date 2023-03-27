@@ -20,7 +20,7 @@ public class SecondSmallest {
 	}
 
 	public static void main(String[] args) {
-		int result = secondSmallest(new int[] {0, 1});
+		int result = secondSmallest(new int[] {0, 0});
 		System.out.println(result);
 	}
 

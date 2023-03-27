@@ -75,9 +75,54 @@ public class LastStone2 {
 		return sumArr - dp[sum] - dp[sum];
 	}
 
+	public static int lastStoneWeightII4(int[] stones) {
+		int sum = 0;
+		for (int stone : stones) {
+			sum += stone;
+		}
+		int length = stones.length;
+		int capacity = sum / 2;
+		int[] dp = new int[capacity + 1];
+		for (int i = 0; i < length; i++) {
+			int stone = stones[i];
+			for (int j = capacity; j >= stone; j--) {
+				dp[j] = Math.max(dp[j], dp[j - stone] + stone);
+			}
+		}
+		int maxSum = dp[capacity];
+		int remaining = sum - maxSum;
+		return Math.abs(maxSum - remaining);
+	}
+
+	public int lastStoneWeightII5(int[] stones) {
+		int sumStWt = 0;
+		for (int stone : stones) {
+			sumStWt += stone;
+		}
+		Integer[][] dp = new Integer[stones.length][sumStWt];
+		return helper3(stones, 0, 0, 0, dp);
+	}
+
+	private int helper3(int[] stones, int index, int sumL, int sumR, Integer[][] dp) {
+		if (index == stones.length) {
+			return Math.abs(sumL - sumR);
+		}
+
+		if (dp[index][sumL] != null) {
+			return dp[index][sumL];
+		}
+
+		dp[index][sumL] = Math.min(
+				helper3(stones, index + 1, sumL + stones[index], sumR, dp),
+				helper3(stones, index + 1, sumL, sumR + stones[index], dp));
+		return dp[index][sumL];
+	}
+
 	public static void main(String[] args) {
 		int[] stones = { 2, 7, 4, 1, 8, 1 };
-		lastStoneWeightII2(stones);
+		lastStoneWeightII4(stones);
+
+		//https://leetcode.com/problems/last-stone-weight-ii/solutions/1938051/java-recursion-memoisation-intuitive-solution-with-explanation/
 	}
 
 }

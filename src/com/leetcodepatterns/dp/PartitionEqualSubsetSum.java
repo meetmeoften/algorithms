@@ -24,6 +24,8 @@ public class PartitionEqualSubsetSum {
 			dp[i][0] = true;
 		}
 
+		// https://www.youtube.com/watch?v=34l1kTIQCIA&list=RDCMUCnxhETjJtTPs37hOZ7vQ88g&index=2&ab_channel=TECHDOSE
+
 		for (int i = 1; i <= nums.length; i++) {
 			for (int j = 1; j <= sum; j++) {
 				if (j >= nums[i - 1]) {
@@ -35,6 +37,34 @@ public class PartitionEqualSubsetSum {
 			}
 		}
 		return dp[nums.length][sum];
+	}
+
+	public static boolean subsetSum(int[] nums, int n, int sum) {
+		// return true if the sum becomes 0 (subset found)
+		if (sum == 0) {
+			return true;
+		}
+
+		// base case: no items left or sum becomes negative
+		if (n < 0 || sum < 0) {
+			return false;
+		}
+
+		// Case 1. Include the current item `nums[n]` in the subset and recur
+		// for remaining items `n-1` with the remaining total `sum-nums[n]`
+		boolean include = subsetSum(nums, n - 1, sum - nums[n]);
+
+		// return true if we get subset by including the current item
+		if (include) {
+			return true;
+		}
+
+		// Case 2. Exclude the current item `nums[n]` from the subset and recur for
+		// remaining items `n-1`
+		boolean exclude = subsetSum(nums, n - 1, sum);
+
+		// return true if we get subset by excluding the current item
+		return exclude;
 	}
 
 	public static boolean canPartition2(int[] nums) {
@@ -68,7 +98,8 @@ public class PartitionEqualSubsetSum {
 	}
 
 	public static void main(String[] args) {
-		canPartition(new int[] { 1, 5, 10, 6 });
+		// canPartition(new int[] { 1, 5, 10, 6 });
+		canPartition(new int[] { 1, 2, 3, 4 });
 	}
 
 }

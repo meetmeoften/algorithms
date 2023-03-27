@@ -21,13 +21,12 @@ public class AssemblyCar {
 		return Math.max(v1, Math.max(v2, v3));
 	}
 
-
 	public static void main(String[] args) {
-		int[] h={6, 5, 5, 4, 3};
-		int x=8,y=9;
-		int n=h.length;
+		int[] h = { 6, 5, 5, 4, 3 };
+		int x = 8, y = 9;
+		int n = h.length;
 
-		int ans= recur(h,0,x,y,n);
+		int ans = recur(h, 0, x, y, n);
 		System.out.println(ans);
 	}
 

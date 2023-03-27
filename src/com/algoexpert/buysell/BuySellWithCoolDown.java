@@ -55,7 +55,7 @@ public class BuySellWithCoolDown {
 				M[1] = Math.max(prices[1] - prices[0], 0);
 			} else {
 				M[i] = Math.max(M[i - 1], maxDiff + prices[i]);
-				maxDiff = Math.max(maxDiff, M[i - 2] - prices[i]);
+				maxDiff = Math.max(maxDiff, M[i - 1] - prices[i]);
 			}
 		}
 

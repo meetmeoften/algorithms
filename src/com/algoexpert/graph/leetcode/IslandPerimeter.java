@@ -2,7 +2,7 @@ package com.algoexpert.graph.leetcode;
 
 public class IslandPerimeter {
 
-	public int islandPerimeter2(int[][] grid) {
+	public static int islandPerimeter2(int[][] grid) {
 		int islands = 0, neighbours = 0;
 
 		for (int i = 0; i < grid.length; i++) {
@@ -62,7 +62,7 @@ public class IslandPerimeter {
 	}
 
 	public static void main(String[] args) {
-		int[][] points = { { 0, 1, 0, 0 }, { 1, 1, 1, 0 }, { 0, 1, 0, 0 }, { 0, 1, 0, 0 }, { 1, 1, 0, 0 } };
+		int[][] points = { { 0, 1, 0, 0 }, { 1, 1, 1, 0 }, { 0, 1, 0, 0 }, { 1, 1, 0, 0 } };
 		islandPerimeter(points);
 	}
 
