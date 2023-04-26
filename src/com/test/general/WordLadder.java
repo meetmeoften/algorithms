@@ -1,61 +1,70 @@
 package com.test.general;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 public class WordLadder {
-	public int ladderLength(String beginWord, String endWord, Set<String>
-	wordDict) {
-		LinkedList<WordNode> queue = new LinkedList<WordNode>();
-		queue.add(new WordNode(beginWord, 1));
-		wordDict.add(endWord);
-		while(!queue.isEmpty()){
-			WordNode top = queue.remove();
-			String word = top.word;
-			if(word.equals(endWord)){
-				return top.numSteps;
-			}
-			char[] arr = word.toCharArray();
-			for(int i=0; i<arr.length; i++){
-				for(char c='a'; c<='z'; c++){
-					char temp = arr[i];
-					if(arr[i]!=c){
-						arr[i]=c;
+
+	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+		if (beginWord.equals(endWord)) {
+			return 1;
+		}
+
+		Set<String> dict = new HashSet<>(wordList);
+		Queue<String> q = new LinkedList<>();
+		q.offer(beginWord);
+
+		int steps = 1;
+
+		while (!q.isEmpty()) {
+			int level = q.size();
+
+			for (int i = 0; i < level; i++) {
+				String s = q.poll();
+
+				if (s.equals(endWord)) {
+					return steps;
+				}
+
+				char[] letters = s.toCharArray();
+
+				for (int j = 0; j < s.length(); j++) {
+					char prevCh = letters[j];
+
+					for (char ch = 'a'; ch <= 'z'; ch++) {
+						letters[j] = ch;
+						String nextWord = new String(letters);
+
+						if (dict.contains(nextWord)) {
+							q.offer(nextWord);
+							dict.remove(nextWord);
+						}
 					}
-					String newWord = new String(arr);
-					if(wordDict.contains(newWord)){
-						queue.add(new WordNode(newWord, top.numSteps+1));
-						wordDict.remove(newWord);
-					}
-					arr[i]=temp;
+
+					letters[j] = prevCh;
 				}
 			}
+
+			++steps;
 		}
+
 		return 0;
 	}
 
-
-	class WordNode{
-		String word;
-		int numSteps;
-		public WordNode(String word, int numSteps){
-			this.word = word;
-			this.numSteps = numSteps;
-		}
-	}
-
-
 	public static void main(String[] args) {
 		String start = "hit";
-		String	end = "cog";
-		Set<String> set = new HashSet<>();
-		String[] 	dict = new String[] {"hot","dot","dog","lot","log"};
-		set.addAll(Arrays.asList(dict));
+		String end = "cog";
+		List<String> list = new ArrayList<>();
+		String[] dict = new String[] { "hot", "dot", "dog", "lot", "log" };
+		list.addAll(Arrays.asList(dict));
 
 		WordLadder ladder = new WordLadder();
-		ladder.ladderLength(start, end, set);
+		System.out.println(ladder.ladderLength(start, end, list));
 
 	}
 }

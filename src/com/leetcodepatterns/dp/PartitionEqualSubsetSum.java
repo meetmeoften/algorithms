@@ -1,7 +1,7 @@
 package com.leetcodepatterns.dp;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PartitionEqualSubsetSum {
 
@@ -67,39 +67,60 @@ public class PartitionEqualSubsetSum {
 		return exclude;
 	}
 
+
+
+
 	public static boolean canPartition2(int[] nums) {
-		int sum = 0;
-		for (int n : nums) {
-			sum += n;
-		}
-		if (sum % 2 == 1) {
+		if(nums == null || nums.length == 0){
 			return false;
 		}
 
-		return backtracking(sum, nums, 0, 0, new HashSet<>());
+		int sum =0;
+		for(int num : nums) {
+			sum += num;
+		}
+
+		if(sum %2 != 0) {
+			return false;
+		}
+
+		Map<String, Boolean> map = new HashMap<>();
+
+		return helper(nums, nums.length-1, sum/2, map);
 	}
 
-	public static boolean backtracking(int sum, int[] nums, int cur, int i, Set<Integer> visited) {
-		if (cur == sum / 2) {
+
+	private static boolean helper(int[] nums, int n, int sum,  Map<String, Boolean> map) {
+		if(sum == 0) {
 			return true;
 		}
-		if (visited.contains(cur) || i > nums.length || cur > sum / 2) {
+
+		if(n < 0 || sum < 0) {
 			return false;
 		}
-		visited.add(cur);
-		for (int j = i; j < nums.length; j++) {
-			cur += nums[j];
-			if (backtracking(sum, nums, cur, j + 1, visited)) {
-				return true;
-			}
-			cur -= nums[j];
+
+		String key = n + "|" + sum;
+		System.out.println(key);
+
+		if(map.containsKey(key)) {
+			return map.get(key);
 		}
-		return false;
+
+		boolean include = helper(nums, n-1, sum - nums[n], map);
+		map.put(key, include);
+		if(include) {
+			return true;
+		}
+
+		boolean exclude = helper(nums, n-1, sum, map);
+		map.put(key, exclude);
+		return exclude;
 	}
 
 	public static void main(String[] args) {
 		// canPartition(new int[] { 1, 5, 10, 6 });
 		canPartition(new int[] { 1, 2, 3, 4 });
+		canPartition2(new int[] { 1, 5, 11, 5 });
 	}
 
 }

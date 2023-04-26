@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class WiggleSort {
 
-	public void wiggleSort(int[] nums) {
+	public static void wiggleSort(int[] nums) {
 		int[] copy = Arrays.copyOf(nums, nums.length);
 		Arrays.sort(copy);
 
@@ -19,6 +19,11 @@ public class WiggleSort {
 				--left;
 			}
 		}
+	}
+
+	public static void main(String[] args) {
+		int[] nums = { 1, 5, 1, 1, 6, 4 };
+		wiggleSort(nums);
 	}
 
 }

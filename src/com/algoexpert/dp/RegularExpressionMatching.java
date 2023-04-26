@@ -43,10 +43,10 @@ public class RegularExpressionMatching {
 			return false;
 		}
 
-		boolean match = i < s.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.');
+		boolean match = i < s.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?');
 
-		if (j + 1 < p.length() && p.charAt(j + 1) == '*') {
-			cache[i][j] = dfs(cache, s, p, i, j + 2) || (match && dfs(cache, s, p, i + 1, j));
+		if (p.charAt(j) == '*') {
+			cache[i][j] = dfs(cache, s, p, i, j + 1) || (dfs(cache, s, p, i + 1, j));
 		} else {
 			cache[i][j] = match && dfs(cache, s, p, i + 1, j + 1);
 		}
@@ -55,7 +55,10 @@ public class RegularExpressionMatching {
 	}
 
 	public static void main(String[] args) {
-
+		RegularExpressionMatching match = new RegularExpressionMatching();
+		String s = "aba", p = "*";
+		//match.isMatch(s, p);
+		match.isMatch2(s, p);
 	}
 
 }

@@ -14,13 +14,10 @@ public class MyLinkedList {
 		if (index >= size) {
 			return -1;
 		}
-
 		ListNode currNode = dummyNode;
-
 		for (int i = 0; i <= index; i++) {
 			currNode = currNode.next;
 		}
-
 		return currNode.val;
 	}
 
@@ -73,6 +70,17 @@ public class MyLinkedList {
 
 		currNode.next = currNode.next.next;
 		size--;
+	}
+
+	public static void main(String[] args) {
+		MyLinkedList li = new MyLinkedList();
+
+		li.addAtHead(1);
+		li.addAtHead(2);
+		li.addAtTail(4);
+		li.addAtIndex(2, 3);
+		li.get(2);
+		li.deleteAtIndex(3);
 	}
 
 }

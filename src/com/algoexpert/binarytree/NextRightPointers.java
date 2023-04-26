@@ -87,7 +87,10 @@ public class NextRightPointers {
 		root.right.left.right.left = new Node(9);
 		root.right.left.right.right = new Node(10);
 
-		connect2(root);
+		connect(root);
+
+
+
 	}
 
 }

@@ -34,7 +34,7 @@ public class MedianOfTwoSortedArrays {
 
 	public static void main(String[] args) {
 		//		int[] nums1 = { 1, 3 }, nums2 = { 2 };
-		int[] nums1 = { 1, 2 }, nums2 = { 3, 4 };
+		int[] nums1 = { 1, 2 }, nums2 = { 3};
 		findMedianSortedArrays(nums1, nums2);
 
 	}

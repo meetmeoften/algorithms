@@ -6,6 +6,10 @@ import java.util.List;
 
 public class RightSmallerThan2 {
 
+
+
+
+
 	public static List<Integer> rightSmallerThan(List<Integer> array) {
 		if(array.size() == 0) {
 			return new ArrayList<Integer>();

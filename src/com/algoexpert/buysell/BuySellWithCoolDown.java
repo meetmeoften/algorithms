@@ -57,6 +57,7 @@ public class BuySellWithCoolDown {
 				M[i] = Math.max(M[i - 1], maxDiff + prices[i]);
 				maxDiff = Math.max(maxDiff, M[i - 1] - prices[i]);
 			}
+			System.out.println(maxDiff);
 		}
 
 		return M[n - 1];
@@ -92,7 +93,8 @@ public class BuySellWithCoolDown {
 
 	public static void main(String[] args) {
 		maxProfit2(new int[] { 1, 2, 3, 0, 2 });
-		maxProfit3(new int[] { 1, 2, 3, 0, 2 });
+		// maxProfit3(new int[] { 1, 2, 3, 0, 2 });
+		maxProfit3(new int[] { 7,1,5,3,6,4 });
 	}
 
 }

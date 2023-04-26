@@ -38,4 +38,16 @@ public class MyLinkedListUsingArrayList {
 		}
 	}
 
+
+	public static void main(String[] args) {
+		MyLinkedListUsingArrayList li = new MyLinkedListUsingArrayList();
+
+		li.addAtHead(1);
+		li.addAtHead(2);
+		li.addAtTail(4);
+		li.addAtIndex(2, 3);
+		li.get(2);
+		li.deleteAtIndex(3);
+	}
+
 }

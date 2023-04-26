@@ -24,7 +24,7 @@ public class MergeTriplets {
 		int[][] triplets = { { 3, 5, 1 }, { 10, 5, 7 } };
 		int[] target = { 3, 5, 7 };
 
-		mergeTriplets(triplets, target);
+		System.out.println(mergeTriplets(triplets, target));
 	}
 
 }

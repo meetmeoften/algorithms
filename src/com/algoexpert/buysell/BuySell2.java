@@ -27,6 +27,7 @@ public class BuySell2 {
 		int valley = prices[0];
 		int maxProfit = 0;
 		int len = prices.length;
+
 		while (i < len - 1) {
 			while (i < len - 1 && prices[i] >= prices[i + 1]) {// down
 				i++;

@@ -1,5 +1,8 @@
 package com.algoexpert2.binarytree.veryhard;
 
+import java.util.Stack;
+import java.util.function.Function;
+
 public class MorrisInOrderTraversal {
 
 	public static void iterativeInOrderTraversal(BinaryTree root) {
@@ -12,7 +15,8 @@ public class MorrisInOrderTraversal {
 				cur = cur.right;
 			} else {
 				BinaryTree p = cur.left;
-				while (p.right != null && p.right != cur) {
+
+				while (p.right != null && p.right != cur) {  // Inorder Predecessor
 					p = p.right;
 				}
 				if (p.right == null) {
@@ -24,6 +28,24 @@ public class MorrisInOrderTraversal {
 					System.out.println(cur.value);
 					cur = cur.right;
 				}
+			}
+		}
+	}
+
+	public static void iterativeInOrderTraversal(
+			BinaryTree tree, Function<BinaryTree, Void> callback) {
+		// Write your code here.
+		Stack<BinaryTree> stack = new Stack<>();
+		BinaryTree currentNode = tree;
+		while(!stack.isEmpty() || currentNode != null) {
+			if(currentNode != null) {
+				stack.add(currentNode);
+				currentNode = currentNode.left;
+			} else {
+				BinaryTree node = stack.pop();
+				//callback.apply(node);
+				System.out.println(node.value);
+				currentNode = node.right;
 			}
 		}
 	}
@@ -55,5 +77,6 @@ public class MorrisInOrderTraversal {
 		root.right.right = new MorrisInOrderTraversal.BinaryTree(7, root.right);
 
 		MorrisInOrderTraversal.iterativeInOrderTraversal(root);
+		MorrisInOrderTraversal.iterativeInOrderTraversal(root, null);
 	}
 }

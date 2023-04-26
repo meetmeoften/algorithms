@@ -51,7 +51,8 @@ public class MatrixZeros {
 	}
 
 	public static void main(String[] args) {
-		int[][] edges = new int[][] { { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } };
+		//int[][] edges = new int[][] { { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } };
+		int[][] edges = new int[][] { { 1, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } };
 		new MatrixZeros().setZeroes(edges);
 	}
 

@@ -60,5 +60,6 @@ public class MinimumCoinChange {
 	public static void main(String[] args) {
 		int[] input = { 2, 5, 10 };
 		minNumberOfCoinsForChange(7, input);
+		findMinCoins( input, 7);
 	}
 }
