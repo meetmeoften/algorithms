@@ -33,6 +33,9 @@ public class MaximumPerformanceOfTeam {
 		int n = 6, k = 2;
 		int[] speed = { 2, 10, 3, 1, 5, 8 }, efficiency = { 5, 4, 3, 9, 7, 2 };
 		maxPerformance(n, speed, efficiency, k);
+
+
+		// [[1, 9], [5, 7], [2, 5], [10, 4], [3, 3], [8, 2]]
 	}
 
 }

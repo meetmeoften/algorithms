@@ -18,7 +18,7 @@ public class MinimumInRotatedSortedArray {
 	}
 
 
-	public int findMin2(int[] nums) {
+	public static int findMin2(int[] nums) {
 		int l = 0;
 		int r = nums.length - 1;
 
@@ -39,7 +39,8 @@ public class MinimumInRotatedSortedArray {
 
 
 	public static void main(String[] args) {
-		findMin(new int[] {4,5,6,7,0,1,2});
+		findMin(new int[] {3,4,5,1,2});
+		findMin2(new int[] {4,5,6,7,0,1,2});
 	}
 
 }

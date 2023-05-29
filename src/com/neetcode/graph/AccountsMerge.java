@@ -82,8 +82,10 @@ public class AccountsMerge {
 	}
 
 	public static void main(String[] args) {
-		String[][] accounts = { { "John", "johnsmith@mail.com", "john_newyork@mail.com" },
-				{ "John", "johnsmith@mail.com", "john00@mail.com" }, { "Mary", "mary@mail.com" },
+		String[][] accounts = {
+				{ "John", "johnsmith@mail.com", "john_newyork@mail.com" },
+				{ "John", "johnsmith@mail.com", "john00@mail.com" },
+				{ "Mary", "mary@mail.com" },
 				{ "John", "johnnybravo@mail.com" } };
 		List<List<String>> resList = new ArrayList<>();
 		for (String[] rows : accounts) {

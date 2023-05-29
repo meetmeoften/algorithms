@@ -73,6 +73,16 @@ public class SearchSuggestionSystem {
 		}
 	}
 
+	private static void insert(TrieNode root, String word) {
+		for (char c : word.toCharArray()) {
+			if (root.children[c - 'a'] == null) {
+				root.children[c - 'a'] = new TrieNode();
+			}
+			root = root.children[c - 'a'];
+			root.addToPQ(word);
+		}
+	}
+
 	public static List<List<String>> suggestedProducts2(String[] products, String searchWord) {
 		TrieNode root = new TrieNode();
 		for (String product : products) {
@@ -91,16 +101,6 @@ public class SearchSuggestionSystem {
 			results.add(new ArrayList<>());
 		}
 		return results;
-	}
-
-	private static void insert(TrieNode root, String word) {
-		for (char c : word.toCharArray()) {
-			if (root.children[c - 'a'] == null) {
-				root.children[c - 'a'] = new TrieNode();
-			}
-			root = root.children[c - 'a'];
-			root.addToPQ(word);
-		}
 	}
 
 	public static void main(String[] args) {

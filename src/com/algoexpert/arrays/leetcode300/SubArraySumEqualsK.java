@@ -37,8 +37,8 @@ public class SubArraySumEqualsK {
 	}
 
 	public static void main(String[] args) {
-		int[] num = { 1, 1, 1 };
-		subarraySum(num, 2);
+		int[] num = { 1, 2, 3 };
+		subarraySum(num, 3);
 	}
 
 }

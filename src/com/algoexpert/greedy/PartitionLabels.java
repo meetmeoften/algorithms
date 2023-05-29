@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PartitionLabels {
 
-	public List<Integer> partitionLabels(String S) {
+	public static List<Integer> partitionLabels(String S) {
 		if (S == null || S.length() == 0) {
 			return null;
 		}
@@ -27,11 +27,13 @@ public class PartitionLabels {
 				start = last+1;
 			}
 		}
-
-
-
 		return list;
 
+	}
+
+	public static void main(String[] args) {
+		String s = "ababcbacadefegdehijhklij";
+		partitionLabels(s);
 	}
 
 }

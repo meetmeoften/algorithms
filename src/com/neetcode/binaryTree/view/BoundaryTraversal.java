@@ -33,24 +33,6 @@ public class BoundaryTraversal {
 		}
 	}
 
-	static void addLeftBoundary1(Node root, ArrayList<Integer> res) {
-		Node curr = root.left;
-		while(curr != null) {
-			if(isLeaf(curr) == false) {
-				res.add(curr.data);
-			}
-			if(curr.left != null) {
-				curr = curr.left;
-			} else {
-				curr = curr.right;
-			}
-		}
-
-	}
-
-
-
-
 	static void addRightBoundary(Node root, ArrayList<Integer> res) {
 		Node cur = root.right;
 		ArrayList<Integer> tmp = new ArrayList<Integer>();
@@ -64,8 +46,7 @@ public class BoundaryTraversal {
 				cur = cur.left;
 			}
 		}
-		int i;
-		for (i = tmp.size() - 1; i >= 0; --i) {
+		for (int i = tmp.size() - 1; i >= 0; --i) {
 			res.add(tmp.get(i));
 		}
 	}

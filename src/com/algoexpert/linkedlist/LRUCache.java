@@ -27,8 +27,8 @@ public class LRUCache {
 
 	public void put(int key, int value) {
 		if (q.size() == size) {
-			int val = q.removeLast();
-			m.remove(val);
+			int oldKey = q.removeLast();
+			m.remove(oldKey);
 		} else {
 			q.remove(key);
 		}
@@ -44,6 +44,7 @@ public class LRUCache {
 		l.put(2, 6);
 		System.out.println(l.get(1));
 		l.put(1, 5);
+		l.put(3, 5);
 		l.put(1, 2);
 		System.out.println(l.get(1));
 		System.out.println(l.get(2));

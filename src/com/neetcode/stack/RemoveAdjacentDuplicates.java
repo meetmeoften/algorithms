@@ -63,6 +63,7 @@ public class RemoveAdjacentDuplicates {
 
 	public static void main(String[] args) {
 		removeDuplicates("deeedbbcccbdaa", 3);
+		removeDuplicates2("deeedbbcccbdaa", 3);
 	}
 
 }
