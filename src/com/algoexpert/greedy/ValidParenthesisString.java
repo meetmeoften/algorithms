@@ -4,6 +4,8 @@ import java.util.Stack;
 
 public class ValidParenthesisString {
 
+	// (*))*(*
+
 	public static boolean checkValidString(String s) {
 		Stack<Integer> op = new Stack<>();
 		Stack<Integer> st = new Stack<>();
@@ -96,7 +98,7 @@ public class ValidParenthesisString {
 	}
 
 	public static void main(String[] args) {
-		checkValidString("(*))*(*");
+		System.out.println(checkValidString("(*))*(*"));
 		checkValidString2("(*()");
 	}
 

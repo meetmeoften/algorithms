@@ -57,7 +57,8 @@ public class MaximumSumCircularSubArrayDoubleKadane {
 	}
 
 	public static void main(String[] args) {
-		int[] nums = { 1, -2, 3, -2 };
+		//int[] nums = { 1, -2, 3, -2 };
+		int[] nums = {5, -3, 5 };
 		maxSubarraySumCircular(nums);
 		maxSubarraySumCircular2(nums);
 	}

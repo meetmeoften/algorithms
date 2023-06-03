@@ -32,7 +32,7 @@ public class DecodeString {
 	}
 
 	public static void main(String[] args) {
-		String s = "10[a]2[bc]";
+		String s = "1[a]2[bc]";
 		System.out.println(decodeString(s));
 
 	}

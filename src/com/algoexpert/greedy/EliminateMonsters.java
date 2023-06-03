@@ -26,8 +26,8 @@ public class EliminateMonsters {
 	}
 
 	public static void main(String[] args) {
-		int[] dist = { 3, 100, 4 };
-		int[] speed = { 5, 100, 2 };
+		int[] dist = { 1, 1, 3, 4};
+		int[] speed = { 1, 1,1,  1 };
 		eliminateMaximum(dist, speed);
 
 	}

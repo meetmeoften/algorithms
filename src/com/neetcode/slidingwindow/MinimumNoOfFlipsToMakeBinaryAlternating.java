@@ -85,7 +85,7 @@ public class MinimumNoOfFlipsToMakeBinaryAlternating {
 	}
 
 	public static void main(String[] args) {
-		minFlips2("111000");
+		minFlips2("110");
 	}
 
 }

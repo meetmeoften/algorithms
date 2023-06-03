@@ -10,6 +10,7 @@ public class CarPooling {
 		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
 		Arrays.sort(trips, (a, b) -> a[1] - b[1]);
 		int totalPersonsInTheCar = 0;
+
 		for (int[] trip : trips) {
 			while (!pq.isEmpty() && pq.peek()[2] <= trip[1]) {
 				int[] detail = pq.poll();

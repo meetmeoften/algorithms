@@ -58,6 +58,7 @@ public class LongestSubstringWithoutRepeating {
 
 	public static void main(String[] args) {
 		lengthOfLongestSubstring("abcabcdbb");
+		lengthOfLongestSubstring("abcabcdbb");
 	}
 
 }

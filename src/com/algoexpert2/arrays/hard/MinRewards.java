@@ -72,7 +72,7 @@ public class MinRewards {
 	public static void main(String[] args) {
 		minRewards(new int[] { 8, 4, 2, 1, 3, 6, 7, 9, 5 });
 		minRewards2(new int[] { 8, 4, 2, 1, 3, 6, 7, 9, 5 });
-		minRewards3(new int[] { 8, 4, 2, 1, 3, 6, 7, 9, 5 });
+		minRewards3(new int[] { 1, 0, 2 });
 		// minRewards(new int[] {4, 6, 4, 5, 6, 2});
 	}
 
