@@ -7,6 +7,7 @@ public class LongestHappyString {
 
 	public String longestDiverseString(int a, int b, int c) {
 		PriorityQueue<Pair> maxHeap = new PriorityQueue<>(new PairComparator());
+
 		StringBuilder answer = new StringBuilder();
 		if (a != 0) {
 			maxHeap.offer(new Pair(a, 'a'));
@@ -17,25 +18,26 @@ public class LongestHappyString {
 		if (c != 0) {
 			maxHeap.offer(new Pair(c, 'c'));
 		}
+
 		while (!maxHeap.isEmpty()) {
 			Pair pair = maxHeap.poll();
 			int n = answer.length();
-			if (n > 1 && answer.charAt(n - 1) == answer.charAt(n - 2) && answer.charAt(n - 1) == pair.y) {
+			if (n > 1 && answer.charAt(n - 1) == answer.charAt(n - 2) && answer.charAt(n - 1) == pair.value) {
 				if (maxHeap.isEmpty()) {
 					break;
 				} else {
 					Pair nextPair = maxHeap.poll();
-					answer.append(nextPair.y);
-					nextPair.x--;
-					if (nextPair.x != 0) {
+					answer.append(nextPair.value);
+					nextPair.count--;
+					if (nextPair.count != 0) {
 						maxHeap.offer(nextPair);
 					}
 				}
 			} else {
-				answer.append(pair.y);
-				pair.x--;
+				answer.append(pair.value);
+				pair.count--;
 			}
-			if (pair.x != 0) {
+			if (pair.count != 0) {
 				maxHeap.offer(pair);
 			}
 		}
@@ -43,20 +45,26 @@ public class LongestHappyString {
 	}
 
 	class Pair {
-		int x;
-		char y;
+		int count;
+		char value;
 
 		Pair(int x, char y) {
-			this.x = x;
-			this.y = y;
+			this.count = x;
+			this.value = y;
 		}
 	}
 
 	class PairComparator implements Comparator<Pair> {
 		@Override
 		public int compare(Pair p1, Pair p2) {
-			return p2.x - p1.x;
+			return p2.count - p1.count;
 		}
+	}
+
+	public static void main(String[] args) {
+		int a = 1, b = 1, c = 7;
+		LongestHappyString longest = new LongestHappyString();
+		longest.longestDiverseString(a, b, c);
 	}
 
 }

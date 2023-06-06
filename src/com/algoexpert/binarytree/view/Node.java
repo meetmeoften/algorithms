@@ -1,4 +1,4 @@
-package com.neetcode.binaryTree.view;
+package com.algoexpert.binarytree.view;
 
 public class Node {
 

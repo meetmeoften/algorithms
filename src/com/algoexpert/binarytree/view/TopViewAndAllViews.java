@@ -1,4 +1,4 @@
-package com.neetcode.binaryTree.view;
+package com.algoexpert.binarytree.view;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 
-public class TopView {
+public class TopViewAndAllViews {
 
 	public static ArrayList<Integer> topView(Node root) {
 		ArrayList<Integer> ans = new ArrayList<>();

@@ -14,19 +14,15 @@ public class KthLargestContigousArray {
 		PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
 
 		for (int i = 0; i < n; i++) {
-
 			// To store the current subarray sum.
 			int sum = 0;
 			for (int j = i; j < n; j++) {
 				sum = sum + arr.get(j);
 
 				if (minHeap.size() < k) {
-
 					minHeap.add(sum);
 				} else {
-
 					if (minHeap.peek() < sum) {
-
 						// Pop the minimum element.
 						minHeap.poll();
 						minHeap.add(sum);

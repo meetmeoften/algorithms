@@ -1,4 +1,4 @@
-package com.algoexpert;
+package com.algoexpert.arrays;
 
 public class NextGreaterElement3 {
 

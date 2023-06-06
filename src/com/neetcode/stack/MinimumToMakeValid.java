@@ -1,0 +1,34 @@
+package com.neetcode.stack;
+
+import java.util.Stack;
+
+public class MinimumToMakeValid {
+
+	public static int minAddToMakeValid(String s) {
+		if (s == null || s.length() == 0) {
+			return 0;
+		}
+		Stack<Character> stack = new Stack<>();
+		char[] chars = s.toCharArray();
+		int moves = 0;
+
+		for (char c : chars) {
+			if (c == '(') {
+				stack.push('(');
+			} else {
+				if (!stack.isEmpty() && stack.peek() == '(') {
+					stack.pop();
+				} else {
+					moves++;
+				}
+			}
+		}
+		return moves + stack.size();
+	}
+
+	public static void main(String[] args) {
+		String s = "())";
+		minAddToMakeValid(s);
+	}
+
+}

@@ -71,8 +71,45 @@ public class LongestIncreasingSubsequence {
 		return sequence;
 	}
 
+	/**
+	 *
+	 *
+	 * @param args
+	 */
+
+	public int findPositionToReplace(int[] a, int low, int high, int x) {
+		while (low <= high) {
+			int mid = low + (high - low) / 2;
+			if (a[mid] == x) {
+				return mid;
+			} else if (a[mid] < x) {
+				low = mid + 1;
+			} else {
+				high = mid - 1;
+			}
+		}
+		return low;
+	}
+
+	public int lengthOfLIS2(int[] nums) {
+		int n = nums.length;
+		int len = 1;
+		int[] dp = new int[n];
+		dp[0] = nums[0];
+		for (int i = 1; i < n; i++) {
+			if (nums[i] > dp[len - 1]) {
+				dp[len++] = nums[i];
+			} else {
+				int index = findPositionToReplace(dp, 0, len - 1, nums[i]);
+				dp[index] = nums[i];
+			}
+		}
+
+		return len;
+	}
+
 	public static void main(String[] args) {
-		longestIncreasingSubsequence(new int[] { 5, 7, -24, 12, 10, 2, 3, 12, 5, 6, 35 });
+		longestIncreasingSubsequence2(new int[] { 5, 7, -24, 12, 10, 2, 3, 12, 5, 6, 35 });
 	}
 
 }
