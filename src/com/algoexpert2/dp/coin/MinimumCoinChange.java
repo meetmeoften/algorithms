@@ -69,7 +69,7 @@ public class MinimumCoinChange {
 			if (T % arr[0] == 0) {
 				return T / arr[0];
 			} else {
-				return (int) Math.pow(10, 9);
+				return Integer.MAX_VALUE;
 			}
 		}
 		if (dp[ind][T] != -1) {
@@ -78,7 +78,7 @@ public class MinimumCoinChange {
 
 		int notTaken = 0 + minimumElementsUtil(arr, ind - 1, T, dp);
 
-		int taken = (int) Math.pow(10, 9);
+		int taken = Integer.MAX_VALUE;
 		if (arr[ind] <= T) {
 			taken = 1 + minimumElementsUtil(arr, ind, T - arr[ind], dp);
 		}

@@ -77,7 +77,15 @@ public class LFUCache {
 	}
 
 	public static void main(String[] args) {
-
+		LFUCache l = new LFUCache(2);
+		System.out.println(l.get(2));
+		l.put(2, 6);
+		System.out.println(l.get(1));
+		l.put(1, 5);
+		l.put(3, 5);
+		l.put(1, 2);
+		System.out.println(l.get(1));
+		System.out.println(l.get(2));
 	}
 
 }

@@ -6,17 +6,17 @@ public class DeleteAndEarn {
 	// See this
 
 	public static int deleteAndEarn(int[] nums) {
-		int a[] = new int[10001];
+		int a[] = new int[11];
 		for (int i : nums) {
 			a[i] += i;
 		}
-		int dp[] = new int[10001];
+		int dp[] = new int[11];
 		dp[0] = a[0];
 		dp[1] = Math.max(a[0], a[1]);
-		for (int i = 2; i <= 10000; i++) {
+		for (int i = 2; i <= 10; i++) {
 			dp[i] = Math.max(dp[i - 2] + a[i], dp[i - 1]);
 		}
-		return dp[10000];
+		return dp[10];
 	}
 
 	public int deleteAndEarn2(int[] nums) {
@@ -35,7 +35,8 @@ public class DeleteAndEarn {
 	}
 
 	public static void main(String[] args) {
-		int[] nums = { 2, 2, 3, 3, 3, 4 };
+		//int[] nums = { 2, 2, 3, 3, 3, 4 };
+		int[] nums = { 2,3,4,2 };
 		deleteAndEarn(nums);
 	}
 
