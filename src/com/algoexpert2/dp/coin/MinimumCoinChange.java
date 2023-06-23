@@ -4,6 +4,14 @@ import java.util.Arrays;
 
 public class MinimumCoinChange {
 
+
+	/**
+	 * https://veeevek.medium.com/amazon-coin-change-problem-1st-round-65fabb9a3aad
+	 * @param n
+	 * @param denoms
+	 * @return
+	 */
+
 	public static int minNumberOfCoinsForChange(int n, int[] denoms) {
 		int[] numOfCoins = new int[n + 1];
 		Arrays.fill(numOfCoins, Integer.MAX_VALUE);
@@ -65,25 +73,26 @@ public class MinimumCoinChange {
 	 */
 
 	public static int minimumElementsUtil(int[] arr, int ind, int T, int[][] dp) {
-		if (ind == 0) {
-			if (T % arr[0] == 0) {
-				return T / arr[0];
+		if(ind == 0){
+			if(T%arr[0] == 0) {
+				return T/arr[0];
 			} else {
-				return Integer.MAX_VALUE;
+				return (int)Math.pow(10,9);
 			}
 		}
-		if (dp[ind][T] != -1) {
+
+		if(dp[ind][T]!=-1) {
 			return dp[ind][T];
 		}
 
-		int notTaken = 0 + minimumElementsUtil(arr, ind - 1, T, dp);
+		int notTaken = 0 + minimumElementsUtil(arr,ind-1,T,dp);
 
-		int taken = Integer.MAX_VALUE;
-		if (arr[ind] <= T) {
-			taken = 1 + minimumElementsUtil(arr, ind, T - arr[ind], dp);
+		int taken = (int)Math.pow(10,9);
+		if(arr[ind] <= T) {
+			taken = 1 + minimumElementsUtil(arr,ind,T-arr[ind],dp);
 		}
 
-		return dp[ind][T] = Math.min(notTaken, taken);
+		return dp[ind][T] = Math.min(notTaken,taken);
 	}
 
 	public static int minimumElements(int[] arr, int T) {
@@ -101,10 +110,10 @@ public class MinimumCoinChange {
 	}
 
 	public static void main(String[] args) {
-		int[] input = { 2, 5, 10 };
+		int[] input = { 2, 5, 7 };
 		minNumberOfCoinsForChange(7, input);
 		findMinCoins(input, 7);
 
-		minimumElements(input, 7);
+		System.out.println(minimumElements(input, 7));
 	}
 }

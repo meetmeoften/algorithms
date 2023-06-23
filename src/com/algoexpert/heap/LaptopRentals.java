@@ -13,8 +13,10 @@ public class LaptopRentals {
 			return 0;
 		}
 		int usedLaptops = 0;
+
 		List<Integer> startTimes = new ArrayList<Integer>();
 		List<Integer> endTimes = new ArrayList<Integer>();
+
 		for(ArrayList<Integer> interval: times) {
 			startTimes.add(interval.get(0));
 			endTimes.add(interval.get(1));

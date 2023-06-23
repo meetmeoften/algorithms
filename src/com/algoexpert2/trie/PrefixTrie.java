@@ -95,7 +95,7 @@ public class PrefixTrie {
 	public static void main(String[] args) {
 		PrefixTrie prefixTrie = new PrefixTrie();
 		prefixTrie.insert("apple");
-		prefixTrie.insert("appale");
+		//prefixTrie.insert("appale");
 		System.out.println(prefixTrie.search("apple"));
 		//		System.out.println(prefixTrie.wordSearch("apple"));
 		System.out.println(prefixTrie.wordSearch("app.l."));

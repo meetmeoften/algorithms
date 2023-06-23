@@ -1,48 +1,46 @@
 package com.algoexpert.heap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 
 public class SingleThreadedCPU {
 
-	public static int[] getOrder(int[][] tasks) {
-
-		// Arrays.sort(tasks);
-		int time = 1;
-
-		PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-		int[] task = tasks[0];
-
-		int taskTime = task[0];
-		int processingTime = task[1];
-		q.offer(new int[] { taskTime, processingTime, 0 });
-
-		int index = 1;
-		List<Integer> res = new ArrayList<>();
-
-		while (!q.isEmpty()) {
-			int[] qTask = q.poll();
-			int qTaskTime = qTask[1];
-			res.add(qTask[2]);
-			time += qTaskTime;
-
-			taskTime = Integer.MIN_VALUE;
-			while (time >= taskTime) {
-				task = tasks[index];
-				taskTime = task[0];
-				processingTime = task[1];
-
-				if (time >= taskTime) {
-					q.offer(new int[] { taskTime, processingTime, index });
-					index++;
-				}
-			}
-		}
-		return null;
-	}
+	//	public static int[] getOrder(int[][] tasks) {
+	//
+	//		// Arrays.sort(tasks);
+	//		int time = 1;
+	//
+	//		PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+	//		int[] task = tasks[0];
+	//
+	//		int taskTime = task[0];
+	//		int processingTime = task[1];
+	//		q.offer(new int[] { taskTime, processingTime, 0 });
+	//
+	//		int index = 1;
+	//		List<Integer> res = new ArrayList<>();
+	//
+	//		while (!q.isEmpty()) {
+	//			int[] qTask = q.poll();
+	//			int qTaskTime = qTask[1];
+	//			res.add(qTask[2]);
+	//			time += qTaskTime;
+	//
+	//			taskTime = Integer.MIN_VALUE;
+	//			while (time >= taskTime) {
+	//				task = tasks[index];
+	//				taskTime = task[0];
+	//				processingTime = task[1];
+	//
+	//				if (time >= taskTime) {
+	//					q.offer(new int[] { taskTime, processingTime, index });
+	//					index++;
+	//				}
+	//			}
+	//		}
+	//		return null;
+	//	}
 
 	public static int[] getOrder2(int[][] tasks) {
 

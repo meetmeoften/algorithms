@@ -22,7 +22,7 @@ public class OddEvenMain3 implements Runnable {
 	public void run() {
 		while(number  < MAX_COUNT ) {
 			synchronized (lock) {
-				if(number % 2 != value) {
+				if(number % 2 != value) {   // while (number % 3 != remainder)   for print three number sequence
 					try {
 						lock.wait();
 					} catch (InterruptedException e) {
