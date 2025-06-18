@@ -66,7 +66,7 @@ public class EvaluateDivision {
 		return res;
 	}
 
-	public class Pair<U, V> {
+	public static class Pair<U, V> {
 
 		private U u;
 		private V v;

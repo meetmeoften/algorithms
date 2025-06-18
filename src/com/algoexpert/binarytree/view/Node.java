@@ -2,10 +2,10 @@ package com.algoexpert.binarytree.view;
 
 public class Node {
 
-	int data;
-	int hd;
-	Node left;
-	Node right;
+	public int data;
+	public int hd;
+	public Node left;
+	public Node right;
 
 	public Node(int data, Node left, Node right) {
 		this.data = data;

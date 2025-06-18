@@ -15,7 +15,7 @@ public class SplitArrayLargestSum {
 
 		while (left < right) {
 			int mid = (left + right) / 2;
-			if (canSplit(nums, mid, k)) {
+			if (canSplit(nums, k, mid)) {
 				right = mid;
 			} else {
 				left = mid + 1;
@@ -24,23 +24,17 @@ public class SplitArrayLargestSum {
 		return left;
 	}
 
-	public static boolean canSplit(int[] nums, int amount, int m) {
-		int count = 1;
-		int sum = 0;
-
+	private static boolean canSplit(int[] nums, int k, int maxSumAllowed) {
+		int currentSum = 0, splits = 1;
 		for (int num : nums) {
-			if (sum + num <= amount) {
-				sum += num;
-				continue;
+			if (currentSum + num > maxSumAllowed) {
+				currentSum = num;
+				splits++;
+				if (splits > k) return false;
+			} else {
+				currentSum += num;
 			}
-
-			if (++count > m) {
-				return false;
-			}
-
-			sum = num;
 		}
-
 		return true;
 	}
 

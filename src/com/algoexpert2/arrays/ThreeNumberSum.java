@@ -32,7 +32,7 @@ public class ThreeNumberSum {
 	}
 
 
-	public List<List<Integer>> threeSum(int[] array) {
+	public static List<List<Integer>> threeSum(int[] array) {
 		Arrays.sort(array);
 		List<List<Integer>> triplets = new ArrayList<>();
 
@@ -72,7 +72,9 @@ public class ThreeNumberSum {
 		expected.add(new Integer[] {-8, 2, 6});
 		expected.add(new Integer[] {-8, 3, 5});
 		expected.add(new Integer[] {-6, 1, 5});
-		List<Integer[]> output = threeNumberSum(new int[] {12, 3, 1, 2, -6, 5, -8, 6}, 0);
+		//List<Integer[]> output = threeNumberSum(new int[] {12, 3, 1, 2, -6, 5, -8, 6}, 0);
+
+		 threeSum(new int[] {12, 3});
 	}
 
 }

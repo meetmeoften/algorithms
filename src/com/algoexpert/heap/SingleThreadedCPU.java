@@ -75,7 +75,7 @@ public class SingleThreadedCPU {
 	}
 
 	public static void main(String[] args) {
-		int[][] tasks = { { 1, 2 }, { 2, 4 }, { 3, 2 }, { 4, 1 } };
+		int[][] tasks = { { 1, 2 }, { 2, 4 }, { 4, 2 }, { 5, 1 } };
 		getOrder2(tasks);
 	}
 

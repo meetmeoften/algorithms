@@ -66,7 +66,8 @@ public class MinimumJumps {
 		int[] input = {3, 4, 2, 1, 2, 3};
 		minNumberOfJumps(input);
 		int[]  nums = {2,3,1,1,4};
-		canJump(nums);
-		jump(nums);
+		System.out.println(canJump(nums));
+		System.out.println(jump(nums));
+		System.out.println(minNumberOfJumps(nums));
 	}
 }

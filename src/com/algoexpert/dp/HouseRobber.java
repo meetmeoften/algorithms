@@ -16,7 +16,6 @@ public class HouseRobber {
 		for(int i= 2; i < array.length; i++) {
 			maxSums[i] = Math.max(maxSums[i-1], maxSums[i-2] + array[i]);
 		}
-
 		return maxSums[array.length -1];
 	}
 

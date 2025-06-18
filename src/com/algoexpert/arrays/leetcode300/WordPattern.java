@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class WordPattern {
 
 	public static boolean wordPattern(String pattern, String s) {
-		String[] sArray = s.split("\s");
+		String[] sArray = s.split("\\s");
 		if (sArray.length != pattern.length()) {
 			return false;
 		}

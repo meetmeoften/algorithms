@@ -63,7 +63,7 @@ public class TaskScheduler {
 	public static void main(String[] args) {
 		TaskScheduler s = new TaskScheduler();
 		//	char[] charac = new char[] {'A','A','A','B','B','B'};
-		char[] charac = new char[] { 'A','A','A','A','A','A','B','C','D','E','F','G'};
+		char[] charac = new char[] { 'A','A','A','B', 'B'};
 		s.leastInterval(charac,  2);
 	}
 
