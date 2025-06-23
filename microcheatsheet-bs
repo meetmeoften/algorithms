@@ -1,0 +1,61 @@
+int CAPACITY-TO_SHIP(int[] weights, int days)
+    int left = 0, right = 0;
+    for (int weight : weights)
+    	right += weight;
+    	left = Math.max(left, weight);
+    while (left < right)
+    	int mid = (left + right) / 2;
+    	int curr = canShip(weights, mid);
+    	if (curr <= days) right = mid;
+    	else left = mid + 1;
+    return left;
+int canShip(int[] weights, int capacity)
+    int days = 1, current = 0;
+    for (int w : weights)
+    	if (current + w > capacity)
+    		current = 0; days++;
+    	current += w;
+    return days;
+    
+int SPLIT-ARRAY(int[] nums, int k)
+    int left, right = nums[0];
+    for (int num :  nums)
+    	left = Math.max(left, num);
+    	right += num;
+    while (left < right)
+    	int mid = (left + right) / 2;
+    	if (canSplit(nums, k, mid))
+    		right = mid;
+    	 else
+    		left = mid + 1;
+    return left;
+boolean canSplit(int[] nums, int k, int maxSumAllowed)
+    int currentSum = 0, splits = 1;
+    for (int num : nums)
+    	if (currentSum + num > maxSumAllowed)
+    		currentSum = num; splits++;
+    		if (splits > k) return false;
+    	 else currentSum += num;
+    return true;
+    
+    
+int KOKO-BANANAS(int[] piles, int h) 
+    int left = 1, right = 1;
+    for (int pile : piles)
+    	right = Math.max(right, pile);
+    while (left < right)
+    	int middle = (left + right) / 2;
+    	int hourSpent = 0;
+    	for (int pile : piles)
+    		hourSpent += Math.ceil((double) pile / middle);
+    	if (hourSpent <= h) right = middle;
+    	else left = middle + 1;
+    return left;
+    
+int FIND-MIN(int[] nums)
+    int left = 0; right = nums.length-1;
+    while(left < right)
+        if(nums[left] <= nums[mid] && nums[mid] > nums[right])
+            left = mid +1 ;
+        else  right = mid;
+    retur   n nums[left];

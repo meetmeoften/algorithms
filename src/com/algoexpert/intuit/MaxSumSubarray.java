@@ -1,6 +1,7 @@
 package com.algoexpert.intuit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MaxSumSubarray {
 
@@ -41,10 +42,34 @@ public class MaxSumSubarray {
 		return list;
 	}
 
+	public static int[] maxSubArrayWithIndices(int[] nums) {
+		int maxSum = nums[0], currentSum = nums[0];
+		int start = 0, end = 0, tempStart = 0;
+
+		for (int i = 1; i < nums.length; i++) {
+			if (nums[i] > currentSum + nums[i]) {
+				currentSum = nums[i];
+				tempStart = i;
+			} else {
+				currentSum += nums[i];
+			}
+
+			if (currentSum > maxSum) {
+				maxSum = currentSum;
+				start = tempStart;
+				end = i;
+			}
+		}
+
+		int[] result =  Arrays.copyOfRange(nums, start, end + 1);
+		return result;
+	}
+
 
 	public static void main(String[] args) {
-		int[] arr = new int[]{1, 2, 5, 0, -7, 2, 3};
-		findSubarray(arr, arr.length);
+		int[] arr = new int[]{1, 2, 5, 0, -7, 7, 3};
+		System.out.println(findSubarray(arr, arr.length));
+		System.out.println(maxSubArrayWithIndices(arr));
 	}
 
 }

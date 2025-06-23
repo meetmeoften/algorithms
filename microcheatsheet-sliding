@@ -1,0 +1,110 @@
+int CHARACTER_REPLACE(String s, int k) 
+    int[] arr = new int[26];
+    int left = 0; max = 0, result = 0;
+    for (int right = 0; right < s.length(); right++) 
+    	arr[s.charAt(right) - 'A']++;   
+    	max = Math.max(max, arr[s.charAt(right) - 'A']);
+    	if (right - left + 1 - max > k)
+    		arr[s.charAt(left) - 'A']--;
+    		left++;
+    	result = Math.max(result, right - left + 1);
+    return result;
+
+int LENGTH-LONGEST-WITHOUT-REPEATING(String s)
+    int left = 0, max = 0;
+    Set<Character> set = new HashSet<>();
+    for (int right = 0; right < n; right++)
+        char c = s.charAt(right);
+        while (set.contains(c))
+            set.remove(s.charAt(left));
+            left++;
+        set.add(c);
+        max = Math.max(max, right - left + 1);
+    return max;
+
+boolean PERMUTATION-STRING(String s1, String s2)
+    int[] count = new int[26];
+    for (int i = 0; i < len1; i++)
+    	count[s1.charAt(i) - 'a']++;
+    	count[s2.charAt(i) - 'a']--;
+    if(allZero(count)) return true;
+    for (int i = len1; i < len2; i++)
+    	count[s2.charAt(i) - 'a']--;
+    	count[s2.charAt(i - len1) - 'a']++;
+    	if (allZero(count)) return true;
+
+int MIN-SWAP-GROUP1'S(int[] data)
+    for (int num : data)
+        if (num == 1) totalOnes++;
+    if (totalOnes <= 1) return 0;
+    int left = 0, max = 0, currentOnes = 0;
+    for (int right = 0; right < data.length; right++)
+        currentOnes += data[right];
+        if (right - left + 1 > totalOnes)
+            currentOnes -= data[left]; left++;
+        if (right - left + 1 == totalOnes)
+            max = Math.max(max, currentOnes);
+    return totalOnes - max;
+    
+int numOfSubarrays(int[] arr, int k, int threshold) 
+    int left = 0, sum =0, count = 0;
+    for(int right =0; right < arr.length; right++)
+        sum += arr[right];
+        if(right - left + 1 == k)
+            if(sum/k >= threshold )
+                count++;
+            sum -= arr[left];
+            left++;
+    return count;
+
+int minSubArrayLen(int target, int[] nums)
+    int left = 0, sum = 0;
+    int min = Integer.MAX_VALUE;
+    for (int right = 0; right < n; right++)
+        sum += nums[right];
+        while (sum >= target)
+            min = Math.min(min, right - left + 1);
+            sum -= nums[left]; left++;
+    return min == Integer.MAX_VALUE ? 0 : min;
+    
+int[] MAX-SLIDING-WINDOW(int[] nums, int k) 
+    ArrayDeque<Integer> q = new ArrayDeque<>();
+    int[] result = new int[nums.length - k + 1];
+    int idx = 0;
+    for (int i = 0; i < nums.length; i++) 
+    	if (!q.isEmpty() && i - k + 1 > q.getFirst()) 
+    		q.removeFirst();
+    	while (!q.isEmpty() && nums[i] >= nums[q.getLast()]) 
+    		q.removeLast();
+    	q.offerLast(i);
+    	if (i + 1 >= k) 
+    		result[idx] = nums[q.getFirst()];
+    		idx++ ;
+    return result;
+    
+
+String MIN-WINDOW-SUBSTRING(String s, String t) 
+    Map<Character, Integer> tMap = new HashMap<>();
+    for (char c : t.toCharArray()) 
+        tMap.put(c, tMap.getOrDefault(c, 0) + 1);
+    int left = 0, right = 0, start = 0, min = Integer.MAX_VALUE;
+    int required = tMap.size();  
+    int formed = 0;
+
+    Map<Character, Integer> windowCounts = new HashMap<>();
+    while (right < s.length()) 
+        char c = s.charAt(right);
+        windowCounts.put(c, windowCounts.getOrDefault(c, 0) + 1);
+        if (tMap.containsKey(c) && windowCounts.get(c).intValue() == tMap.get(c).intValue()) 
+            formed++;
+        while (left <= right && formed == required) 
+            if (right - left + 1 < min) 
+                min = right - left + 1;
+                start = left;
+            char leftChar = s.charAt(left);
+            windowCounts.put(leftChar, windowCounts.get(leftChar) - 1);
+            if (tMap.containsKey(leftChar) && windowCounts.get(leftChar) < tMap.get(leftChar)) 
+                formed--;
+            left++;
+        right++;
+    return min == Integer.MAX_VALUE ? "" : s.substring(start, start + min);

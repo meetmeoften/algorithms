@@ -8,10 +8,10 @@ public class MinimumJumps {
         }
         int jumps = 0;
         int max = 0;
-        int currMax = 0;
+        int curr = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (currMax < i) {
-                currMax = max;
+            if (curr < i) {
+                curr = max;
                 jumps++;
             }
             max = Math.max(max, i + nums[i]);

@@ -9,7 +9,7 @@ public class UnionFind {
 	HashMap<Integer, Integer> ranks = new HashMap<Integer, Integer>();
 
 	public void createSet(int value) {
-		// Write your code here.
+		// Write your code here.R
 		parents.put(value, value);
 		ranks.put(value, 0);
 	}

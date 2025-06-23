@@ -45,16 +45,16 @@ public class MinimumJumps {
 			return 0;
 		}
 
-		int currFarthest = 0;
+		int max = 0;
 		int jumps = 0;
 		int currEnd = 0;
 
 		for(int i= 0; i < nums.length; i++){
 			if(currEnd < i) {
-				currEnd = currFarthest;
+				currEnd = max;
 				jumps++;
 			}
-			currFarthest = Math.max(currFarthest, i+nums[i]);
+			max = Math.max(max, i+nums[i]);
 		}
 		return jumps;
 
@@ -63,8 +63,10 @@ public class MinimumJumps {
 
 
 	public static void main(String[] args) {
-		int[] input = {3, 4, 2, 1, 2, 3};
-		minNumberOfJumps(input);
+//		int[] input = {3, 4, 2, 1, 2, 3};
+		int[] input = {3, 2, 1, 0, 3};
+//		minNumberOfJumps(input);
+		canJump(input);
 		int[]  nums = {2,3,1,1,4};
 		System.out.println(canJump(nums));
 		System.out.println(jump(nums));

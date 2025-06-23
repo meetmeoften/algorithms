@@ -1,0 +1,132 @@
+int MIN-JUMPS(int[] nums)
+    int jumps, max, curr = 0;
+    for (int i = 0; i < nums.length; i++)
+        if (curr < i)
+            curr = max; jumps++;
+        max = Math.max(max, i + nums[i]);
+
+int FIND-MIN-COINS(int[] arr, int i, int target)
+    if (target == 0) return 0;
+    if (i < 0 || target < 0) return (int) Math.pow  
+    int exclude = findMinCoins(arr, i - 1, target);
+    int include = 1 + findMinCoins(arr, i, target - arr[i]);
+    return Math.min(exclude, include);
+
+int DECODE-WAYS(String s, int i)
+    if (i == s.length()) return 1;
+    if (s.charAt(i) == '0') return 0;   
+    int count = dfs(s, i + 1);   
+    if (i + 1 < s.length()) 
+        int num = Integer.parseInt(s.substring(i, i + 2));
+        if (num <= 26) count += dfs(s, i + 2);
+    return count
+
+int ROD-CUT(int[] price, int n)
+   if (n == 0) return 0;
+   int max = Integer.MIN_VALUE;
+   for (int i = 1; i <= n; i++)
+       int cost = price[i - 1] + rodCut(price, n - i);
+       if (cost > max) max = cost;
+    return max;
+    
+int BUY-SELL(int[] prices, int buySell, int ind)
+    if (ind >= prices.length)  return 0;
+    int profit = 0;
+    if (buySell == 0) profit = Math.max(dfs(prices, 0, ind + 1),
+                -prices[ind] + dfs(prices, 1, ind + 1));
+    if (buySell == 1) profit = Math.max(dfs(prices, 1, ind + 1),
+                prices[ind] + dfs(prices, 0, ind + 1));
+    return profit;
+    
+long BALL-ARRANGEMENT(int r, int g, int b, char prev)
+        if (r == 0 && g == 0 && b == 0) return 1;
+        String key = r + "," + g + "," + b + "," + prev;
+        if (memo.containsKey(key)) return memo.get(key);
+        long ways = 0;
+        if (r > 0 && prev != 'R') 
+            ways += countWays(r - 1, g, b, 'R');
+        if (g > 0 && prev != 'G')
+            ways += countWays(r, g - 1, b, 'G');
+        if (b > 0 && prev != 'B')
+            ways += countWays(r, g, b - 1, 'B');
+        memo.put(key, ways);
+        return ways;
+    
+boolean INTERLEAVING(String A, String B, String C,
+    int i, int j, int k)
+    if (k == C.length())
+        return i == A.length() && j == B.length();
+    String key = i + "," + j;
+    if (memo.containsKey(key)) return memo.get(key);
+    boolean valid = false;
+    if (i < A.length() && A.charAt(i) == C.charAt(k))
+        valid |= dfs(A, i+1, B, j, C, k+1, memo);
+    if (j < B.length() && B.charAt(j) == C.charAt(k))
+        valid |= dfs(A, i, B, j + 1, C, k + 1, memo);
+    memo.put(key, valid);
+    return valid;
+    
+List<Integer> LIS(int[] nums)
+    int[] lengths, sequences = new int[n];
+    Arrays.fill(lengths, 1);
+    Arrays.fill(sequences, -1);
+    int maxLen =1; int lastIndex = 0;
+    for(int i=1; i < n; i++)
+        for(int j=0; j < i; j++) 
+            if(nums[i] >  nums[j] && 
+            lengths[i] < lengths[j] + 1 ) 
+                lengths[i] = lengths[j] + 1;
+                sequences[i] = j;
+        if (lengths[i] > maxLen) 
+            maxLen = lengths[i];
+            lastIndex = i;
+    List<Integer> lis = new ArrayList<>();
+    int index = lastIndex;
+    while (index != -1) 
+        lis.add(0, nums[index]);
+        index = sequences[index];
+    return lis;
+    
+String LCS(String s1, String s2)
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            if (s1.charAt(i - 1) == s2.charAt(j - 1))
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+             else
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+    StringBuilder lcs = new StringBuilder();
+    int i = m, j = n;
+    while (i > 0 && j > 0)
+        if (s1.charAt(i - 1) == s2.charAt(j - 1))
+            lcs.append(s1.charAt(i - 1));
+            i--; j--;
+        else if (dp[i - 1][j] > dp[i][j - 1])
+            i--;
+         else
+            j--;
+    return lcs.reverse().toString();
+    
+int LCSLength2(String X, String Y, int m, int n) 
+    if (m == 0 || n == 0) return 0;
+    if (X.charAt(m - 1) == Y.charAt(n - 1))
+    	return 1 + LCSLength2(X, Y, m - 1, n - 1);
+    return Integer.max(LCSLength2(X, Y, m - 1, n),
+    LCSLength2(X, Y, m, n - 1));
+    
+List<String> WORD-BREAK(String s, Set<String> wordSet)
+    if (memo.containsKey(s)) return memo.get(s);
+    List<String> result = new ArrayList<>();
+    if (s.length() == 0)
+        result.add("");
+        return result;
+    for (int end = 1; end <= s.length(); end++)
+        String prefix = s.substring(0, end);
+        if (wordSet.contains(prefix))
+            List<String> suffixBreaks = dfs(s.substring(end), wordSet, memo);
+            for (String suffix : suffixBreaks)
+                String space = suffix.isEmpty() ? "" : " ";
+                result.add(prefix + space + suffix);
+    memo.put(s, result);
+    return result;
+

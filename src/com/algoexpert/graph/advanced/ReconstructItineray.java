@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class ReconstructItineray {
 
-	public static List<String> findItinerary(List<List<String>> tickets) {
+	public static List<String> findItinerary2(List<List<String>> tickets) {
 		LinkedList<String> itinerary = new LinkedList<>();
 		Map<String, PriorityQueue<String>> graph = new HashMap<>();
 		Stack<String> stack = new Stack<>();
@@ -34,6 +34,29 @@ public class ReconstructItineray {
 		return itinerary;
 	}
 
+	Map<String, PriorityQueue<String>> graph = new HashMap<>();
+	LinkedList<String> list = new LinkedList<>();
+
+	public List<String> findItinerary(List<List<String>> tickets) {
+		for(List<String> ticket : tickets) {
+			String start = ticket.get(0);
+			String end = ticket.get(1);
+
+			graph.computeIfAbsent(start, k -> new PriorityQueue<>()).offer(end);
+		}
+		dfs("JFK");
+		return list;
+	}
+
+	public void dfs(String airport) {
+		PriorityQueue<String> pq = graph.get(airport);
+		while(pq != null && !pq.isEmpty()) {
+			dfs(pq.poll());
+		}
+		list.addFirst(airport);
+
+	}
+
 
 	public static void main(String[] args) {
 		//String[][] tickets = {{"MUC","LHR"},{"JFK","MUC"},{"SFO","SJC"},{"LHR","SFO"}};
@@ -45,7 +68,7 @@ public class ReconstructItineray {
 		for(String[] rows : tickets) {
 			resList.add(Arrays.stream(rows).collect(Collectors.toList()));
 		}
-		List<String> result = findItinerary(resList);
+		List<String> result = new ReconstructItineray().findItinerary(resList);
 		System.out.println(result);
 
 	}

@@ -1,5 +1,7 @@
 package com.algoexpert.dp;
 
+import java.util.Arrays;
+
 public class BurstBalloons {
 
 	public static int maxCoins(int[] nums) {
@@ -51,8 +53,35 @@ public class BurstBalloons {
 		}
 
 		int[][] memo = new int[n + 2][n + 2];
-		int res =  helper(newNums, memo, 1, n);
+		//int res =  helper(newNums, memo, 1, n);
+
+		for (int[] row : memo) {
+			Arrays.fill(row, -1);
+		}
+		int res = burst(newNums, 0, n + 1, memo);
 		return res;
+
+
+	}
+
+	private static int burst(int[] nums, int left, int right, int[][] memo) {
+		if (left + 1 == right) return 0; // No balloon to burst between
+
+		if (memo[left][right] != -1) return memo[left][right];
+
+		int maxCoins = 0;
+
+		// Try every possible balloon to burst last in (left, right)
+		for (int i = left + 1; i < right; i++) {
+			int coins = nums[left] * nums[i] * nums[right]
+					+ burst(nums, left, i, memo)
+					+ burst(nums, i, right, memo);
+
+			maxCoins = Math.max(maxCoins, coins);
+		}
+
+		memo[left][right] = maxCoins;
+		return maxCoins;
 	}
 
 	private static int helper(int[] nums, int[][] memo, int start, int end) {
@@ -77,7 +106,7 @@ public class BurstBalloons {
 
 	public static void main(String[] args) {
 		//		int[] nums = { 3, 1, 5, 8 };
-		int[] nums = { 3, 5 };
+		int[] nums = { 2, 3 };
 		maxCoins2(nums);
 		//maxCoins(nums);
 	}

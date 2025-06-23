@@ -2,6 +2,18 @@ package com.algoexpert.dp;
 
 public class UniquePathWithGrid {
 
+	public static int uniquePaths(int m, int n) {
+		if(m ==0 || n == 0) {
+			return 1;
+		}
+
+		int a = uniquePaths(m-1, n);
+		int b = uniquePaths(m , n-1);
+		return a + b;
+	}
+
+
+
 	public static int uniquePathsWithObstacles(int[][] obstacleGrid) {
 
 		int m = obstacleGrid.length;
@@ -60,7 +72,9 @@ public class UniquePathWithGrid {
 	public static void main(String[] args) {
 		int[][] obstacleGrid = { { 0, 0 }, { 1, 1 }, { 0, 0 } };
 		// uniquePathsWithObstacles(obstacleGrid);
-		uniquePathsWithObstacles2(obstacleGrid);
+		// uniquePathsWithObstacles2(obstacleGrid);
+
+		uniquePaths(3, 2);
 	}
 
 }

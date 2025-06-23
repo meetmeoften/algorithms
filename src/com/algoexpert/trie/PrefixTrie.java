@@ -1,5 +1,10 @@
 package com.algoexpert.trie;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 public class PrefixTrie {
 
 
@@ -91,6 +96,68 @@ public class PrefixTrie {
 			runner = runner.children[ch - 'a'];
 		}
 		return true;
+	}
+
+	public List<String> autoComplete(String prefix) {
+		List<String> results = new ArrayList<>();
+
+		TrieNode node = root;
+		for(int i=0; i < prefix.length(); i++) {
+			char ch = prefix.charAt(i);
+			if(node.children[ch - 'a'] == null) {
+				return results;
+			}
+			node = node.children[ch - 'a'];
+		}
+		dfs(node, new StringBuilder(), results);
+		return results;
+	}
+
+	private void dfs(TrieNode node, StringBuilder stringBuilder, List<String> results) {
+		if(node.isEndWord) {
+			results.add(stringBuilder.toString());
+		}
+
+		for(char ch ='a'; ch <= 'z'; ch++) {
+			TrieNode child = node.children[ch - 'a'];
+			if(child != null) {
+				stringBuilder.append(ch);
+				dfs(child, stringBuilder, results);
+				stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+			}
+		}
+ 	}
+
+	private void bfs(String prefix, TrieNode node, List<String> results) {
+		Queue<Pair> queue = new LinkedList<>();
+		queue.offer(new Pair(node, new StringBuilder(prefix)));
+
+		while (!queue.isEmpty()) {
+			Pair current = queue.poll();
+			TrieNode currNode = current.node;
+			StringBuilder path = current.path;
+
+			if (currNode.isEndWord) {
+				results.add(path.toString());
+			}
+
+			for (char ch = 'a'; ch <= 'z'; ch++) {
+				TrieNode child = currNode.children[ch - 'a'];
+				if (child != null) {
+					queue.offer(new Pair(child, new StringBuilder(path).append(ch)));
+				}
+			}
+		}
+	}
+
+	static class Pair {
+		TrieNode node;
+		StringBuilder path;
+
+		Pair(TrieNode node, StringBuilder path) {
+			this.node = node;
+			this.path = path;
+		}
 	}
 
 
