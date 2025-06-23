@@ -79,8 +79,9 @@ public class KadaneAlgorithm {
 		KadaneAlgorithm maxSum = new KadaneAlgorithm();
 		System.out.println("Maximum subarray is  " + maxSum.kandaneForMaxSubArray(arr));
 		maxSum.maxSubarraySum(arr, arr.length);
-		int arrNeg[] = { -10, -8, -3, -7, -2, -7, -3, -9 };
+		// int arrNeg[] = { -10, -8, -3, -7, -2, -7, -3, -9 };
+		int arrNeg[] = { 2, -3, 4 };
 		System.out.println(
-				"Maximum Subarray when all elements are negative : " + maxSum.kandaneForMaxSubArrayForNegativ(arr));
+				"Maximum Subarray when all elements are negative : " + maxSum.kandaneForMaxSubArrayForNegativ(arrNeg));
 	}
 }

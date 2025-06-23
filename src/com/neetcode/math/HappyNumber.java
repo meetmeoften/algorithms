@@ -24,7 +24,7 @@ public class HappyNumber {
 	}
 
 	public static void main(String[] args) {
-		isHappy(2);
+		isHappy(19);
 	}
 
 }

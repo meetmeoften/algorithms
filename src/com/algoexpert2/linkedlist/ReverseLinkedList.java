@@ -30,7 +30,7 @@ public class ReverseLinkedList {
 	}
 
 	public static void main(String[] args) {
-		LinkedList test = newLinkedList(new int[] { 0, 1, 2, 3, 4, 5 });
+		LinkedList test = newLinkedList(new int[] { 1, 2, 3 });
 		List<Integer> result = toArrayList(reverseLinkedList(test));
 		int[] expected = new int[] { 5, 4, 3, 2, 1, 0 };
 		// Utils.assertTrue(arraysEqual(result, expected));

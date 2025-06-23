@@ -6,11 +6,11 @@ import java.util.List;
 public class RemoveKthNodeFromLinkedList {
 
 	public static void removeKthNodeFromEnd(LinkedList head, int k) {
-		int counter = 1;
+		int counter = 0;
 		LinkedList first = head;
 		LinkedList second = head;
 
-		while (counter <= k) {
+		while (counter < k) {
 			second = second.next;
 			counter++;
 		}
@@ -41,9 +41,9 @@ public class RemoveKthNodeFromLinkedList {
 
 	public static void main(String[] args) {
 		TestLinkedList test = new TestLinkedList(0);
-		test.addMany(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+		test.addMany(new int[] { 1, 2, 3, 4, 5});
 		int[] expected = { 0, 1, 2, 3, 4, 5, 7, 8, 9 };
-		removeKthNodeFromEnd(test, 10);
+		removeKthNodeFromEnd(test, 6);
 		// Utils.assertTrue(compare(test.getNodesInArray(), expected));
 	}
 

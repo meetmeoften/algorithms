@@ -29,7 +29,7 @@ public class KthLargestInStream {
 	public static void main(String[] args) {
 
 		int[] nums = new int[] {4, 5, 8, 2};
-		KthLargestInStream stream = new KthLargestInStream(2, nums);
+		KthLargestInStream stream = new KthLargestInStream(3, nums);
 		System.out.println(stream.add(3));
 		System.out.println(stream.add(5));
 		System.out.println(stream.add(10));

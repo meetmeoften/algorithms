@@ -2,6 +2,7 @@ package com.test.general;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CombinationalSum {
 
@@ -32,6 +33,26 @@ public class CombinationalSum {
 			combinationSum(candidates, diff, i, curr, result);
 			curr.remove(curr.size() - 1);
 		}
+	}
+
+
+	public void dfs(int[] nums, int target, int idx, List<List<Integer>> result, List<Integer> temp) {
+
+		if(target < 0) {
+			return;
+		}
+
+		if(target == 0) {
+			result.add(new ArrayList<>(temp));
+			return;
+		}
+
+		for(int i= idx; i < nums.length; i++) {
+			temp.add(nums[i]);
+			dfs(nums, target - nums[i], i, result, temp);
+			temp.remove(temp.size() - 1);
+		}
+
 	}
 
 	public static void main(String[] args) {

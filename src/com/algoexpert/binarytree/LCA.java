@@ -40,7 +40,7 @@ public class LCA {
 		TreeNode rootNode = createBinaryTree();
 		System.out.println("Lowest common ancestor for node 5 and 30:");
 		TreeNode node5 = new TreeNode(20);
-		TreeNode node30 = new TreeNode(60);
+		TreeNode node30 = new TreeNode(50);
 		System.out.println(lowestCommonAncestor(rootNode, node5, node30).data);
 
 	}

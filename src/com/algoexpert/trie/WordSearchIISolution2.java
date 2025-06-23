@@ -61,6 +61,7 @@ public class WordSearchIISolution2 {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				if (trie.children[board[i][j] - 'a'] != null) {
+					System.out.println(board[i][j] );
 					dfs(board, i, j, trie, new boolean[n][m]);
 				}
 			}
@@ -74,7 +75,14 @@ public class WordSearchIISolution2 {
 				{ 'e', 't', 'a', 'e' },
 				{ 'i', 'h', 'k', 'r' },
 				{ 'i', 'f', 'l', 'v' } };
-		String words[] = { "oath", "pea", "eat", "rain" };
+
+
+		//		char board[][] = {
+		//				{ 'o', 'a', 'a', 'n' },
+		//				{ 'e', 't', 'a', 'e' },
+		//		};
+
+		String words[] = { "oath","eat" };
 
 		// Output: ["eat","oath"]
 

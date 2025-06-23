@@ -7,6 +7,9 @@ import java.util.Set;
 
 public class WordBreak {
 
+
+	// https://leetcode.com/problems/word-break/discuss/169383/solved-The-Time-Complexity-of-The-Brute-Force-Method-Should-Be-O(2n)-and-Prove-It-Below
+
 	public boolean wordBreak(String s, List<String> wordDict) {
 		if (s == null || s.length() == 0) {
 			return false;
@@ -27,6 +30,8 @@ public class WordBreak {
 		}
 		return dp[s.length()];
 	}
+
+
 
 	public static void wordBreak(List<String> dict, String word, String out) {
 		// if the end of the string is reached,
@@ -54,8 +59,11 @@ public class WordBreak {
 		// String word = "leetcode";
 		// new WordBreak().wordBreak(word, Arrays.asList(new String[] {"leet",
 		// "code"}));
-		boolean result = new WordBreak().wordBreak("catsandog",
-				Arrays.asList(new String[] { "cats", "dog", "sand", "and", "cat" }));
+		//		boolean result = new WordBreak().wordBreak("catsandog",
+		//				Arrays.asList(new String[] { "cats", "dog", "sand", "and", "cat" }));
+
+		boolean result = new WordBreak().wordBreak("ca",
+				Arrays.asList(new String[] { "a"}));
 		System.out.println(result);
 	}
 

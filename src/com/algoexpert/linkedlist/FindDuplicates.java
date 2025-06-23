@@ -23,7 +23,8 @@ public class FindDuplicates {
 	}
 
 	public static void main(String[] args) {
-		int[] nums = { 1, 3, 4, 2, 2 };
+		//int[] nums = { 1, 3, 4, 2, 2 };
+		int[] nums = { 1, 2, 2 };
 		findDuplicate(nums);
 	}
 

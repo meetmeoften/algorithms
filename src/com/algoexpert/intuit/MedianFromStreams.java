@@ -33,5 +33,9 @@ public class MedianFromStreams {
 		System.out.println(streams.findMedian());
 		streams.addNum(3);
 		System.out.println(streams.findMedian());
+		streams.addNum(4);
+		System.out.println(streams.findMedian());
+		streams.addNum(5);
+		System.out.println(streams.findMedian());
 	}
 }

@@ -28,6 +28,7 @@ public class DecodeWays {
 
 		if (s.charAt(0) != '0') {
 			dp[0] = 1;
+			dp[1] = 1;
 		}
 		if (dp[0] == 1) {
 			dp[1] = 1;
@@ -45,11 +46,30 @@ public class DecodeWays {
 		}
 
 		return dp[s.length()];
+	}
 
+	public static int numDecodings2(String s) {
+		return numDecodings2(s, 0);
+	}
+
+	private static int numDecodings2(String s, int i) {
+		if (i == s.length()) {
+			return 1;
+		}
+		if (s.charAt(i) == '0') {
+			return 0;
+		}
+		int count = 0;
+		count += numDecodings2(s, i + 1);
+		if (i < s.length() - 1 && (s.charAt(i) == '1' || s.charAt(i) == '2' && s.charAt(i + 1) < '7')) {
+			count += numDecodings2(s, i + 2);
+		}
+
+		return count;
 	}
 
 	public static void main(String[] args) {
-		int x = 123;
+		int x = 12;
 
 		char[] chars = String.valueOf(x).toCharArray();
 		System.out.println("The total number of decodings are " + count(chars, chars.length));

@@ -6,6 +6,41 @@ import java.util.Queue;
 public class JumpGameVII {
 
 
+	public static boolean jump1(int[] nums) {
+
+		int maxReach = 0;
+		for(int i= 0; i< nums.length; i++) {
+			if(maxReach < i) {
+				return false;
+			}
+
+			maxReach = Math.max(maxReach, nums[i] + i);
+		}
+		return true;
+
+	}
+
+	public static int jump2(int[] nums) {
+		if (nums == null || nums.length == 0) {
+			return 0;
+		}
+
+		int currFarthest = 0;
+		int jumps = 0;
+		int currEnd = 0;
+
+		for(int i= 0; i < nums.length; i++){
+			if(currEnd < i) {
+				currEnd = currFarthest;
+				jumps++;
+			}
+			currFarthest = Math.max(currFarthest, i+nums[i]);
+		}
+		return jumps;
+
+	}
+
+
 	// This is the base solution
 	public static boolean canReach2(String s, int minJump, int maxJump) {
 		if(s.charAt(s.length() - 1) != '0') {
@@ -68,6 +103,9 @@ public class JumpGameVII {
 	public static void main(String[] args) {
 		String s = "011010";
 		canReach2(s, 2, 3);
+
+		int[] nums = new int[] {2,3,1,1,4};
+		System.out.println(jump2(nums));
 	}
 
 }

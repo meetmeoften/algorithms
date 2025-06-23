@@ -19,7 +19,7 @@ public class PlusOne {
 	}
 
 	public static void main(String[] args) {
-		new PlusOne().plusOne(new int[] { 9, 9, 9 });
+		new PlusOne().plusOne(new int[] { 1, 9, 1 });
 	}
 
 }

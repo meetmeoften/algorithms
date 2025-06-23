@@ -25,7 +25,6 @@ public class AlienDictionary {
 		}
 
 		// This is the main matter
-
 		for (int i = 0; i < words.length - 1; i++) {
 			String word1 = words[i], word2 = words[i + 1];
 
@@ -74,7 +73,7 @@ public class AlienDictionary {
 	}
 
 	public static void main(String[] args) {
-		String[] input = { "wrt", "wrf", "er", "ett", "rftt" };
+		String[] input = { "wrt"};
 		// output wertf
 		System.out.println(alienOrder(input));
 	}

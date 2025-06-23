@@ -1,5 +1,8 @@
 package com.algoexpert.trie;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PrefixTrie {
 
 
@@ -81,6 +84,7 @@ public class PrefixTrie {
 		return t.children[ch - 'a'] != null && helper2(word, idx+1, t.children[ch - 'a']);
 	}
 
+
 	public boolean startsWith(String word) {
 		TrieNode runner = root;
 		for(char ch: word.toCharArray()) {
@@ -94,12 +98,57 @@ public class PrefixTrie {
 	}
 
 
+	// --------------------
+
+	public void suggestHelper(TrieNode root, List<String> list, StringBuffer curr) {
+		if (root.isEndWord) {
+			list.add(curr.toString());
+		}
+
+		if (root.children == null || root.children.length == 0) {
+			return;
+		}
+
+		for(int i= 0; i < root.children.length; i++) {
+			TrieNode child = root.children[i];
+			if(child == null) {
+				continue;
+			}
+			suggestHelper(child, list, curr.append(child.value));
+			curr.setLength(curr.length() - 1);
+		}
+	}
+
+	public List<String> suggest(String prefix) {
+		List<String> list = new ArrayList<>();
+		TrieNode lastNode = root;
+		StringBuffer curr = new StringBuffer();
+
+		for(int i= 0; i < prefix.toCharArray().length; i++) {
+			char ch = prefix.charAt(i);
+			lastNode = lastNode.children[ch - 'a'];
+			if (lastNode == null) {
+				return list;
+			}
+			curr.append(ch);
+		}
+		suggestHelper(lastNode, list, curr);
+		return list;
+	}
+
 	public static void main(String[] args) {
 		PrefixTrie prefixTrie = new PrefixTrie();
 		prefixTrie.insert("apple");
+		prefixTrie.insert("appes");
 		System.out.println(prefixTrie.search("apple"));
 		System.out.println(prefixTrie.wordSearch("ap.l."));
 		System.out.println(prefixTrie.startsWith("app"));
-	}
 
+
+		List<String> list = new ArrayList<>();
+		list.add("apple");
+		list.add("appes");
+
+		prefixTrie.suggest("appl");
+	}
 }

@@ -51,7 +51,7 @@ public class BurstBalloons {
 		}
 
 		int[][] memo = new int[n + 2][n + 2];
-		int res =  helper(newNums, memo, 1, n);
+		int res = helper(newNums, memo, 1, n);
 		return res;
 	}
 
@@ -68,7 +68,7 @@ public class BurstBalloons {
 			System.out.println(value);
 			value += helper(nums, memo, start, i - 1);
 			value += helper(nums, memo, i + 1, end);
-			System.out.println("START " + start +  " END " + end   +  " " + memo[start][end] +  " " + value);
+			System.out.println("START " + start + " END " + end + " " + memo[start][end] + " " + value);
 			memo[start][end] = Math.max(memo[start][end], value);
 		}
 
@@ -76,10 +76,10 @@ public class BurstBalloons {
 	}
 
 	public static void main(String[] args) {
-		//		int[] nums = { 3, 1, 5, 8 };
-		int[] nums = { 3, 5 };
+		//int[] nums = { 3, 1, 5, 8 };
+		int[] nums = { 1, 5 };
 		maxCoins2(nums);
-		//maxCoins(nums);
+		// maxCoins(nums);
 	}
 
 }

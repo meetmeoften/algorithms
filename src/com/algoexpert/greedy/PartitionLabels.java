@@ -32,7 +32,9 @@ public class PartitionLabels {
 	}
 
 	public static void main(String[] args) {
-		String s = "ababcbacadefegdehijhklij";
+		//String s = "ababcbacadefegdehijhklij";
+
+		String s = "abadecd";
 		partitionLabels(s);
 	}
 

@@ -47,8 +47,8 @@ public class SwimInRisingWater {
 	}
 
 	public static void main(String[] args) {
-		//int[][] grid = {{0,2}, {1,3}};
-		int[][] grid = {{0,3}, {2,1}};
+		int[][] grid = {{0,2}, {1,3}};
+		//int[][] grid = {{0,3}, {2,1}};
 		System.out.println(swimInWater(grid));
 
 	}

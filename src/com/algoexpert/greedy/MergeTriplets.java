@@ -19,10 +19,10 @@ public class MergeTriplets {
 	}
 
 	public static void main(String[] args) {
-		// int[][] triplets = {{2,5,3},{1,8,4},{1,7,5}};
-		// int[] target = { 2, 7, 5 };
-		int[][] triplets = { { 3, 5, 1 }, { 10, 5, 7 } };
-		int[] target = { 3, 5, 7 };
+		int[][] triplets = {{2,5,3},{1,8,4},{1,7,5}};
+		int[] target = { 2, 7, 5 };
+		//int[][] triplets = { { 3, 5, 1 }, { 10, 5, 7 } };
+		//int[] target = { 3, 5, 7 };
 
 		System.out.println(mergeTriplets(triplets, target));
 	}

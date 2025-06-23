@@ -32,7 +32,7 @@ public class Subsets2 {
 	}
 
 	public static void main(String[] args) {
-		new Subsets2().subsetsWithDup(new int[] {1, 2, 2});
+		new Subsets2().subsetsWithDup(new int[] { 1, 2, 2 });
 	}
 
 }

@@ -91,6 +91,6 @@ public class GraphValidTree {
 	public static void main(String[] args) {
 		int[][] edges = new int[][] { { 0, 1 }, { 1, 2 }, { 3, 4 } };
 		int[][] edges2 = new int[][] { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 1, 3 }, { 1, 4 } };
-		System.out.println(validTree(5, edges2));
+		System.out.println(validTree(5, edges));
 	}
 }

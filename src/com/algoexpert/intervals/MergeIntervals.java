@@ -30,6 +30,7 @@ public class MergeIntervals {
 		return result.toArray(new int[result.size()][]);
 	}
 
+
 	public int[][] mergeOverlappingIntervals(int[][] intervals) {
 		// Write your code here.
 		int[][] sortedIntervals = intervals.clone();

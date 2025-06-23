@@ -16,6 +16,52 @@ public class ZipLinkedList {
 		}
 	}
 
+	// --------------
+	public void reorderList(LinkedList head) {
+		if (head == null) {
+			return;
+		}
+
+		LinkedList slow = head, fast = head;
+		while (fast != null && fast.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+
+		LinkedList head2 = reverse(slow.next);
+		slow.next = null;
+
+		while (head != null && head2 != null) {
+			LinkedList t1 = head.next;
+			LinkedList t2 = head2.next;
+
+			head.next = head2;
+			head2.next = t1;
+
+			head = t1;
+			head2 = t2;
+
+		}
+
+	}
+
+	private LinkedList reverse(LinkedList head) {
+		LinkedList prev = null, curr = head;
+
+		while (curr != null) {
+			LinkedList tmp = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = tmp;
+		}
+
+		return prev;
+	}
+
+
+	// -------------------
+
+
 	public LinkedList zipLinkedList(LinkedList linkedList) {
 		// Write your code here.
 		if ((linkedList.next == null) || (linkedList.next.next == null)) {
@@ -75,7 +121,11 @@ public class ZipLinkedList {
 		TestLinkedList head = new TestLinkedList(1);
 		head.addMany(new int[] { 2, 3, 4, 5, 6 });
 		List<Integer> expected = new ArrayList<Integer>(Arrays.asList(1, 6, 2, 5, 3, 4));
-		var actual = getNodesInArray(new ZipLinkedList().zipLinkedList(head));
+		// var actual = getNodesInArray(new ZipLinkedList().zipLinkedList(head));
+
+		new ZipLinkedList().reorderList(head);
+		System.out.println(head);
+
 		// Utils.assertTrue(expected.equals(actual));
 	}
 

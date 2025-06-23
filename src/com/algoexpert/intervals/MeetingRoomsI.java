@@ -21,7 +21,6 @@ public class MeetingRoomsI {
 		}
 
 		Collections.sort(intervals, (i1, i2) -> i1.start - i2.start);
-
 		PriorityQueue<Interval> pq = new PriorityQueue<>((i1, i2) -> i1.end - i2.end);
 
 		for (Interval interval : intervals) {

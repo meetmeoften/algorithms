@@ -26,7 +26,7 @@ public class MeetingRooms2 {
 		}
 		return pq.size();
 	}
-
+	
 	/**
 	 * Input: intervals = [(0,30),(5,10),(15,20)]
 		Output: 2

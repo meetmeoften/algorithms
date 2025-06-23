@@ -1,6 +1,20 @@
 package com.algoexpert.dp;
 
+import java.util.PriorityQueue;
+
 public class LastStone2 {
+
+
+	public static int lastStoneWeight(int[] A) {
+		PriorityQueue<Integer> pq = new PriorityQueue<>((a, b)-> b - a);
+		for (int a : A) {
+			pq.offer(a);
+		}
+		while (pq.size() > 1) {
+			pq.offer(pq.poll() - pq.poll());
+		}
+		return pq.poll();
+	}
 
 	public static int lastStoneWeightII(int[] stones) {
 		int sumStWt = 0;
@@ -120,7 +134,8 @@ public class LastStone2 {
 
 	public static void main(String[] args) {
 		int[] stones = { 2, 7, 4, 1, 8, 1 };
-		lastStoneWeightII5(stones);
+		lastStoneWeight(stones);
+		//lastStoneWeightII5(stones);
 
 		//https://leetcode.com/problems/last-stone-weight-ii/solutions/1938051/java-recursion-memoisation-intuitive-solution-with-explanation/
 	}

@@ -38,6 +38,7 @@ public class ValidParenthesisString {
 		return op.size() == 0;
 	}
 
+
 	public static boolean checkValidString2(String s) {
 		int low = 0, high = 0;
 		for (int i = 0; i < s.length(); i++) {

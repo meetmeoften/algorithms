@@ -29,8 +29,9 @@ public class InsertIntervals {
 		return result.toArray(new int[0][]);
 	}
 
+
 	public static void main(String[] args) {
-		int intervals[][] = { { 1, 3 }, { 6, 9 } }, newInterval[] = { 2, 5 };
+		int intervals[][] = { { 1, 2 }, {3, 5}, { 6, 9 } }, newInterval[] = { 4, 8};
 		insert(intervals, newInterval);
 
 	}

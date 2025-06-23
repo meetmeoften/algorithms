@@ -29,8 +29,10 @@ public class WordSearch {
 		char c = board[row][col];
 		board[row][col] = '#';
 
-		if (helper(board, word, row + 1, col, idx + 1) || helper(board, word, row - 1, col, idx + 1)
-				|| helper(board, word, row, col + 1, idx + 1) || helper(board, word, row, col - 1, idx + 1)) {
+		if (helper(board, word, row + 1, col, idx + 1)
+				|| helper(board, word, row - 1, col, idx + 1)
+				|| helper(board, word, row, col + 1, idx + 1)
+				|| helper(board, word, row, col - 1, idx + 1)) {
 			return true;
 		}
 
@@ -39,8 +41,12 @@ public class WordSearch {
 	}
 
 	public static void main(String[] args) {
-		char[][] input = { { 'A', 'B', 'C', 'E' }, { 'S', 'F', 'C', 'S' }, { 'A', 'D', 'E', 'E' } };
-		new WordSearch().exist(input, "ABCS");
+		//char[][] input = { { 'A', 'B', 'C', 'E' }, { 'S', 'F', 'C', 'S' }, { 'A', 'D', 'E', 'E' } };
+		//new WordSearch().exist(input, "ABCS");
+
+		char[][] input = {{'o','a','a','n'},{'e','t','a','e'},{'i','h','k','r'},{'i','f','l','v'}};
+		boolean result = new WordSearch().exist(input, "eat");
+		System.out.println(result);
 	}
 
 }

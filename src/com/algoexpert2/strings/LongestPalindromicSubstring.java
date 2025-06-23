@@ -5,9 +5,10 @@ public class LongestPalindromicSubstring {
 	public static String longestPalindromicSubstring(String str) {
 		int[] currentLongest = new int[]{0, 1};
 
-		for(int i=1; i<str.length(); i++) {
-			int[] odd = getLongestPalindromeFrom(str, i-1, i+1);
-			int[] even = getLongestPalindromeFrom(str,i-1, i);
+		for(int i=0; i<str.length(); i++) {
+			int[] odd = getLongestPalindromeFrom(str, i, i+1);
+			//int[] odd =  new int[]{0, 1};
+			int[] even = getLongestPalindromeFrom(str,i, i);
 
 			int[] longest = odd[1] -odd[0]> even[1] - even[0] ? odd: even;
 			currentLongest= currentLongest[1] - currentLongest[0] >
@@ -57,9 +58,10 @@ public class LongestPalindromicSubstring {
 		return true;
 	}
 
+
 	public static void main(String[] args) {
-		System.out.println("abaxyzzyxf".substring(0, 1));
+		//System.out.println("abaxyzzyxf".substring(0, 1));
 		// longestPalindromicSubstring("abaxyzzyxf");
-		longestPalindromicSubstring2("abaxyzzyxf");
+		System.out.println(longestPalindromicSubstring("abbc"));
 	}
 }

@@ -18,9 +18,11 @@ public class MinimumInRotatedSortedArray {
 	}
 
 
+
 	public static int findMin2(int[] nums) {
 		int l = 0;
 		int r = nums.length - 1;
+
 
 		while (l <= r) {
 			if (nums[l] <= nums[r]) {
@@ -28,7 +30,7 @@ public class MinimumInRotatedSortedArray {
 			}
 
 			int mid = (l + r) / 2;
-			if (nums[mid] >= nums[l]) {
+			if (nums[l] <= nums[mid]) {
 				l = mid + 1;
 			} else {
 				r = mid;
