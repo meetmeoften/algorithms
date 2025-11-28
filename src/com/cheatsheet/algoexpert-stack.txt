@@ -1,0 +1,152 @@
+MIN-MAX-STACK
+List<Map<String, Integer>> minMaxStack = new ArrayList<>();
+List<Integer> stack = new ArrayList<Integer>();
+void push(Integer number)
+    Map<String, Integer>  newMinMax = new HashMap<>();
+    newMinMax.put("min", number);
+    newMinMax.put("max", number);
+    if(minMaxStack.size() > 0)
+    	Map<String, Integer>  lastMinMax = new HashMap<>
+    	(minMaxStack.get(minMaxStack.size()-1));
+    	newMinMax.replace("min", Math.min(lastMinMax.get("min"), number));
+    	newMinMax.replace("max", Math.max(lastMinMax.get("max"), number));
+    minMaxStack.add(newMinMax);
+    stack.add(number);
+int peek()
+	return stack.get(stack.size()-1);
+int pop()
+    minMaxStack.remove(minMaxStack.size()-1);
+    return stack.remove(stack.size()-1);
+
+
+boolean VALID-PARANTHESIS(String s)
+    Stack<Character> stack = new Stack<>();
+    for(Character ch:  s.toCharArray())
+        if(ch == '(') stack.push(')');
+        else if(ch == '[') stack.push(']');
+        else if(ch == '') stack.push('');
+        else if(!stack.isEmpty() && stack.peek() != ch)
+            return false;
+        else
+            if(stack.isEmpty()) return false;
+            else stack.pop();
+    return stack.isEmpty();
+
+
+List<Integer> SUNSET-VIEWS(int[] buildings, String direction)  // without STACK
+    ArrayList<Integer> buildingWithViews = new ArrayList<Integer>();
+    if (direction.equals("EAST"))
+        int startIndex = buildings.length - 1;  int step = -1;
+    if (direction.equals("WEST"))
+    	startIndex = 0; step = 1;
+    int index = startIndex;
+    int runningMaxHeight = 0;
+    while (index >= 0 && index < buildings.length)
+    	int buildingHeight = buildings[index];
+    	if (buildingHeight > runningMaxHeight)
+    		buildingWithViews.add(index);
+    	runningMaxHeight = Math.max(runningMaxHeight, buildingHeight);
+    	index = index + step;
+    if (direction.equals("EAST"))
+    	Collections.reverse(buildingWithViews);
+    return buildingWithViews;
+
+List<Integer> SUNSET-VIEWS-STACK(int[] buildings, String direction) 
+    List<Integer> buildingWithViews = new ArrayList<Integer>();
+    if (direction.equals("WEST"))
+        int startIndex = buildings.length - 1; int step = -1;
+    if (direction.equals("EAST"))
+    	startIndex = 0; step = 1;
+    int index = startIndex;
+    while (index >= 0 && index < buildings.length)
+    	int buildingHeight = buildings[index];
+    	while (buildingWithViews.size() > 0
+    			&& buildings[buildingWithViews.
+    			get(buildingWithViews.size() - 1)] <= buildingHeight)
+    		buildingWithViews.remove(buildingWithViews.size() - 1);
+    	buildingWithViews.add(index);
+    	index = index + step;
+    if (direction.equals("WEST")) 
+    	Collections.reverse(buildingWithViews);
+    return buildingWithViews;
+    
+
+String BEST-DIGITS(String number, int numDigits)
+    StringBuilder stack = new StringBuilder();
+    for (char digit : number.toCharArray()) 
+      while (numDigits > 0 && stack.length() > 0 &&
+             stack.charAt(stack.length() - 1) < digit)
+        stack.deleteCharAt(stack.length() - 1);
+        numDigits--;
+      stack.append(digit);
+    return stack.substring(0, stack.length() - numDigits);
+
+
+List<Integer> SORT-STACK(List<Integer> stack)
+    if (stack.size() == 0)
+    	return stack;
+    int top = stack.remove(stack.size() - 1);
+    sortStack(stack);
+    insertInSortedOrder(stack, top);
+    return stack;
+void insertInSortedOrder(List<Integer> stack, int value)
+    if (stack.size() == 0 || stack.get(stack.size() - 1) <= value)
+    	stack.add(value);
+    	return;
+    int top = stack.remove(stack.size() - 1);
+    insertInSortedOrder(stack, value);
+    stack.add(top);
+
+
+int[] NEXT-GREATER-ELEMENT(int[] array)
+    int[] result = new int[array.length];
+    Arrays.fill(result, -1);
+    Stack<Integer> stack = new Stack<>();
+    for(int i= 0;i < 2* array.length; i++) 
+    	int circularIndex = i % array.length;
+    	while(!stack.isEmpty() && array[stack.peek()] < array[circularIndex])
+    		int top = stack.pop();
+    		result[top] = array[circularIndex];
+    	stack.push(circularIndex);
+    return result;
+    
+    
+int REVERSE-POLISH-NOTATION(String[] tokens)
+    Stack<Integer> stack = new Stack<>();
+    String exp = "+-*/";
+    for(String token: tokens)
+        if(exp.indexOf(token) != -1)
+            int n1 = stack.pop();
+            int n2 = stack.pop();
+            if(token.equals("+")) stack.push(n1+n2);
+            else if(token.equals("-")) stack.push(n2-n1);
+            else if(token.equals("*")) stack.push(n1*n2);
+            else if(token.equals("/")) stack.push(n2/n1);
+        else
+            stack.push(Integer.parseInt(token));
+    return stack.pop();
+
+
+int[] COLLIDING-ASTEROIDS(int[] asteroids) 
+    Stack<Integer> stack = new Stack<>();
+    int index = 0;
+    while (index < asteroids.length)
+    	int a = asteroids[index];
+    	if (stack.isEmpty())
+    		stack.push(a);
+    		index++;
+    	else if (stack.peek() > 0 && a < 0)
+    			if (Math.abs(stack.peek()) > Math.abs(a))
+    				index++;
+    			else if (Math.abs(stack.peek()) < Math.abs(a))
+    				stack.pop();
+    			else
+    			    stack.pop();
+    				index++;
+    		else
+    			stack.push(a);
+    			index++;
+    int[] res = new int[stack.size()];
+    for (int i = res.length - 1; i >= 0; i--)
+    	res[i] = stack.pop();
+    return res;

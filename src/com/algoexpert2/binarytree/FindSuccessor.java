@@ -16,6 +16,33 @@ public class FindSuccessor {
 		}
 	}
 
+	public static BinaryTree findSuccessorOptimised(BinaryTree tree, BinaryTree node) {
+		// Case 1: Node has a right subtree
+		if (node.right != null) {
+			return getLeftmostChild(node.right);
+		}
+
+		// Case 2: No right subtree → climb upward
+		return getRightmostParent(node);
+	}
+
+	private static BinaryTree getLeftmostChild(BinaryTree node) {
+		BinaryTree current = node;
+		while (current.left != null) {
+			current = current.left;
+		}
+		return current;
+	}
+
+	private static BinaryTree getRightmostParent(BinaryTree node) {
+		BinaryTree current = node;
+		while (current.parent != null && current.parent.right == current) {
+			current = current.parent;
+		}
+		return current.parent;
+	}
+
+
 	public static BinaryTree findSuccessor(BinaryTree tree, BinaryTree node) {
 		List<BinaryTree> orders = new ArrayList<>();
 		inOrderTraversal(tree, orders);
@@ -56,9 +83,9 @@ public class FindSuccessor {
 		root.left.right.parent = root.left;
 		root.left.left.left = new BinaryTree(6);
 		root.left.left.left.parent = root.left.left;
-		BinaryTree node = root.left.right;
+		BinaryTree node = root;
 		BinaryTree expected = root;
-		BinaryTree output = findSuccessor(root, node);
+		BinaryTree output = findSuccessorOptimised(root, node);
 		assert (expected == output);
 	}
 

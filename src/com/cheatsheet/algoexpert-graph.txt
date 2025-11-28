@@ -1,0 +1,176 @@
+boolean HAS-SINGLE-CYCLE(int[] array)
+    int numVisited = 0;
+    int currentIndex = 0;
+    while (numVisited < array.length)
+    	if (numVisited > 0 && currentIndex == 0)
+    		return false;
+    	numVisited++;
+    	currentIndex = getNextIndex(currentIndex, array);
+    return currentIndex == 0;
+private  int getNextIndex(int currentIndex, int[] array)
+    int jump = array[currentIndex];
+    int nextIdx = (currentIndex + jump) % array.length;
+    int nextValue = nextIdx >= 0 ? nextIdx : nextIdx + array.length;
+    return nextValue;
+
+List<Integer> BFS(Map<Integer, List<Integer>> graph, int source)
+    List<Integer> result = new ArrayList<>();
+    Set<Integer> visited = new HashSet<>();
+    Queue<Integer> queue = new LinkedList<>();
+    queue.add(source);
+    visited.add(source);
+    while (!queue.isEmpty())
+      int node = queue.poll();
+      result.add(node);
+      for (int neighbor : graph.getOrDefault(node, Collections.emptyList()))
+        if (!visited.contains(neighbor))
+          visited.add(neighbor);
+          queue.add(neighbor);
+    return result;
+
+
+List<Integer> RIVER-SIZES(int[][] matrix)
+    List<Integer> list = new ArrayList<>();
+    for (int i = 0; i < matrix.length; i++)
+    	for (int j = 0; j < matrix[0].length; j++)
+    		if (matrix[i][j] == 1)
+    			int count = 0;
+    			dfs(matrix, i, j, count);
+    			list.add(count);
+    return list;
+private void dfs(int[][] matrix, int x, int y, int count) 
+    if (x < 0 || y < 0 || x > matrix.length - 1 ||
+            y > matrix[0].length - 1 || matrix[x][y] == 0) 
+    	return;
+    matrix[x][y] = 0;
+    count++;
+    dfs(matrix, x + 1, y, count);
+    dfs(matrix, x - 1, y, count);
+    dfs(matrix, x, y + 1, count);
+    dfs(matrix, x, y - 1, count);
+
+
+int[][] REMOVE-ISLANDS(int[][] matrix)
+    for (int i = 0; i < matrix.length; i++)
+    	for (int j = 0; j < matrix[0].length; j++)
+    		if(i == 0 || j == 0 || i == matrix.length-1 || j == matrix[0].length-1)
+    			if (matrix[i][j] == 1)
+    				dfs(matrix, i, j);
+    for (int i = 0; i < matrix.length; i++)
+    	for (int j = 0; j < matrix[0].length; j++)
+    		if (matrix[i][j] == 2)
+    			matrix[i][j] = 1;
+    		 else
+    			matrix[i][j] = 0;
+    return matrix;
+void dfs(int[][] matrix, int x, int y)
+    if (x < 0 || y < 0 || x > matrix.length - 1 || y > matrix[0].length - 1
+            || matrix[x][y] == 0 || matrix[x][y] == 2)
+    	return;
+    matrix[x][y] = 2;
+    dfs(matrix, x + 1, y);
+    dfs(matrix, x - 1, y);
+    dfs(matrix, x, y + 1);
+    dfs(matrix, x, y - 1);
+
+
+boolean HAS-CYCLE-DIRECTED()
+    Map<Integer, List<Integer>> graph;
+    boolean[] visited = new boolean[n];
+    boolean[] recStack = new boolean[n];;
+    for (int node : graph.keySet())
+        if (!visited[node])
+            if (dfs(node, visited, recStack))
+                return true;
+    return false;
+boolean dfs(int node, boolean[] visited, boolean[] recStack)
+    visited[node] = true;
+    recStack[node] = true;
+    for (int neighbor : graph.getOrDefault(node, Collections.emptyList()))
+        if (!visited[neighbor] && dfs(neighbor, visited, recStack))
+            return true;
+         else if (recStack[neighbor])
+            return true;
+    recStack[node] = false; // backtrack
+    return false;
+
+public boolean HAS-CYCLE-UNDIRECTED() 
+    Map<Integer, List<Integer>> graph;
+    boolean[] visited = new boolean[n];
+    for (int node = 0; node < n; node++) 
+      if (!visited[node]) 
+        if (bfsDetectCycle(node, visited)) 
+          return true;
+    return false;
+boolean bfsDetectCycle(int start, boolean[] visited) 
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[] start, -1);
+    visited[start] = true;
+    while (!queue.isEmpty()) 
+      int[] current = queue.poll();
+      int node = current[0];
+      int parent = current[1];
+      for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) 
+        if (!visited[neighbor]) 
+          visited[neighbor] = true;
+          queue.offer(new int[] neighbor, node);
+         else if (neighbor != parent) 
+          return true; // cycle detected
+    return false;
+  
+int ROTTEN-ORANGES(int[][] grid)
+    Queue<int[]> q = new ArrayDeque<>();
+    int count = -1, noOfOnes = 0;
+    for(int i = 0; i<grid.length; i++)
+        for(int j = 0; j<grid[0].length; j++)
+            if(grid[i][j]==2) q.add(new int[]i,j);
+            if(grid[i][j]==1) noOfOnes++;
+    if(noOfOnes == 0) return 0;
+    int xmoves[] = 0, 0, -1, 1;
+    int ymoves[] = -1, 1, 0, 0;
+    while(!q.isEmpty())
+        for(int i = 0; i<q.size(); i++)
+            int coord[] = q.poll();
+            for(int k = 0; k<4; k++)
+                int x = xmoves[k] + coord[0];
+                int y = ymoves[k] + coord[1];
+                if(isValid(grid, x, y) && grid[x][y] == 1)
+                    grid[x][y] = 2; q.add(new int[]x,y);
+        count++;
+    for(int row[]: grid)
+        for(int cell: row)
+            if(cell == 1) return -1;
+    return count;
+private static boolean isValid(int[][] grid, int i, int j)
+    return i>=0 && j>=0 && i<grid.length && j<grid[0].length;
+    
+
+boolean BIPARTITE(Map<Integer, List<Integer>> graph, int n)
+    int[] colors = new int[n];
+    Arrays.fill(colors, -1);  // -1 denotes uncolored
+    for (int node = 0; node < n; node++)
+      if (colors[node] == -1)   // uncolored node
+        if (!bfsCheck(graph, colors, node))
+          return false;
+    return true;
+boolean bfsCheck(Map<Integer, List<Integer>> graph, int[] colors, int start)
+    Queue<Integer> queue = new LinkedList<>();
+    queue.offer(start);
+    colors[start] = 0; // Assign color 0 to start node
+    while (!queue.isEmpty())
+      int u = queue.poll();
+      for (int v : graph.getOrDefault(u, Collections.emptyList()))
+        if (colors[v] == -1)
+          colors[v] = 1 - colors[u]; // Assign opposite color
+          queue.offer(v);
+         else if (colors[v] == colors[u])
+          return false; // Adjacent nodes with same color = not bipartite
+    return true;
+boolean dfs(int[][] graph, int[] color, int node, int c) // DFS version
+    if (color[node] != -1)
+        return color[node] == c;
+    color[node] = c;
+    for (int neighbor : graph[node])
+        if (!dfs(graph, color, neighbor, 1 - c))
+            return false;
+    return true;

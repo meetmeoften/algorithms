@@ -1,0 +1,31 @@
+public String LONGEST-PALINDROME(String str)
+    int[] max = new int[]{0, 1};
+    for(int i=0; i < str.length(); i++)
+        int[] odd = helper(str, i, i+1);
+        int[] even = helper(str, i, i);
+        int[] curr = odd[1] - odd[0] > even[1] - even[0] ? odd : even;
+        max = curr[1] - curr[0] > max[1] - max[0] ? curr : max;
+    return str.substring(max[0], max[1]);
+int[] helper(String str, int left, int right)
+    while (left >= 0 && right < str.length())
+        if(str.charAt(left) != str.charAt(right))
+            break;
+        left--;
+        right++;
+    return new int[]{left+1, right};
+
+
+List<List<String>> GROUP-ANAGRAMS(List<String> strs)
+    Map<String, List<String>> map = new HashMap<>();
+    for (String word : strs)
+    	char[] wordArray = word.toCharArray();
+    	Arrays.sort(wordArray);
+    	String newWord = new String(wordArray);
+    	if (map.containsKey(newWord))
+    		map.get(newWord).add(word);
+    	else
+    		List<String> list = new ArrayList<>();
+    		list.add(word);
+    		map.put(newWord, list);
+    return new ArrayList<>(map.values());
+

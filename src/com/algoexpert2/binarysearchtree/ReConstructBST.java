@@ -85,11 +85,11 @@ public class ReConstructBST {
 		tree.left = new ReConstructBST.BST(4);
 		tree.left.left = new ReConstructBST.BST(2);
 		tree.left.left.left = new ReConstructBST.BST(1);
-		tree.left.right = new ReConstructBST.BST(3);
+		tree.left.right = new ReConstructBST.BST(5);
 		tree.right = new ReConstructBST.BST(17);
 		tree.right.right = new ReConstructBST.BST(19);
 		tree.right.right.left = new ReConstructBST.BST(18);
-		var actual = new ReConstructBST().reconstructBst2(preOrderTraversalValues);
+		var actual = new ReConstructBST().reconstructBst(preOrderTraversalValues);
 	}
 
 }

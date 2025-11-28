@@ -1,0 +1,60 @@
+List<List<Integer>> TASK-ASSIGNMENT(int k, List<Integer> tasks) 
+    List<List<Integer>> result = new ArrayList<>();
+    List<int[]> sortedTasks = new ArrayList<>();
+    for (int i = 0; i < tasks.size(); i++)
+        sortedTasks.add(new int[]tasks.get(i), i);
+    sortedTasks.sort((a, b) -> Integer.compare(a[0], b[0]));
+    int left = 0; int right = tasks.size() - 1;
+    for (int i = 0; i < k; i++)
+        int idx1 = sortedTasks.get(left++)[1];
+        int idx2 = sortedTasks.get(right--)[1];
+        result.add(Arrays.asList(idx1, idx2));
+    return result;
+
+int GAS-STATION(int[] gas, int[] cost) 
+    int totalTank = 0, currTank = 0, startingStation = 0;
+    for (int i = 0; i < gas.length; i++)
+        totalTank += gas[i] - cost[i];
+        currTank += gas[i] - cost[i];
+        if (currTank < 0)
+            startingStation = i + 1;
+            currTank = 0;
+    return totalTank >= 0 ? startingStation : -1;
+
+
+
+
+void SIFT-DOWN(int i)
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    int smallest = i;
+    if (left < heap.size() && heap.get(left) < heap.get(smallest))
+      smallest = left;
+    if (right < heap.size() && heap.get(right) < heap.get(smallest))
+      smallest = right;
+    if (smallest != i)
+      swap(i, smallest);
+      siftDown(smallest);
+
+void SIFT-DOWN(int currentIdx, int endIdx, List<Integer> heap)
+    int childOneIdx = currentIdx * 2 + 1;
+    while (childOneIdx <= endIdx)
+    	int childTwoIdx = currentIdx * 2 + 2 <= endIdx ? currentIdx * 2 + 2 : -1;
+    	int idxToSwap;
+    	if (childTwoIdx != -1 && heap.get(childTwoIdx) < heap.get(childOneIdx))
+    		idxToSwap = childTwoIdx;
+    	 else
+    		idxToSwap = childOneIdx;
+    	if (heap.get(idxToSwap) < heap.get(currentIdx))
+    		swap(currentIdx, idxToSwap, heap);
+    		currentIdx = idxToSwap;
+    		childOneIdx = currentIdx * 2 + 1;
+    	 else
+    		return;
+
+void SIFT-UP(int currentIdx, List<Integer> heap) 
+    int parentIdx = (currentIdx - 1) / 2;
+    while (currentIdx > 0 && heap.get(currentIdx) < heap.get(parentIdx))
+    	swap(currentIdx, parentIdx, heap);
+    	currentIdx = parentIdx;
+    	parentIdx = (currentIdx - 1) / 2;

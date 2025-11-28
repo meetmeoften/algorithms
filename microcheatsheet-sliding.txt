@@ -1,0 +1,213 @@
+int CHARACTER_REPLACE(String s, int k) 
+    int[] arr = new int[26];
+    int left = 0; max = 0, result = 0;
+    for (int right = 0; right < s.length(); right++) 
+    	arr[s.charAt(right) - 'A']++;   
+    	max = Math.max(max, arr[s.charAt(right) - 'A']);
+    	if (right - left + 1 - max > k)
+    		arr[s.charAt(left) - 'A']--;
+    		left++;
+    	result = Math.max(result, right - left + 1);
+    return result;
+
+int LENGTH-LONGEST-WITHOUT-REPEATING(String s)
+    int left = 0, max = 0;
+    Set<Character> set = new HashSet<>();
+    for (int right = 0; right < n; right++)
+        char c = s.charAt(right);
+        while (set.contains(c))
+            set.remove(s.charAt(left));
+            left++;
+        set.add(c);
+        max = Math.max(max, right - left + 1);
+    return max;
+
+boolean PERMUTATION-STRING(String s1, String s2)
+    int[] count = new int[26];
+    for (int i = 0; i < len1; i++)
+    	count[s1.charAt(i) - 'a']++;
+    	count[s2.charAt(i) - 'a']--;
+    if(allZero(count)) return true;
+    for (int i = len1; i < len2; i++)
+    	count[s2.charAt(i) - 'a']--;
+    	count[s2.charAt(i - len1) - 'a']++;
+    	if (allZero(count)) return true;
+
+int MIN-SWAP-GROUP1'S(int[] data)
+    for (int num : data)
+        if (num == 1) totalOnes++;
+    if (totalOnes <= 1) return 0;
+    int left = 0, max = 0, currentOnes = 0;
+    for (int right = 0; right < data.length; right++)
+        currentOnes += data[right];
+        if (right - left + 1 > totalOnes)
+            currentOnes -= data[left]; left++;
+        if (right - left + 1 == totalOnes)
+            max = Math.max(max, currentOnes);
+    return totalOnes - max;
+    
+int NO-OF-SUBARRAYS(int[] arr, int k, int threshold)
+    int left = 0, sum =0, count = 0;
+    for(int right =0; right < arr.length; right++)
+        sum += arr[right];
+        if(right - left + 1 == k)
+            if(sum/k >= threshold )
+                count++;
+            sum -= arr[left];
+            left++;
+    return count;
+
+int MIN-SUBARRAY-LEN(int target, int[] nums)
+    int left = 0, sum = 0;
+    int min = Integer.MAX_VALUE;
+    for (int right = 0; right < n; right++)
+        sum += nums[right];
+        while (sum >= target)
+            min = Math.min(min, right - left + 1);
+            sum -= nums[left]; left++;
+    return min == Integer.MAX_VALUE ? 0 : min;
+    
+int[] MAX-SLIDING-WINDOW(int[] nums, int k) 
+    ArrayDeque<Integer> q = new ArrayDeque<>();
+    int[] result = new int[nums.length - k + 1];
+    int idx = 0;
+    for (int i = 0; i < nums.length; i++) 
+    	if (!q.isEmpty() && i - k + 1 > q.getFirst()) 
+    		q.removeFirst();
+    	while (!q.isEmpty() && nums[i] >= nums[q.getLast()]) 
+    		q.removeLast();
+    	q.offerLast(i);
+    	if (i + 1 >= k) 
+    		result[idx] = nums[q.getFirst()];
+    		idx++ ;
+    return result;
+    
+String MIN-WINDOW-SUBSTRING(String s, String t)
+    int left, right= 0;
+    Map<Character, Integer> map = new HashMap<>();
+    for(char ch: t.toCharArray())
+        map.put(ch, map.getOrDefault(ch, 0) + 1);
+    int matched = 0; min = Integer.MAX_VALUE;
+    String result = "";
+    while(right < s.length())
+        char rightCh = s.charAt(right);
+        if(map.containsKey(rightCh))
+            map.put(rightCh, map.get(rightCh) - 1);
+            if(map.get(rightCh) == 0) matched++;
+        while(matched == map.size())
+            if(min > right - left + 1)
+                min = right - left  + 1;
+                result = s.substring(left, right+1);
+            char leftCh = s.charAt(left);
+            if(map.containsKey(leftCh))
+                if(map.get(leftCh) == 0)  matched--;
+                map.put(leftCh, map.get(leftCh) + 1);
+            left++;
+        right++;
+    return result;
+    
+int LONGEST-CONSECUTIVE(int[] nums)
+    Map<Integer, Boolean> map;
+    int[] range = new int[] {0, 1};
+    int longest = 0;
+    for(int num: nums) map.put(num, false);
+    for(int i= 0; i < nums.length; i++)
+        if(map.get(nums[i])) continue;
+        int num = nums[i];
+        map.put(num, true);
+        int left = num -1;
+        int right = num + 1;
+        while(map.containsKey(left))
+            map.put(left, true); left--;
+        while(map.containsKey(right))
+            map.put(right, true); right++;
+        int length = right - left - 1;
+        longest = Math.max(longest, length);
+    return longest;
+
+int SUB-ARRAY-SUM-K(int[] nums, int k)
+    int result = 0, sum = 0;
+    Map<Integer, Integer> map;
+    map.put(0, 1);
+    for(int i=0; i< nums.length; i++)
+        sum += nums[i];
+        int diff = sum -k;
+        if(map.containsKey(diff))
+            result += map.get(diff);
+        map.put(sum, map.getOrDefault(sum,0)+1);
+    return result;
+
+void SORT-COLORS(int[] nums)
+    int low =0, mid = 0, high = nums.length-1;
+    while(mid<=high)
+    	if(nums[mid] == 0 )  swap(low, mid, nums); low++; mid++;
+    	else if (nums[mid] == 1)  mid++;
+    	else  swap(mid, high, nums); high--;
+
+boolean PALINDROME(String s)
+    int i = 0, j = s.length() - 1;
+    while (i < j) 
+        Character start = s.charAt(i);
+        Character end = s.charAt(j);
+        if (!Character.isLetterOrDigit(start))
+            i++; continue;
+        if (!Character.isLetterOrDigit(end))
+            j--; continue;
+        if (Character.toLowerCase(start) != Character.toLowerCase(end))
+            return false;
+        i++; j--;
+    return true;
+
+int RESCUE-BOATS(int[] people, int limit) 
+    int count = 0;
+    int left = 0, right = people.length -1;
+    Arrays.sort(people);
+    while(left <= right)
+        int sum = people[left] + people[right];
+        if(sum <= limit) count++; left++; right--;
+        else count++; right--;
+    return count;
+
+int CONTAINER-WATER(int[] height) 
+    int left = 0, right = height.length - 1;
+    int maxArea = Integer.MIN_VALUE;
+    while( left < right)
+        int width = right - left;
+        int area = Math.min(height[left], height[right]) * width;
+        maxArea = Math.max(maxArea, area);
+        if(height[left] < height[right])  left++;
+        else right --;
+    return maxArea;
+
+List<List<Integer>> THREE-SUM(int[] array)
+    Arrays.sort(array);
+    List<List<Integer>> triplets = new ArrayList<>();
+    for(int i= 0; i< array.length-1; i++)
+      if(i == 0 || array[i] != array[i-1])
+        int left = i+1;
+        int right = array.length-1;
+        while(left < right)
+            int cs = array[i] + array[left] + array[right];
+            if(cs == 0)
+                triplets.add(Arrays.asList(array[i], array[left], array[right]));
+                while (left < right && array[left] == array[left + 1]) left++;
+                while (left < right && array[right] == array[right - 1]) right--;
+                left++; right--;
+             else if(cs > 0)  right--;
+             else  left++;
+    return triplets;
+    
+int TRAPPING-RAIN-WATER(int[] height)
+    int left = 0, waterArea = 0, right = height.length -1;
+    int maxLeft = height[left];
+    int maxRight = height[right];
+    while(left < right)
+        if(height[left] <= height[right])
+            left++;
+            maxLeft = Math.max(maxLeft, height[left]);
+            waterArea += (maxLeft - height[left]);
+         else
+            right--;
+            maxRight = Integer.max(maxRight, height[right]);
+            waterArea += (maxRight - height[right]);
+    return waterArea;

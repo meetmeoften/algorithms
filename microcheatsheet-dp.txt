@@ -51,9 +51,21 @@ long BALL-ARRANGEMENT(int r, int g, int b, char prev)
             ways += countWays(r, g, b - 1, 'B');
         memo.put(key, ways);
         return ways;
+
+int DISTINCT-SUBSEQUENCE(String s, String t, int sIdx, int tIdx)
+    if (memo[sIdx][tIdx] != -1) return memo[sIdx][tIdx];
+    if (tIdx >= t.length()) return 1;
+    if (sIdx >= s.length()) return 0;
+    if (t.charAt(tIdx) == s.charAt(sIdx))
+    	memo[sIdx][tIdx] =
+    	    recursion(s, t, sIdx + 1, tIdx + 1, memo)
+    	    + recursion(s, t, sIdx + 1, tIdx, memo);
+    	return memo[sIdx][tIdx];
+    memo[sIdx][tIdx] = recursion(s, t, sIdx + 1, tIdx, memo);
+    return memo[sIdx][tIdx];
     
 boolean INTERLEAVING(String A, String B, String C,
-    int i, int j, int k)
+int i, int j, int k)
     if (k == C.length())
         return i == A.length() && j == B.length();
     String key = i + "," + j;
@@ -99,12 +111,9 @@ String LCS(String s1, String s2)
     int i = m, j = n;
     while (i > 0 && j > 0)
         if (s1.charAt(i - 1) == s2.charAt(j - 1))
-            lcs.append(s1.charAt(i - 1));
-            i--; j--;
-        else if (dp[i - 1][j] > dp[i][j - 1])
-            i--;
-         else
-            j--;
+            lcs.append(s1.charAt(i - 1)); i--; j--;
+        else if (dp[i - 1][j] > dp[i][j - 1]) i--;
+        else j--;
     return lcs.reverse().toString();
     
 int LCSLength2(String X, String Y, int m, int n) 
@@ -130,3 +139,92 @@ List<String> WORD-BREAK(String s, Set<String> wordSet)
     memo.put(s, result);
     return result;
 
+int OPTIMAL-PATH(int[][] grid)
+    int[][] ways = new int[grid.length][grid[0].length];
+    int rowStart = grid.length-1;
+    for(int i= rowStart; i >= 0; i--)
+    	for(int j= 0; j < grid[0].length; j++)
+    		if(j == 0 && i== rowStart)
+    			ways[i][j] = grid[i][j];
+    		 else if(j== 0)
+    			ways[i][j] = grid[i][j] + ways[i+1][j] ;
+    		 else if (i == rowStart)
+    			ways[i][j] = grid[i][j] + ways[i][j-1];
+    		 else
+    			ways[i][j] = grid[i][j]+Math.max(ways[i+1][j],ways[i][j-1]);
+    return ways[0][grid[0].length-1];
+
+int PALINDROME-MIN-CUTS(String s, int start) (s, 0)
+    if (start == s.length()) return 0;
+    if (memo[start] != -1) return memo[start];
+    int minCuts = Integer.MAX_VALUE;
+    for (int end = start; end < s.length(); end++)
+        if (isPalindrome(s, start, end))
+            int cuts = 1 + minCutsFrom(s, end + 1);
+            minCuts = Math.min(minCuts, cuts);
+    memo[start] = minCuts;
+    return minCuts;
+
+int RUSSIAN-DOLL-ENVELOPES(int[][] envelopes) 
+    Arrays.sort(envelopes, (a, b) ->
+        if (a[0] == b[0])  return b[1] - a[1];
+            else return a[0] - b[0];
+    int[] heights = new int[envelopes.length];
+    for (int i = 0; i < envelopes.length; i++)
+        heights[i] = envelopes[i][1];
+    return lengthOfLIS(heights);
+
+int BURST-BALLOONS(int[] nums) 
+    int[] newNums = new int[n+2];
+    newNums[0] =1; newNums[n+1] = 1;
+    for(int i=0; i < n; i++)
+        newNums[i + 1] = nums[i];
+    return helper(newNums, 0, n+1);
+int helper  (int[] nums, int left, int right)
+    if(left + 1 == right)  return 0;
+    int maxCoins = 0;
+    for(int i=left+1; i < right; i++)
+        int coins = nums[left] * nums[i] * nums[right]
+            + helper(nums, left, i)
+            + helper(nums, i, right);
+        maxCoins = Math.max(coins, maxCoins);
+    return maxCoins;
+
+int ACTIVITY-SELECTION(Activity[] activities, int i, Integer[] memo)
+    if (i >= activities.length) return 0;
+    if (memo[i] != null)  return memo[i];
+    int maxActivities = recursiveSelect(activities, i + 1, memo);
+    for (int j = i + 1; j < activities.length; j++)
+        if (activities[i].finish <= activities[j].start)
+            maxActivities = Math.max(maxActivities,
+                1 + recursiveSelect(activities, j, memo));
+    memo[i] = maxActivities;
+    return maxActivities;
+    
+
+int JOB-SCHEDULING(int[] start, int[] end, int[] profit)
+    int n = start.length;
+    Job[] jobs = new Job[n];
+    for (int i = 0; i < n; i++)
+        jobs[i] = new Job(start[i], end[i], profit[i]);
+    Arrays.sort(jobs, Comparator.comparingInt(j -> j.end));
+    Map<Integer, Job> selectedJobMap = new HashMap<>();
+    TreeMap<Integer, Integer> dp = new TreeMap<>();
+    dp.put(0, 0);
+    for (Job job : jobs)
+        int prevProfit = dp.floorEntry(job.start).getValue();
+        int currentProfit = prevProfit + job.profit;
+        if (currentProfit > dp.lastEntry().getValue())
+            dp.put(job.end, currentProfit);
+            selectedJobMap.put(job.end, job);
+    List<Job> selectedJobs = new ArrayList<>();
+    Integer currentTime = dp.lastKey();
+    while (currentTime != null && currentTime > 0)
+        Job job = selectedJobMap.get(currentTime);
+        if (job != null)
+            selectedJobs.add(job);
+            currentTime = dp.floorKey(job.start);
+         else break;
+    Collections.reverse(selectedJobs);
+    return dp.lastEntry().getValue();
+    

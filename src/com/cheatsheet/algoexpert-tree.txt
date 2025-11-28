@@ -1,0 +1,105 @@
+int TREE-HEIGHT(Tree node)
+    if (node == null) return -1;
+    int left = treeHeight(node.left);
+    int right = treeHeight(node.right);
+    return 1 + Math.max(left, right);
+
+int MIN-TREE-HEIGHT(BinaryTree node)
+    if (node == null) return Integer.MAX_VALUE;
+    if (node.left == null && node.right == null) return 1;
+    int left = minHeightHelper(node.left);
+    int right = minHeightHelper(node.right);
+    return 1 + Math.min(left, right);
+
+boolean IS-BALANCED(TreeNode root)
+    if (root == null)  return true;
+    return Math.abs(treeHeight(root.left) - treeHeight(root.right)) <= 1 &&
+            isBalanced(root.right) && isBalanced(root.left);
+
+Tree MERGE-BINARY-TREE(Tree tree1, Tree tree2)
+    if (tree1 == null) return tree2;
+    if (tree2 == null) return tree1;
+    tree1.value += tree2.value;
+    tree1.left = mergeBinaryTrees(tree1.left, tree2.left);
+    tree1.right = mergeBinaryTrees(tree1.right, tree2.right);
+    return tree1;
+
+void BRANCH-SUM(Tree node, int runningSum, List<Integer> sums)
+    if (node == null) return;
+    int newRunningSum = runningSum + node.value;
+    if (node.left == null && node.right == null)
+        sums.add(newRunningSum); return;
+    branchSum(node.left, newRunningSum, sums);
+    branchSum(node.right, newRunningSum, sums);
+
+int NODE-DEPTH(Tree root, int depth)
+    if(root == null) return 0;
+    int left = nodeDepth(root.left, depth+1);
+    int right = nodeDepth(root.right, depth+1);
+    return depth + left + right;
+
+int DIAMETER-HEIGHT(Node node)
+    if (node == null) return 0;
+    int leftHeight = height(node.left);
+    int rightHeight = height(node.right);
+    diameter = Math.max(diameter, leftHeight + rightHeight);
+    return 1 + Math.max(leftHeight, rightHeight);
+
+boolean IDENTICAL(Node node1, Node node2)
+    if (node1 == null && node2 == null) return true;
+    return node1 != null && node2 != null &&
+            node1.data == node2.data &&
+            identical(node1.left, node2.left) &&
+            identical(node1.right, node2.right);
+
+void INVERT-BINARY-TREE(Tree tree)
+    if (tree == null) return;
+    //swap
+    BinaryTree temp = tree.left;
+    tree.left = tree.right;
+    tree.right = temp;
+    invertBinaryTree(tree.left);
+    invertBinaryTree(tree.right);
+
+int SPLIT-BINARY-TREE(Tree tree)
+		List<Integer> sums = new ArrayList<>();
+		int total = helper(sums, tree);
+		if(total % 2 != 0) return 0;
+		for(int sum: sums)
+			if(sum == total/2)
+				return sum;
+		return 0;
+int helper(List<Integer> sums, BinaryTree tree)
+    if(tree == null) return 0;
+    int left = helper(sums, tree.left);
+    int right = helper(sums, tree.right);
+    int sum = tree.value + left + right;
+    sums.add(sum);
+    return sum;
+
+Node LCA(Node root, Node p, Node q) {
+    if (root == null || root == p || root == q) return root;
+    Node left = lca(root.left, p, q);
+    Node right = lca(root.right, p, q);
+    if (left != null && right != null) return root;
+    return left != null ? left : right;
+
+Node LCA-WITH-PARENT-NODE(Node a, Node b)
+    int depthA = getDepth(a);
+    int depthB = getDepth(b);
+    if (depthA > depthB)
+        a = lift(a, depthA - depthB);
+    else
+        b = lift(b, depthB - depthA);
+    while (a != b)
+        a = a.parent; b = b.parent;
+    return a;
+int getDepth(Node x)
+    int depth = 0;
+    while (x.parent != null)
+        x = x.parent; depth++;
+    return depth;
+Node lift(Node x, int steps)
+    while (steps-- > 0)
+        x = x.parent;
+    return x;

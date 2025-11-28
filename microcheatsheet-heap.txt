@@ -1,0 +1,230 @@
+int IPO(int k, int w, int[] profits, int[] capital) 
+    int length = profits.length;
+    int[][] profitsCapital = new int[length][2];
+    for (int i = 0; i < length; i++) 
+    	profitsCapital[i][0] = profits[i];
+    	profitsCapital[i][1] = capital[i];
+    Arrays.sort(profitsCapital, (a, b) -> a[1] - b[1]);
+    int totalCapital = w;
+    PriorityQueue<Integer> priorityQueue = new PriorityQueue<Integer>((a, b) -> b - a);
+    int index = 0;
+    while (k > 0) 
+    	while (index < length && profitsCapital[index][1] <= totalCapital) 
+    		priorityQueue.offer(profitsCapital[index][0]);
+    		index++;
+    	if (priorityQueue.isEmpty()) 
+    		break;
+    	totalCapital += priorityQueue.poll();
+    	k--;
+    return totalCapital;
+    
+int[] ASSIGN-TASKS(int[] servers, int[] tasks)
+    Queue<int[]> free = new PriorityQueue<>((a, b)
+            -> a[1] == b[1] ? (a[0] - b[0]) : (a[1] - b[1]));
+    Queue<int[]> busy = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+    int ans[] = new int[tasks.length];
+    for (int i = 0; i < servers.length; i++)
+    	free.add(new int[]{i,servers[i]});
+    int i = 0; curTime = 0;
+    while (i < tasks.length)
+    	while (!busy.isEmpty() && busy.peek()[1] <= curTime)
+    		int id = busy.poll()[0];
+    		free.add(new int[]{id, servers[id]});
+    	while (i < tasks.length && i <= curTime && !free.isEmpty())
+    		int id = free.poll()[0];
+    		busy.add(new int[]{id, curTime + tasks[i]});
+    		ans[i++] = id;
+    	if (free.isEmpty()) curTime = busy.peek()[1];
+    	else curTime++;
+    return ans;
+
+int TASK-SCHEDULER(char[] tasks, int n) {
+    HashMap<Character, Integer> map = new HashMap<>();
+    for (char ch : tasks)
+    	map.put(ch, map.getOrDefault(ch, 0) + 1);
+    PriorityQueue<Map.Entry<Character, Integer>> queue = new PriorityQueue<>(
+    		(a, b) -> (b.getValue() - a.getValue()));
+    queue.addAll(map.entrySet());
+    int cnt = 0;
+    while (!queue.isEmpty())
+    	int interval = n + 1;
+    	List<Map.Entry<Character, Integer>> list = new ArrayList<>();
+    	while (interval > 0 && !queue.isEmpty())
+    		Map.Entry<Character, Integer> entry = queue.poll();
+    		entry.setValue(entry.getValue() - 1);
+    		list.add(entry); interval--; cnt++;
+    	for (Map.Entry<Character, Integer> entry : list)
+    		if (entry.getValue() > 0) queue.offer(entry);
+    	if (queue.isEmpty()) break;
+    	cnt += interval;
+    return  cnt;
+
+boolean CARPOOLING(int[][] trips, int capacity)
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    Arrays.sort(trips, (a, b) -> a[1] - b[1]);
+    int totalPersonsInTheCar = 0;
+    for (int[] trip : trips)
+    	while (!pq.isEmpty() && pq.peek()[2] <= trip[1])
+    		int[] detail = pq.poll();
+    		totalPersonsInTheCar -= detail[0];
+    	totalPersonsInTheCar += trip[0];
+    	if (totalPersonsInTheCar > capacity) return false;
+    	pq.offer(trip);
+    return true;
+
+int[] SINGLE-THREADED-CPU(int[][] tasks)
+    int[][] newTasks = new int[tasks.length][3];
+    for (int i = 0; i < tasks.length; i++)
+        newTasks[i][0] = tasks[i][0];
+        newTasks[i][1] = tasks[i][1];
+        newTasks[i][2] = i;
+    Arrays.sort(newTasks, Comparator.comparingInt(a -> a[0]));
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) ->
+        (a[0] != b[0] ? (a[0] - b[0]) : (a[1] - b[1])));
+    int[] ans = new int[tasks.length];
+    int ansIndex = 0, currTime = 0;
+    for (int i = 0; i < newTasks.length; i++)
+        while (currTime < newTasks[i][0] && !pq.isEmpty())
+            int[] topTask = pq.remove();
+            ans[ansIndex++] = topTask[1];
+            currTime += topTask[0];
+        currTime = Math.max(currTime, newTasks[i][0]);
+        pq.add(new int[]{newTasks[i][1], newTasks[i][2]});
+    while (!pq.isEmpty())
+        int[] topTask = pq.remove();
+        ans[ansIndex++] = topTask[1];
+    return ans;
+
+String REORGANIZE-STRING(String s) {
+    Map<Character, Integer> freqMap = new HashMap<>();
+    for (char c : s.toCharArray())
+        freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
+    PriorityQueue<Map.Entry<Character, Integer>> maxHeap =
+        new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
+    maxHeap.addAll(freqMap.entrySet());
+    StringBuilder result = new StringBuilder();
+    Map.Entry<Character, Integer> prev = null;
+    while (!maxHeap.isEmpty())
+        Map.Entry<Character, Integer> curr = maxHeap.poll();
+        result.append(curr.getKey());
+        if (prev != null && prev.getValue() > 0)
+            maxHeap.offer(prev);
+        curr.setValue(curr.getValue() - 1);
+        prev = curr;
+    return result.length() == s.length() ? result.toString() : "";
+
+long TOTAL-HIRE-K-WORKERS(int[] costs, int k, int candidates)
+    int n = costs.length;
+    PriorityQueue<Integer> front = new PriorityQueue<>();
+    PriorityQueue<Integer> back = new PriorityQueue<>();
+    int left = 0, right = n - 1, totalCost = 0;
+    for (int i = 0; i < candidates && left <= right; i++)
+        front.offer(costs[left++]);
+    for (int i = 0; i < candidates && left <= right; i++)
+        back.offer(costs[right--]);
+    for (int i = 0; i < k; i++)
+        if (front.isEmpty())
+            totalCost += back.poll();
+            if (left <= right) back.offer(costs[right--]);
+         else if (back.isEmpty())
+            totalCost += front.poll();
+            if (left <= right) front.offer(costs[left++]);
+         else
+            if (front.peek() <= back.peek())
+                totalCost += front.poll();
+                if (left <= right) front.offer(costs[left++]);
+                else
+                totalCost += back.poll();
+                if (left <= right) back.offer(costs[right--]);
+    return totalCost;
+
+long MAX-SUBSEQUENCE-SCORE(int[] nums1, int[] nums2, int k)
+    int n = nums1.length;
+    int[][] pairs = new int[n][2];
+    for (int i = 0; i < n; i++)
+    	pairs[i] = new int[]{nums2[i],nums1[i]};
+    Arrays.sort(pairs, (a, b) -> b[0] - a[0]);
+    PriorityQueue<Integer> pq = new PriorityQueue<>(k, (a, b) -> a - b);
+    long res = 0, totalSum = 0;
+    for (int[] pair : pairs)
+    	pq.add(pair[1]);
+    	totalSum += pair[1];
+    	if (pq.size() > k) totalSum -= pq.poll();
+    	if (pq.size() == k) res = Math.max(res, totalSum * pair[0]);
+    return res;
+
+int MIN-MEETING-ROOMS(int[][] intervals)
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    PriorityQueue<Integer> heap = new PriorityQueue<>();
+    for (int[] meeting : intervals)
+        if (!heap.isEmpty() && heap.peek() <= meeting[0])
+            heap.poll();
+        heap.offer(meeting[1]);
+    return heap.size();
+
+int MIN-MEETING-3(int n, int[][] meetings)
+    Arrays.sort(meetings, (a, b) -> a[0] - b[0]);
+    PriorityQueue<long[]> busyRooms = new PriorityQueue<>((a, b) -> Long.compare(a[0], b[0]));
+    PriorityQueue<Integer> freeRooms = new PriorityQueue<>();
+    for (int i = 0; i < n; i++)
+        freeRooms.offer(i);
+    int[] roomCount = new int[n];
+    for (int[] meeting : meetings) {
+        int start = meeting[0], end = meeting[1];
+        while (!busyRooms.isEmpty() && busyRooms.peek()[0] <= start) {
+            freeRooms.offer((int) busyRooms.poll()[1]);
+        if (!freeRooms.isEmpty())
+            int room = freeRooms.poll();
+            roomCount[room]++;
+            busyRooms.offer(new long[]{end, room});
+        else
+            long[] earliest = busyRooms.poll();
+            long newEnd = earliest[0] + (end - start);
+            int room = (int) earliest[1];
+            roomCount[room]++;
+            busyRooms.offer(new long[]{newEnd, room});
+    int maxMeetings = 0, result = 0;
+    for (int i = 0; i < n; i++) {
+        if (roomCount[i] > maxMeetings)
+            maxMeetings = roomCount[i];
+            result = i;
+    return result;
+
+int QUICK-SELECT(int[] nums, int low, int high, int k)
+    int idx = low, pivot = high;
+    for (int i = low; i < high; i++)
+    	if (nums[i] <= nums[pivot])
+    		swap(nums, i, idx);
+    		idx++;
+    swap(nums, idx, pivot);
+    if (idx == k) return nums[idx];
+    else if (idx < k) return quickSelect(nums, idx + 1, high, k);
+    else return quickSelect(nums, low, idx - 1, k);
+
+int[][] MERGE-INTERVALS(int[][] intervals)
+    Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
+    List<int[]> result = new ArrayList<>();
+    int[] prev = intervals[0];
+    for (int i = 1; i < intervals.length; i++)
+        int[] curr = intervals[i];
+    	if (prev[1] >= curr[0])
+    		prev[1] = Math.max(prev[1], curr[1]);
+    	else
+    		result.add(interval);
+    		prev = curr;
+    result.add(interval);
+    return result.toArray(new int[result.size()][]);
+
+int[][] INSERT-INTERVALS(int[][] intervals, int[] newInterval)
+    List<int[]> result = new ArrayList<>();
+    int idx = 0;
+    while (idx < intervals.length && intervals[idx][1] < newInterval[0])
+    	result.add(intervals[idx]);idx++;
+    while (idx < intervals.length && intervals[idx][0] <= newInterval[1])
+    	newInterval[0] = Math.min(newInterval[0], intervals[idx][0]);
+    	newInterval[1] = Math.max(newInterval[1], intervals[idx][1]);
+    	idx++;
+    result.add(newInterval);
+    while (idx < intervals.length)
+    	result.add(intervals[idx]);idx++;
+    return result.toArray(new int[0][]);

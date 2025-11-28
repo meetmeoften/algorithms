@@ -2,6 +2,7 @@ package com.techiedelight.dp.medium.partition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class ActivitySelection {
@@ -25,6 +26,41 @@ public class ActivitySelection {
                 lastFinishTime = activities[i].finish;  // Update the last finish time
             }
         }
+    }
+
+    public static int selectActivitiesMemo(Activity[] activities, int n) {
+        // Sort the activities by finish time
+        Arrays.sort(activities, Comparator.comparingInt(a -> a.finish));
+
+        // Memoization array to store the maximum number of activities from a given index
+        Integer[] memo = new Integer[n];
+
+        // Recursive function to find the maximum number of activities from a given index
+        return recursiveSelect(activities, 0, memo);
+    }
+
+    // Recursive function to compute the maximum number of activities from index `i`
+    private static int recursiveSelect(Activity[] activities, int i, Integer[] memo) {
+        // Base case: if we are beyond the last activity, no more activities can be selected
+        if (i >= activities.length) {
+            return 0;
+        }
+        // If the result has already been computed, return it from the memo array
+        if (memo[i] != null) {
+            return memo[i];
+        }
+        // 1. Skip the current activity
+        int maxActivities = recursiveSelect(activities, i + 1, memo);
+        // 2. Include the current activity and find the next activity that doesn't overlap
+        for (int j = i + 1; j < activities.length; j++) {
+            if (activities[i].finish <= activities[j].start) {
+                maxActivities = Math.max(maxActivities, 1 + recursiveSelect(activities, j, memo));
+            }
+        }
+
+        // Store the result in memo array for future use
+        memo[i] = maxActivities;
+        return maxActivities;
     }
 
     public static int selectActivitiesDP(Activity[] activities) {

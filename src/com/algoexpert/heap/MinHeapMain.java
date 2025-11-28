@@ -82,8 +82,9 @@ public class MinHeapMain {
 
 	public static void main(String[] args) {
 		MinHeapMain.MinHeap minHeap = new MinHeapMain.MinHeap(
-				new ArrayList<Integer>(Arrays.asList(48, 12, 24, 7, 8, -5, 24, 391, 24, 56, 2, 6, 8, 41)));
-		minHeap.insert(76);
+				//new ArrayList<Integer>(Arrays.asList(48, 12, 24, 7, 8, -5, 24, 391, 24, 56, 2, 6, 8, 41)));
+				new ArrayList<Integer>(Arrays.asList(5, 3, 8, 4, 1)));
+		minHeap.insert(2);
 		isMinHeapPropertySatisfied(minHeap.heap);
 		minHeap.peek();
 		minHeap.remove();

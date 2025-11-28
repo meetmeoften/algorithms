@@ -1,0 +1,73 @@
+int KADANE(int[] arr)
+    int curr = arr[0]; int max = arr[0];
+    for (int i = 1; i < arr.length; i++)
+    	curr = Math.max(arr[i], curr + arr[i]);
+    	max = Math.max(max, curr);
+    return max;
+
+int PRINT-KADANE(int[] arr)
+    int curr = arr[0]; int max = arr[0];
+    int start = 0, end = 0, tempStart = 0;
+    for (int i = 1; i < arr.length; i++)
+      if (arr[i] > curr + arr[i])
+        curr = arr[i];
+        tempStart = i;
+      else
+        curr = curr + arr[i];
+      if (curr > max) 
+        max = curr;
+        start = tempStart;
+        end = i;
+    for (int i = start; i <= end; i++)
+      System.out.print(arr[i]);
+    return max;
+
+class UNION-FIND
+    private int[] parents, size, rank;
+    private int count;
+    public UnionFind(int n)
+    	parent = new int[n];
+        size = new int[n];
+        rank = new int[n];
+    	for (int i = 0; i < parents.length; i++)
+    		parents[i] = i;
+    		size[i] = 1;
+            rank[i] = 0;
+    public int find(int node)
+        if (parent[x] != x)
+            parent[x] = find(parent[x]);
+        return parent[x];
+    public void union(int i, int j)
+    	int p1 = find(i), p2 = find(j);
+    	if (p1 == p2) return;
+    	parents[p2] = p1;
+    public boolean unionByRank(int a, int b)
+        int rootA = find(a);
+        int rootB = find(b);
+        if (rootA == rootB) return false;
+        if (rank[rootA] < rank[rootB])
+            parent[rootA] = rootB;
+        else if (rank[rootA] > rank[rootB])
+            parent[rootB] = rootA;
+        else
+            parent[rootB] = rootA;
+            rank[rootA]++;
+        count--;
+        return true;
+    public boolean unionBySize(int a, int b)
+        int rootA = find(a);
+        int rootB = find(b);
+        if (rootA == rootB) return false;
+        if (size[rootA] < size[rootB])
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
+        else
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
+        count--;
+        return true;
+    public boolean connected(int a, int b)
+        return find(a) == find(b);
+    public int componentSize(int x)
+        return size[find(x)];
+        

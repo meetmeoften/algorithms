@@ -1,0 +1,87 @@
+Node INSERT-REC(Node node, int value)
+    if (node == null)
+        return new Node(value);
+    if (value < node.value)
+        node.left = insertRec(node.left, value);
+    else if (value > node.value)
+        node.right = insertRec(node.right, value);
+    return node; // unchanged if duplicate
+
+boolean SEARCH-REC(Node node, int value)
+        if (node == null) return false;
+        if (value == node.value) return true;
+        return value < node.value
+                ? searchRec(node.left, value)
+                : searchRec(node.right, value);
+
+Node REMOVE-REC(Node node, int value)
+    if (node == null) return null;
+    if (value < node.value)
+        node.left = removeRec(node.left, value);
+    else if (value > node.value)
+        node.right = removeRec(node.right, value);
+    else // Node found -
+        // Case 1: no child
+        if (node.left == null && node.right == null)
+            return null;
+        // Case 2: one child
+        if (node.left == null) return node.right;
+        if (node.right == null) return node.left;
+        // Case 3: two children → find inorder successor
+        Node successor = minValueNode(node.right);
+        node.value = successor.value;
+        node.right = removeRec(node.right, successor.value);
+    return node;
+
+Node MIN-VALUE-NODE(Node node)
+    while (node.left != null)
+        node = node.left;
+    return node;
+
+boolean VALIDATE-BST(Node root, Integer min, Integer max)
+    if(root.val < min || root.val >= max)
+        return false;
+    if(root.left != null && !validateBst(root.left, min, root.val))
+        return false;
+    if(root.right != null && !validateBst(root.right, root.val, max))
+        return false;
+    return true;
+
+void INSERT(int value)
+    if (value < this.value)
+        if (left == null) left = new Node(value);
+        else left.insert(value);
+    else
+        if (right == null) right = new Node(value);
+        else right.insert(value);
+
+Node MIN-HEIGHT-BST(List<Integer> array, Node bst, int start, int end)
+    if (start > end) return bst;
+    int mid = (start + end) / 2;
+    int value = array.get(mid);
+    Node bst = new Node(array.get(mid));
+    bst.left = constructMinHeightBst(array, start, mid - 1);
+    bst.right = constructMinHeightBst(array, mid + 1, end);
+    return bst;
+
+BST RECONSTRUCT(int lowerBound, int upperBound, List<Integer> arrList, TreeInfo treeInfo)
+    if(treeInfo.rootIdx == arrList.size()) return null;
+    int rootValue = arrList.get(treeInfo.rootIdx);
+    if(rootValue < lowerBound || rootValue >= upperBound) return null;
+    treeInfo.rootIdx += 1;
+    Node bst = new Node(rootValue);
+    bst.left = reconstruct(lowerBound, rootValue, arrList, treeInfo );
+    bst.right = reconstruct(rootValue, upperBound, arrList, treeInfo);
+    return bst;
+
+int FIND-KTH-VALUE-BST(Node tree, int k) //Reverse In Order
+    TreeInfo info = new TreeInfo(0, -1); // count, latestValue
+    reverseInOrderTraverse(tree, k, info);
+    return info.latestValue;
+void REVERSE-IN-ORDER-TRAVERSE(Node node, int k, TreeInfo info) {
+    if (node == null || info.count >= k) return;
+    reverseInOrderTraverse(node.right, k, info);
+    if (info.count < k)
+        info.count++;
+        info.latestValue = node.value;
+    reverseInOrderTraverse(node.left, k, info);

@@ -42,7 +42,7 @@ public class MajorityElement {
 
 
 	public static void main(String[] args) {
-		majorityElement(new int[] {3,2,3});
+		majorityElement(new int[] {1,2, 3, 3, 2, 3});
 	}
 
 }

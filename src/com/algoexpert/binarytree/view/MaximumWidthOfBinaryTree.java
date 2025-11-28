@@ -1,4 +1,4 @@
-package com.algoexpert.binarytree;
+package com.algoexpert.binarytree.view;
 
 import java.util.HashMap;
 import java.util.LinkedList;

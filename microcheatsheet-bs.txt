@@ -1,0 +1,131 @@
+int KOKO-BANANAS(int[] piles, int h)
+    int left = 1, right = 1;
+    for (int pile : piles)
+    	right = Math.max(right, pile);
+    while (left < right)
+    	int middle = (left + right) / 2;
+    	int hourSpent = 0;
+    	for (int pile : piles)
+    		hourSpent += Math.ceil((double) pile / middle);
+    	if (hourSpent <= h) right = middle;
+    	else left = middle + 1;
+    return left;
+
+int CAPACITY-TO_SHIP(int[] weights, int days)
+    int left = 0, right = 0;
+    for (int weight : weights)
+        left = Math.max(left, weight);
+        right += weight;
+    while (left < right)
+    	int curr = canShip(weights, mid);
+    	if (curr <= days) right = mid;
+    	else left = mid + 1;
+    return left;
+int canShip(int[] weights, int capacity)
+    int days = 1, current = 0;
+    for (int w : weights)
+    	if (current + w > capacity)
+    		current = 0; days++;
+    	current += w;
+    return days;
+    
+int SPLIT-ARRAY(int[] nums, int k)
+    int left, right = nums[0];
+    for (int num :  nums)
+    	left = Math.max(left, num);
+    	right += num;
+    while (left < right)
+    	int mid = (left + right) / 2;
+    	if (canSplit(nums, k, mid))
+    		right = mid;
+    	 else
+    		left = mid + 1;
+    return left;
+boolean canSplit(int[] nums, int k, int maxSumAllowed)
+    int currentSum = 0, splits = 1;
+    for (int num : nums)
+    	if (currentSum + num > maxSumAllowed)
+    		currentSum = num; splits++;
+    		if (splits > k) return false;
+    	 else currentSum += num;
+    return true;
+    
+int FIND-MIN(int[] nums)
+    int left = 0; right = nums.length-1;
+    while(left < right)
+        if(nums[left] <= nums[mid] && nums[mid] > nums[right])
+            left = mid +1 ;
+        else  right = mid;
+    return nums[left];
+    
+
+int SEARCH-ROTATED(int[] nums, int left, int right, int target)
+    while(left <= right)
+        if(nums[mid] == target) return mid;
+         else if(nums[left] <= nums[mid])
+            if(nums[left] > target || nums[mid] < target)
+                left = mid + 1;
+             else right = mid - 1;
+         else
+            if(nums[right] < target || nums[mid] > target)
+                right = mid -1 ;
+             else left = mid + 1;
+    return -1;
+
+class TRIE
+class TrieNode
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean isEndWord;
+private TrieNode root;
+public Trie()
+    root = new TrieNode();
+public void insert(String word)
+    TrieNode node = root;
+    for(char ch: word.toCharArray())
+        node = node.children.computeIfAbsent(ch, c -> new TrieNode());
+    node.isEndWord = true;
+public TrieNode searchNode(String word)
+    TrieNode node = root;
+    for(char ch: word.toCharArray())
+        node = node.children.get(ch);
+        if(node == null) return null;
+    return node;
+public boolean helper(String word, int idx, TrieNode t)
+    if (idx >= word.length()) return t.isWord;
+    char c = word.charAt(idx);
+    if (c == '.')
+        for (Map.Entry<Character, TrieNode> entry : t.children.entrySet())
+            if (helper(word, idx + 1, entry.getValue())) return true;
+        return false;
+    return t.children.get(c) != null && helper(word, idx + 1, t.children.get(c));
+public void autoComplete(String prefix)
+    List<String> results = new ArrayList<>();
+    TrieNode node = root;
+    for (char ch : prefix.toCharArray())
+        node = node.children.get(ch);
+        if (node == null) return results;
+    dfs(node, new StringBuilder(prefix), results);
+    return results;
+public void dfs(TrieNode node, StringBuilder sb, List<String> results)
+    if(node.isEndWord)
+        results.add(sb.toString());
+    for(Map.Entry<Character, TrieNode> entry : node.children.entrySet())
+        sb.append(entry.getKey());
+        dfs(node.getValue(), sb, results);
+        sb.deleteCharAt(sb.length()-1);
+public List<String> autocompleteBFS(String prefix)
+    List<String> results = new ArrayList<>();
+    TrieNode node = root;
+    for (char ch : prefix.toCharArray())
+        node = node.children.get(ch);
+        if (node == null) return results;
+    Queue<Pair> queue = new LinkedList<>();
+    queue.offer(new Pair(node, new StringBuilder(prefix)));
+    while (!queue.isEmpty())
+        Pair current = queue.poll();
+        if (current.node.isEndOfWord)
+            results.add(current.path.toString());
+        for (Map.Entry<Character, TrieNode> entry : current.node.children.entrySet())
+            queue.offer(new Pair(entry.getValue(),
+                new StringBuilder(current.path).append(entry.getKey())));
+    return results;

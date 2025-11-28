@@ -50,7 +50,7 @@ public class SortStack {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Integer> stack = new ArrayList<Integer>(Arrays.asList(-5, 2, -2, 4, 3, 1));
+		ArrayList<Integer> stack = new ArrayList<Integer>(Arrays.asList(-5, 2, 4, -2, 3, 1));
 		ArrayList<Integer> expected = new ArrayList<Integer>(Arrays.asList(-5, -2, 1, 2, 3, 4));
 		var actual = new SortStack().sortStack(stack);
 	}

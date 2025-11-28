@@ -1,0 +1,61 @@
+int MAX-SUBSET-NO-ADJACENT(int index, int[] arr) HOUSE-ROBBER
+    if (index >= arr.length) return 0;
+    int include = arr[index] + helper(index + 2, arr, memo);
+    int exclude = helper(index + 1, arr, memo);
+    int result = Math.max(include, exclude);
+    return result;
+
+int FIND-MIN-COINS(int[] arr, int i, int target)
+    if (target == 0) return 0;
+    if (i < 0 || target < 0) return Integer.MAX_VALUE;
+    int exclude = findMinCoins(arr, i - 1, target);
+    int include = 1 + findMinCoins(arr, i, target - arr[i]);
+    return Math.min(exclude, include);
+
+int FIND-MIN-COINS-2(int amount, int[] denoms) {
+    if (amount == 0) return 0;
+    if (amount < 0) return Integer.MAX_VALUE;
+    int min = Integer.MAX_VALUE;
+    for (int coin : denoms) {
+        int res = dfs(amount - coin, denoms);
+        if (res != Integer.MAX_VALUE) {
+            min = Math.min(min, 1 + res);
+    return min;
+
+int EDIT-DISTANCE(int i, int j, String s1, String s2)
+    if (i == s1.length()) return s2.length() - j;
+    if (j == s2.length()) return s1.length() - i;
+    if (s1.charAt(i) == s2.charAt(j))
+        dfs(i + 1, j + 1, s1, s2);
+    int insert = 1 + dfs(i, j + 1, s1, s2, memo);
+    int delete = 1 + dfs(i + 1, j, s1, s2, memo);
+    int replace = 1 + dfs(i + 1, j + 1, s1, s2, memo);
+    return Math.min(insert, Math.min(delete, replace));
+
+int LCS-LENGTH(String X, String Y, int m, int n)
+    if (m == 0 || n == 0) return 0;
+    if (X.charAt(m - 1) == Y.charAt(n - 1))
+    	return 1 + LCSLength2(X, Y, m - 1, n - 1);
+    return Integer.max(LCSLength2(X, Y, m - 1, n),
+    LCSLength2(X, Y, m, n - 1));
+
+int UNIQUE-PATHS(int r, int c)
+    if (r == 1 || c == 1) return 1;
+    return dfs(r - 1, c, memo) + dfs(r, c - 1, memo);
+
+int UNIQUE-PATHS(int w, int h, Map<String, Integer> memo)
+    if (w == 1 || h == 1) return 1;
+    String key = w + "-" + h;
+    if (memo.containsKey(key)) return memo.get(key);
+    int ways = dfs(w - 1, h, memo) + dfs(w, h - 1, memo);
+    memo.put(key, ways);
+    return ways;
+
+
+int UNIQUE-PATHS-2(int r, int c, int[][] grid)
+    if (r >= grid.length || c >= grid[0].length) return 0;
+    if (grid[r][c] == 1) return 0;
+    if (r == grid.length - 1 && c == grid[0].length - 1) return 1;
+    int down = dfs(r + 1, c, grid);
+    int right = dfs(r, c + 1, grid);
+    return down + right;

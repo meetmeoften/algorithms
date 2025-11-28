@@ -1,0 +1,151 @@
+List<Integer> THREE-NUMBER_SUM(int[] array)
+    Arrays.sort(array);
+    List<Integer[]> triplets = new ArrayList<Integer[]>();
+    for(int i=0; i<array.length; i++)
+    	int left = i+1;
+    	int right = array.length -1;
+    	while(left < right)
+    		int cs = array[i] + array[left] + array[right];
+    		if(cs == targetSum)
+    			Integer[] newTriplet = array[i], array[left], array[right];
+    			triplets.add(newTriplet);
+    			left++; right--;
+    		else if (cs > targetSum) right--;
+    		else if(cs < targetSum) left++;
+    return triplets;
+
+int[] SMALLEST-DIFFERENCE(int[] arrayOne, int[] arrayTwo)
+    Arrays.sort(arrayOne); Arrays.sort(arrayTwo);
+    int i = 0; int j = 0;
+    int smallest = Integer.MAX_VALUE;
+    int current = Integer.MAX_VALUE;
+    int[] smallestPair = new int[2];
+    while (i < arrayOne.length && j < arrayTwo.length)
+    	int firstNum = arrayOne[i];
+    	int secondNum = arrayTwo[j];
+    	if (firstNum > secondNum)
+    		current = firstNum - secondNum; j++;
+    	else if (secondNum > firstNum)
+    		current = secondNum - firstNum; i++;
+    	else return new int[]  firstNum, secondNum ;
+    	if (current < smallest)
+    		smallest = current;
+    		smallestPair = new int[]  firstNum, secondNum ;
+    return smallestPair;
+
+List<Integer> MOVE-ELEMENT-TO-END(List<Integer> array, int toMove)
+    int i = 0; int j = array.size() - 1;
+    while (i < j)
+    	while (i < j && array.get(j) == toMove)
+    		j--;
+    	if (array.get(i) == toMove) 
+    		int temp = array.get(i);
+    		array.set(i, array.get(j));
+    		array.set(j, temp);
+    	i++;
+    return array
+
+boolean IS-MONOTONIC(int[] array) 
+    if (array.length <= 2) return true;
+    boolean inc = true; boolean dec = true
+    for (int i = 0; i < array.length-1; i++)
+        if(array[i] < array[i + 1]) dec = false;
+        if(array[i] > array[i + 1]  inc = false
+    return inc || dec;
+
+
+List<Integer> SPIRAL-ORDER(int[][] array)
+    List<Integer> results = new ArrayList<>();
+    if (array.length == 0) return true;
+    int startRow = 0;
+    int endRow = array.length - 1;
+    int startCol = 0;
+    int endCol = array[0].length - 1;
+    while (startRow <= endRow && startCol <= endCol)
+    	for (int col = startCol; col <= endCol; col++)
+    		results.add(array[startRow][col]);
+    	for (int row = startRow + 1; row <= endRow; row++)
+    		results.add(array[row][endCol]);
+    	for (int col = endCol - 1; col >= startCol; col--)
+    		if (startRow == endRow)
+    			break;
+    		results.add(array[endRow][col]);
+    	for (int row = endRow - 1; row > startRow; row--)
+    		if (startCol == endCol)
+    			break;
+    		results.add(array[row][startCol]);
+    	startRow++;
+    	startCol++;
+    	endRow--;
+    	endCol--;
+    return results;
+
+int LONGEST-PEAK(int[] array)
+    int longestPeakLength = 0; int i = 1;
+    while (i < array.length - 1)
+    	boolean isPeak = array[i] > array[i - 1] && array[i] > array[i + 1];
+    	if (!isPeak) i++; continue;
+    	int leftIdx = i - 2;
+    	while (leftIdx >= 0 && array[leftIdx] < array[leftIdx + 1])
+    		leftIdx--;
+    	int rightIdx = i + 2;
+    	while (rightIdx < array.length && array[rightIdx] < array[rightIdx - 1])
+    		rightIdx++;
+    	int currentPeakLength = rightIdx - leftIdx - 1;
+    	longestPeakLength = Math.max(longestPeakLength, currentPeakLength);
+    	i++;
+    return longestPeakLength;
+
+int[][] MERGE-INTERVALS(int[][] intervals)
+    Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
+    List<int[]> result = new ArrayList<>();
+    int[] prev = intervals[0];
+    for (int i = 1; i < intervals.length; i++)
+        int[] curr = intervals[i];
+    	if (prev[1] >= curr[0])
+    		prev[1] = Math.max(prev[1], curr[1]);
+    	else
+    		result.add(interval);
+    		prev = curr;
+    result.add(interval);
+    return result.toArray(new int[res   ult.size()][]);
+
+
+int[] FIND-SUBARRAY-SUM(int[] nums, int k)
+    Map<Integer, Integer> map = new HashMap<>();
+    int prefixSum = 0;
+    map.put(0, -1);
+    for (int i = 0; i < nums.length; i++)
+        prefixSum += nums[i];
+        int needed = prefixSum - k;
+        if (map.containsKey(needed))
+            int start = map.get(needed) + 1;
+            int end = i;
+            return Arrays.copyOfRange(nums, start, end + 1);
+        map.put(prefixSum, i);
+    return null;
+
+List<int[]> FIND-ALL-SUBARRAY-SUM(int[] nums, int k)
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    List<int[]> result = new ArrayList<>();
+    int prefixSum = 0;
+    map.put(0, new ArrayList<>(Arrays.asList(-1)));
+    for (int i = 0; i < nums.length; i++)
+        prefixSum += nums[i];
+        int needed = prefixSum - k;
+        if (map.containsKey(needed))
+            for (int startIndex : map.get(needed))
+                int start = startIndex + 1;
+                int end = i;
+                result.add(Arrays.copyOfRange(nums, start, end + 1));
+        map.putIfAbsent(prefixSum, new ArrayList<>());
+        map.get(prefixSum).add(i);
+    return result;
+
+int MAJORITY-ELEMENT(int[] nums)
+    int res = 0, count = 0;
+    for (int n : nums)
+    	if (count == 0)  res = n;
+    	if(n == res)  count++;
+    	else count--;
+    return res;
