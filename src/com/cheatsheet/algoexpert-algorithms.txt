@@ -70,4 +70,3 @@ class UNION-FIND
         return find(a) == find(b);
     public int componentSize(int x)
         return size[find(x)];
-        

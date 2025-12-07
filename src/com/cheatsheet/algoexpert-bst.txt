@@ -85,3 +85,73 @@ void REVERSE-IN-ORDER-TRAVERSE(Node node, int k, TreeInfo info) {
         info.count++;
         info.latestValue = node.value;
     reverseInOrderTraverse(node.left, k, info);
+
+
+int RANGE-SUM-BST(BST root, int low, int high) {
+    if (root == null) return 0;
+    if (root.value < low)
+        return rangeSumBST(root.right, low, high);
+    if (root.value > high)
+        return rangeSumBST(root.left, low, high);
+    return root.value
+           rangeSumBST(root.left, low, high) +
+           rangeSumBST(root.right, low, high);
+
+
+boolean VALIDATE-THREE-NODES(BST nodeOne, BST nodeTwo, BST nodeThree) {
+		if (isDescendant(nodeTwo, nodeOne)) // 2->1
+			return isDescendant(nodeThree, nodeTwo);  3->2
+		if (isDescendant(nodeTwo, nodeThree)) 2->3
+			return isDescendant(nodeOne, nodeTwo) 1->2
+		return false;
+boolean isDescendant(BST node, BST target) {
+		if (node == null) return false;
+		if (node == target) return true;
+		return (node.value > target.value)
+		        ? isDescendant(node.left, target)
+		        : isDescendant(node.right, target);
+
+
+REPAIR BST
+private BST nodeOne = null, nodeTwo = null, previousNode = null;
+BST REPAIR-BST(BST tree) {
+		inOrderTraversal(tree);
+		int temp = nodeOne.value;
+		nodeOne.value = nodeTwo.value;
+		nodeTwo.value = temp;
+		return tree;
+void inOrderTraversal(BST node)
+    if (node == null) return;
+    inOrderTraversal(node.left);
+    if (previousNode != null && this.previousNode.value > node.value)
+    	if (this.nodeOne == null)
+    		this.nodeOne = this.previousNode;
+    	this.nodeTwo = node;
+    this.previousNode = node;
+    inOrderTraversal(node.right);
+
+
+boolean SAME-BSTS(List<Integer> arrayOne, List<Integer> arrayTwo)
+    if (arrayOne.size() == 0 && arrayTwo.size() == 0)
+    	return true;
+    if (arrayOne.size() != arrayTwo.size())
+    	return false;
+    if (arrayOne.get(0).intValue() != arrayTwo.get(0).intValue())
+    	return false;
+    List<Integer> leftOne = getSmaller(arrayOne);
+    List<Integer> leftTwo = getSmaller(arrayTwo);
+    List<Integer> rightOne = getBiggerOrEqual(arrayOne);
+    List<Integer> rightTwo = getBiggerOrEqual(arrayTwo);
+    return sameBsts(leftOne, leftTwo) && sameBsts(rightOne, rightTwo);
+List<Integer> getSmaller(List<Integer> array)
+    ArrayList<Integer> smaller = new ArrayList<>();
+    for (int i = 1; i < array.size(); i++)
+    	if (array.get(i).intValue() < array.get(0).intValue())
+    		smaller.add(array.get(i));
+    return smaller;
+List<Integer> getBiggerOrEqual(List<Integer> array)
+    ArrayList<Integer> biggerOrEqual = new ArrayList<>();
+    for (int i = 1; i < array.size(); i++)
+    	if (array.get(i).intValue() >= array.get(0).intValue())
+    		biggerOrEqual.add(array.get(i));
+    return biggerOrEqual;

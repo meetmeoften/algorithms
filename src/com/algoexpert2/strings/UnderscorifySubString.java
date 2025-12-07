@@ -8,7 +8,7 @@ public class UnderscorifySubString {
 	// Underscorify Substring
 	public static String underscorifySubstring(String str, String substring) {
 		var locations = getLocations(str, substring);
-		List<Integer[]> collapsed = collapse(locations);
+		List<Integer[]> collapsed = mergeIntervals(locations);
 		return underscorify(str, collapsed);
 	}
 
@@ -27,7 +27,7 @@ public class UnderscorifySubString {
 		return locations;
 	}
 
-	public static List<Integer[]> collapse(List<Integer[]> locations) {
+	public static List<Integer[]> mergeIntervals(List<Integer[]> locations) {
 		if (locations.size() == 0) {
 			return locations;
 		}
@@ -74,7 +74,9 @@ public class UnderscorifySubString {
 
 	public static void main(String[] args) {
 		String expected = "_test_this is a _testtest_ to see if _testestest_ it works";
-		String output = underscorifySubstring("testthis is a testtest to see if testestest it works", "test");
+		//String output = underscorifySubstring("testthis is a testtest to see if testestest it works", "test");
+		String output = underscorifySubstring("testthis is a testtest", "test");
+
 		// Utils.assertTrue(expected.equals(output));
 	}
 

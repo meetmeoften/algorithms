@@ -77,8 +77,8 @@ public class ShortenPath {
 	public static void main(String[] args) {
 		//String s = "/home/..//foo/";
 
-		String s =  "../../foo/../../bar/baz";
-
+		// String s =  "../../foo/../../bar/baz";
+		String s ="/.../a/../b/c/../d/./";
 		System.out.println(simplifyPath(s));
 		System.out.println(simplifyPath2(s));
 

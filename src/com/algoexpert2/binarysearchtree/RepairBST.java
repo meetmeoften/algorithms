@@ -97,10 +97,15 @@ public class RepairBST {
 		tree.right.right = new BST(22);
 		tree.right.left.right = new BST(14);
 
+		BST tree1 = new BST(1);
+		tree1.left = new BST(3);
+		tree1.left.right = new BST(2);
+
+
 
 
 		List<Integer> expected = Arrays.asList(0, 1, 2, 3, 4);
-		List<Integer> actual = inOrderTraverse(new RepairBST().repairBst2(tree), new ArrayList<Integer>());
+		List<Integer> actual = inOrderTraverse(new RepairBST().repairBst(tree1), new ArrayList<Integer>());
 		// Utils.assertEquals(actual, expected);
 	}
 

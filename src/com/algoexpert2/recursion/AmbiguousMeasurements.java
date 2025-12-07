@@ -48,10 +48,11 @@ public class AmbiguousMeasurements {
 
 	public static void main(String[] args) {
 		int[][] cups = new int[][] {{200, 210}, {450, 465}, {800, 850}};
-		int low = 2100;
-		int high = 2300;
+		int low = 410;
+		int high = 500;
 		boolean expected = true;
 		var actual = ambiguousMeasurements(cups, low, high);
+		System.out.println(actual);
 	}
 
 }

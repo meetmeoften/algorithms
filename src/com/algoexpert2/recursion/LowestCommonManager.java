@@ -89,6 +89,7 @@ public class LowestCommonManager {
 
 		OrgChart lcm =
 				getLowestCommonManager(orgCharts.get('A'), orgCharts.get('E'), orgCharts.get('I'));
+		System.out.println(lcm);
 	}
 
 }

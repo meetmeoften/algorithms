@@ -44,7 +44,7 @@ public class SmallestSubStringContaining {
 	}
 
 	public static void main(String[] args) {
-		String bigString = "ADOABECODEBANAC";
+		String bigString = "ADOAABECODEBANAC";
 		String smallString = "AABC";
 		String expected = "BANAC";
 		smallestSubstringContaining(bigString, smallString);

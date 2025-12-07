@@ -36,3 +36,28 @@ int STAIRCASE-TRAVERSAL(int height, int maxSteps)
     for (int i = 1; i < Math.min(maxSteps, height) + 1; i++)
     	numberOfWays += numberOfWaysToTop(height - i, maxSteps, map);
     return numberOfWays;
+
+
+boolean wordPatternMatch(String pattern, String s)
+    return backtrack(pattern, 0, s, 0, new HashMap<>(), new HashSet<>());
+boolean backtrack(String pattern, int pIndex, String s, int sIndex,
+                              Map<Character, String> map, Set<String> used)
+    if (pIndex == pattern.length() && sIndex == s.length()) return true;
+    if (pIndex == pattern.length() || sIndex == s.length()) return false;
+    char currentChar = pattern.charAt(pIndex);
+    if (map.containsKey(currentChar)) {
+        String target = map.get(currentChar);
+        if (!s.startsWith(target, sIndex)) return false;
+        return backtrack(pattern, pIndex + 1,
+                s, sIndex + target.length(),
+                map, used);
+    for (int end = sIndex + 1; end <= s.length(); end++) {
+        String candidate = s.substring(sIndex, end);
+        if (used.contains(candidate)) continue;
+        map.put(currentChar, candidate);
+        used.add(candidate);
+        if (backtrack(pattern, pIndex + 1, s, end, map, used))
+            return true;
+        map.remove(currentChar);
+        used.remove(candidate);
+    return false;

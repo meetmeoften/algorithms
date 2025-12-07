@@ -8,7 +8,8 @@ public class KSum {
 
 	public static List<List<Integer>> fourNumberSum(int[] array, int targetSum) {
 		Arrays.sort(array);
-		return kSum(array, 0, 4, targetSum);
+		List<List<Integer>> result = kSum(array, 0, 4, targetSum);
+		return result;
 	}
 
 	private static List<List<Integer>> kSum(int[] nums, int index, int k, int target) {
@@ -19,16 +20,26 @@ public class KSum {
 		List<List<Integer>> kList = new ArrayList<>();
 
 		int length = nums.length - k + 1;
+//		for (int i = index; i < length; i++) {
+//			List<List<Integer>> temp = kSum(nums, i + 1, k - 1, target - nums[i]);
+//			if (temp != null && temp.size() > 0) {
+//				for (List<Integer> sumList : temp) {
+//					sumList.add(0, nums[i]);
+//				}
+//				kList.addAll(temp);
+//			}
+//			while (i < length && nums[i] == nums[i + 1]) {
+//				i++;
+//			}
+//		}
 		for (int i = index; i < length; i++) {
+			if (i > index && nums[i] == nums[i - 1]) continue; // avoid duplicates
 			List<List<Integer>> temp = kSum(nums, i + 1, k - 1, target - nums[i]);
-			if (temp != null && temp.size() > 0) {
-				for (List<Integer> sumList : temp) {
-					sumList.add(0, nums[i]);
-				}
-				kList.addAll(temp);
-			}
-			while (i < length && nums[i] == nums[i + 1]) {
-				i++;
+			for (List<Integer> combination : temp) {
+				List<Integer> newList = new ArrayList<>();
+				newList.add(nums[i]);
+				newList.addAll(combination);
+				kList.add(newList);
 			}
 		}
 		return kList;

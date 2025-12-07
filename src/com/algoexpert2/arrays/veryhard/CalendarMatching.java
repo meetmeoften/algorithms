@@ -5,6 +5,30 @@ import java.util.List;
 
 public class CalendarMatching {
 
+	/**
+	 * You are given:
+	 *
+	 * Two people’s calendars (calendar1, calendar2)
+	 *
+	 * Each calendar has:
+	 *
+	 * A list of meetings: [startTime, endTime]
+	 *
+	 * Daily bounds: [earliestStart, latestEnd]
+	 *
+	 * A meeting duration (in minutes)
+	 *
+	 * Goal:
+	 * 👉 Find all time intervals where both people are free for at least the required meeting duration.
+	 *
+	 * @param calendar1
+	 * @param dailyBounds1
+	 * @param calendar2
+	 * @param dailyBounds2
+	 * @param meetingDuration
+	 * @return
+	 */
+
 	public static List<StringMeeting> calendarMatching(List<StringMeeting> calendar1, StringMeeting dailyBounds1,
 			List<StringMeeting> calendar2, StringMeeting dailyBounds2, int meetingDuration) {
 		// Write your code here.

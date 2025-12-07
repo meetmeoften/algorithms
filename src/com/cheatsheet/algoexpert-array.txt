@@ -1,3 +1,5 @@
+MEDIUM
+
 List<Integer> THREE-NUMBER_SUM(int[] array)
     Arrays.sort(array);
     List<Integer[]> triplets = new ArrayList<Integer[]>();
@@ -13,6 +15,7 @@ List<Integer> THREE-NUMBER_SUM(int[] array)
     		else if (cs > targetSum) right--;
     		else if(cs < targetSum) left++;
     return triplets;
+
 
 int[] SMALLEST-DIFFERENCE(int[] arrayOne, int[] arrayTwo)
     Arrays.sort(arrayOne); Arrays.sort(arrayTwo);
@@ -80,6 +83,7 @@ List<Integer> SPIRAL-ORDER(int[][] array)
     	endCol--;
     return results;
 
+
 int LONGEST-PEAK(int[] array)
     int longestPeakLength = 0; int i = 1;
     while (i < array.length - 1)
@@ -108,7 +112,7 @@ int[][] MERGE-INTERVALS(int[][] intervals)
     		result.add(interval);
     		prev = curr;
     result.add(interval);
-    return result.toArray(new int[res   ult.size()][]);
+    return result.toArray(new int[result.size()][]);
 
 
 int[] FIND-SUBARRAY-SUM(int[] nums, int k)
@@ -149,3 +153,199 @@ int MAJORITY-ELEMENT(int[] nums)
     	if(n == res)  count++;
     	else count--;
     return res;
+
+==========================================================================================================
+List<List<Integer>> K-SUM(int[] nums, int index, int k, int target)
+    if(k == 2)
+    	return twoSum(nums, index, nums.length - 1, target);
+    List<List<Integer>> kList = new ArrayList<>();
+    int length = nums.length - k + 1;
+    for (int i = index; i < length; i++)
+    	if (i > index && nums[i] == nums[i - 1]) continue; // avoid duplicates
+    	List<List<Integer>> temp = kSum(nums, i + 1, k - 1, target - nums[i]);
+    	for (List<Integer> combination : temp)
+    		List<Integer> newList = new ArrayList<>();
+    		newList.add(nums[i]);
+    		newList.addAll(combination);
+    		kList.add(newList);
+    return kList;
+List<List<Integer>> twoSum(int[] nums, int left, int right, int target)
+    var twosumList = new ArrayList<List<Integer>>();
+    while (left < right)
+    	int sum = nums[left] + nums[right];
+    	if (sum == target)
+    		var temp = new ArrayList<Integer>();
+    		temp.add(nums[left]);
+    		temp.add(nums[right]);
+    		twosumList.add(temp);
+    	if (sum > target)  right--;
+    	else left++;
+    return twosumList;
+
+int[] SUB-ARRAY-SORT(int[] array) {
+    int min, max = Integer.MAX_VALUE;
+    for (int i = 0; i < array.length; i++) {
+    	int num = array[i];
+    	if (isOutOfOrder(i, num, array)) {
+    		min = Math.min(min, num);
+    		max = Math.max(max, num);
+    if (min == Integer.MAX_VALUE)
+    	return new int[] { -1, -1 };
+    int left = 0;
+    while (min >= array[left])
+    	left++;
+    int right = array.length - 1;
+    while (max <= array[right])
+    	right--;
+    return new int[] { left, right };
+boolean isOutOfOrder(int i, int num, int[] array) {
+    if (i == 0) return num > array[i + 1];
+    if (i == array.length - 1) return num < array[i - 1];
+    return num > array[i + 1] || num < array[i - 1];
+
+int[] LARGEST-RANGE(int[] array)
+    int[] bestRange = new int[2];
+    int longestLength = 0;
+    Map<Integer, Boolean> map = new HashMap<>();
+    for (int num : array) map.put(num, true);
+    for (int num : array)
+    	if (!map.get(num)) continue;
+    	map.put(num, false);
+    	int currentLength = 1;
+    	int left = num - 1;
+    	int right = num + 1;
+    	while (map.containsKey(left))
+    		map.put(left, false);
+    		currentLength++; left--;
+    	while (map.containsKey(right))
+    		map.put(right, false);
+    		currentLength++; right++;
+    	if (currentLength > longestLength)
+    		longestLength = currentLength;
+    		bestRange = new int[] { left + 1, right - 1 };
+    return bestRange;
+
+int MIN-REWARDS(int[] scores)
+    int[] rewards = new int[scores.length];
+    Arrays.fill(rewards, 1);
+    for (int i = 1; i < scores.length; i++)
+    	int j = i - 1;
+    	if (scores[i] > scores[j]) {
+    		rewards[i] = rewards[j] + 1;
+    for (int i = scores.length - 2; i >= 0; i--)
+    	int j = i + 1;
+    	if (scores[i] > scores[j]) {
+    		rewards[i] = Math.max(rewards[i], rewards[j] + 1);
+    return IntStream.of(rewards).sum();
+
+int SUB-ARRAY-SUM-EQUALS-K(int[] nums, int k)
+    int result = 0, sum = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);
+    for(int i= 0; i < nums.length; i++) {
+        sum += nums[i];
+        int diff = sum - k;
+        if(map.containsKey(diff))
+            result += map.get(diff);
+        map.put(sum, map.getOrDefault(sum, 0) + 1);
+    return result;
+
+int LONGEST-SUB-ARRAY-SUM-EQUALS-K(int[] nums, int k)
+    Map<Integer, Integer> map = new HashMap<>();
+    int sum = 0, maxLen = 0;
+    for (int i = 0; i < nums.length; i++)
+        sum += nums[i];
+        // Case 1: subarray from 0..i has sum k
+        if (sum == k)
+            maxLen = i + 1;
+        // Case 2: there exists a previous prefix with value (sum - k)
+        int need = sum - k;
+        if (map.containsKey(need)) {
+            int len = i - map.get(need);
+            maxLen = Math.max(len, maxLen);
+        if (!map.containsKey(sum)) map.put(sum, i);
+    return maxLen;
+
+int APARTMENT-HUNTING(List<Map<String, Boolean>> blocks, String[] reqs)
+    int n = blocks.size();
+    int r = reqs.length;
+    int[][] distances = new int[r][n];
+    for (int reqIndex = 0; reqIndex < r; reqIndex++)
+        String req = reqs[reqIndex];
+        int[] dist = distances[reqIndex];
+        // Forward pass
+        int closest = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++)
+            if (blocks.get(i).get(req))
+                closest = i;
+            dist[i] = (closest == Integer.MAX_VALUE) ? Integer.MAX_VALUE : i - closest;
+        // Backward pass
+        closest = Integer.MAX_VALUE;
+        for (int i = n - 1; i >= 0; i--)
+            if (blocks.get(i).get(req))
+                closest = i;
+            int fromRight = (closest == Integer.MAX_VALUE) ? Integer.MAX_VALUE : closest - i;
+            dist[i] = Math.min(dist[i], fromRight);
+    int bestBlock = -1;
+    int bestDist = Integer.MAX_VALUE;
+    for (int i = 0; i < n; i++)
+        int worst = 0;
+        for (int reqIndex = 0; reqIndex < r; reqIndex++)
+            worst = Math.max(worst, distances[reqIndex][i]);
+        if (worst < bestDist) {
+            bestDist = worst;
+            bestBlock = i;
+    return bestBlock;
+
+List<String[]> CALENDAR-MATCHING(List<String[]> calendar1, String[] dailyBounds1,
+        List<String[]> calendar2, String[] dailyBounds2, int meetingDuration)
+    List<int[]> updatedCal1 = updateCalendar(calendar1, dailyBounds1);
+    List<int[]> updatedCal2 = updateCalendar(calendar2, dailyBounds2);
+    List<int[]> merged = mergeCalendars(updatedCal1, updatedCal2);
+    List<int[]> flattened = flattenCalendar(merged); // merge interval method
+    return findAvailableSlots(flattened, meetingDuration);
+List<int[]> updateCalendar(List<String[]> calendar, String[] bounds)
+    List<int[]> updated = new ArrayList<>();
+    updated.add(new int[]{0, timeToMinutes(bounds[0])});
+    for (String[] interval : calendar) {
+        updated.add(new int[]{timeToMinutes(interval[0]), timeToMinutes(interval[1])});
+    updated.add(new int[]{timeToMinutes(bounds[1]), 24 * 60});
+    return updated;
+List<int[]> mergeCalendars(List<int[]> cal1, List<int[]> cal2) {
+    List<int[]> merged = new ArrayList<>();
+    int i = 0, j = 0;
+    while (i < cal1.size() && j < cal2.size())
+        if (cal1.get(i)[0] <= cal2.get(j)[0])
+            merged.add(cal1.get(i++));
+        else
+            merged.add(cal2.get(j++));
+    while (i < cal1.size()) merged.add(cal1.get(i++));
+    while (j < cal2.size()) merged.add(cal2.get(j++));
+    return merged;
+List<int[]> flattenCalendar(List<int[]> calendar)
+    List<int[]> flat = new ArrayList<>();
+    int[] current = calendar.get(0);
+    for (int i = 1; i < calendar.size(); i++)
+        int[] next = calendar.get(i);
+        if (next[0] <= current[1])       // overlap
+            current[1] = Math.max(current[1], next[1]);
+        else
+            flat.add(current);
+            current = next;
+    flat.add(current);
+    return flat;
+List<String[]> findAvailableSlots(List<int[]> flat, int duration)
+    List<String[]> result = new ArrayList<>();
+    for (int i = 1; i < flat.size(); i++) {
+        int start = flat.get(i - 1)[1];
+        int end = flat.get(i)[0];
+        if (end - start >= duration) {
+            result.add(new String[]{minutesToTime(start), minutesToTime(end)});
+    return result;
+int timeToMinutes(String time) {
+    String[] parts = time.split(":");
+    return Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+String minutesToTime(int minutes) {
+    int h = minutes / 60;
+    int m = minutes % 60;
+    return String.format("%02d:%02d", h, m);

@@ -144,7 +144,6 @@ int ROTTEN-ORANGES(int[][] grid)
 private static boolean isValid(int[][] grid, int i, int j)
     return i>=0 && j>=0 && i<grid.length && j<grid[0].length;
     
-
 boolean BIPARTITE(Map<Integer, List<Integer>> graph, int n)
     int[] colors = new int[n];
     Arrays.fill(colors, -1);  // -1 denotes uncolored
@@ -174,3 +173,199 @@ boolean dfs(int[][] graph, int[] color, int node, int c) // DFS version
         if (!dfs(graph, color, neighbor, 1 - c))
             return false;
     return true;
+
+boolean TWO-EDGE-CONNECTED(List<List<Integer>> graph) // TARJAN
+    int n = graph.size();
+    if (n <= 1) return true;
+    int[] disc = new int[n];
+    int[] low = new int[n];
+    Arrays.fill(disc, -1);
+    int[] time = {0};
+    boolean[] foundBridge = {false};
+    dfs(0, -1, graph, disc, low, time, foundBridge);
+    if (foundBridge[0]) return false;
+    for (int d : disc)
+        if (d == -1) return false;
+    return true;
+void dfs(int node, int parent, List<List<Integer>> graph,
+    int[] disc, int[] low, int[] time, boolean[] foundBridge) {
+    disc[node] = low[node] = time[0]++;
+    for (int neighbor : graph.get(node))
+        if (neighbor == parent) continue;
+        if (disc[neighbor] == -1) {
+            dfs(neighbor, node, graph, disc, low, time, foundBridge);
+            low[node] = Math.min(low[node], low[neighbor]);
+            if (low[neighbor] > disc[node])
+                foundBridge[0] = true;
+        else
+            low[node] = Math.min(low[node], disc[neighbor]);
+
+int NETWORK-DELAY-TIME-DIJKSTRA(int[][] times, int n, int k) {
+    List<List<int[]>> graph = new ArrayList<>();
+    for (int i = 0; i <= n; i++) graph.add(new ArrayList<>());
+    for (int[] t : times)
+        int u = t[0], v = t[1], w = t[2];
+        graph.get(u).add(new int[]{v, w});
+    int[] dist = new int[n + 1];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[k] = 0;
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    pq.add(new int[]{0, k});
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int d = cur[0];
+        int node = cur[1];
+        if (d > dist[node]) continue;  // Skip stale entry
+        for (int[] nei : graph.get(node))
+            int next = nei[0];
+            int weight = nei[1];
+            int newDist = d + weight;
+            if (newDist < dist[next])
+                dist[next] = newDist;
+                pq.add(new int[]{newDist, next});
+    int max = 0;
+    for (int i = 1; i <= n; i++) {
+        if (dist[i] == Integer.MAX_VALUE) return -1; // unreachable
+        max = Math.max(max, dist[i]);
+    return max;
+
+int NETWORK-DELAY-TIME-BELLMAN-FORD(int[][] times, int N, int K) {
+    int INF = Integer.MAX_VALUE / 2;
+    int[] dist = new int[N];
+    Arrays.fill(dist, INF);
+    dist[K - 1] = 0;
+    for (int i = 1; i < N; i++) {
+        boolean updated = false;
+        for (int[] t : times) {
+            int u = t[0] - 1, v = t[1] - 1, w = t[2];
+            if (dist[u] != INF && dist[u] + w < dist[v]) {
+                dist[v] = dist[u] + w;
+                updated = true;
+        if (!updated) break;
+    int max = 0;
+    for (int d : dist) {
+        if (d == INF) return -1;
+        max = Math.max(max, d);
+    return max;
+
+int CHEAPEST-FLIGHTS-BELLMAN-FORD(int n, int[][] flights, int src, int dst, int K)
+		int[] cost = new int[n];
+		Arrays.fill(cost, Integer.MAX_VALUE);
+		cost[src] = 0;
+		for (int i = 0; i <= K; i++)
+			int[] temp = Arrays.copyOf(cost, n);
+			for (int[] f : flights) {
+				int curr = f[0];
+				int next = f[1];
+				int price = f[2];
+				if (cost[curr] == Integer.MAX_VALUE)
+					continue;
+				temp[next] = Math.min(temp[next], cost[curr] + price);
+			cost = temp;
+		return cost[dst] == Integer.MAX_VALUE ? -1 : cost[dst];
+
+int MINIMUM-SPANNING-TREE(int V, List<List<List<Integer>>> adj) // PRIMS-ALGORITHM
+    PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x, y) -> x.distance - y.distance);
+    int[] vis = new int[V];
+    pq.add(new Pair(0, 0)); // {wt, node}
+    int sum = 0;
+    while (pq.size() > 0)
+        int wt = pq.peek().distance;
+        int node = pq.peek().node;
+        pq.remove();
+        if (vis[node] == 1) continue;
+        vis[node] = 1;
+        sum += wt;
+        for (int i = 0; i < adj.get(node).size(); i++)
+            int edW = adj.get(node).get(i).get(1);
+            int adjNode = adj.get(node).get(i).get(0);
+            if (vis[adjNode] == 0) {
+                pq.add(new Pair(edW, adjNode));
+    return sum;
+
+int MINIMUM-SPANNING-TREE(int V, List<List<List<Integer>>> adj) // KRUSKAL
+    List<int[]> edges = new ArrayList<>();
+    for (int i = 0; i < V; i++) {
+        for (List<Integer> it : adj.get(i)) {
+            int v = it.get(0); // Node v
+            int wt = it.get(1); // edge weight
+            int u = i; // Node u
+            edges.add(new int[]{wt, u, v});
+    UnionFind uf = new UnionFind(V);
+    edges.sort(Comparator.comparingInt(o -> o[0])); // sort by weight
+    int sum = 0;
+    for (int[] it : edges) {
+        int wt = it[0]; // edge weight
+        int u = it[1]; // First node
+        int v = it[2]; // Second node
+        if (uf.findUPar(u) != uf.findUPar(v)) {
+            sum += wt;
+            ds.unionBySize(u, v);
+    return sum;
+
+void SHORTEST-DISTANCE(int[][] matrix) // FLOYD WARSHALL
+    int n = matrix.length;
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][k] == -1 || matrix[k][j] == -1)
+                    continue;
+                if (matrix[i][j] == -1)
+                    matrix[i][j] = matrix[i][k] + matrix[k][j];
+                else
+                    matrix[i][j] = Math.min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+
+
+Map<String, PriorityQueue<String>> graph = new HashMap<>();
+LinkedList<String> list = new LinkedList<>();
+List<String> RECONSTRUCT-ITINERARY(List<List<String>> tickets) {
+    for(List<String> ticket : tickets)
+    	String start = ticket.get(0);
+    	String end = ticket.get(1);
+    	graph.computeIfAbsent(start, k -> new PriorityQueue<>()).offer(end);
+    dfs("JFK");
+    return list;
+void dfs(String airport)
+    PriorityQueue<String> pq = graph.get(airport);
+    while(pq != null && !pq.isEmpty())
+    	dfs(pq.poll());
+    list.addFirst(airport);
+
+int AIRPORT-CONNECTIONS(List<String> airports, List<List<String>> routes, String startingAirport)
+        Map<String, List<String>> graph = new HashMap<>();
+        for (String airport : airports) {
+            graph.put(airport, new ArrayList<>());
+        for (List<String> route : routes) {
+            graph.get(route.get(0)).add(route.get(1));
+        // Step 1: Find all reachable airports from startingAirport
+        Set<String> reachable = new HashSet<>();
+        dfs(startingAirport, graph, reachable);
+        // Step 2: Build unreachable airports list
+        List<String> unreachableAirports = new ArrayList<>();
+        for (String airport : airports) {
+            if (!reachable.contains(airport)) {
+                unreachableAirports.add(airport);
+        // Step 3: For each unreachable airport, compute its reachable set (its "component")
+        Map<String, Set<String>> unreachableComponents = new HashMap<>();
+        for (String airport : unreachableAirports)
+            Set<String> visited = new HashSet<>();
+            dfs(airport, graph, visited);
+            // Only keep airports not reachable from starting point
+            visited.removeAll(reachable);
+            unreachableComponents.put(airport, visited);
+        // Step 4: Sort unreachable airports by size of reachable component (descending)
+        unreachableAirports.sort((a, b) -> unreachableComponents.get(b).size() -
+            unreachableComponents.get(a).size());
+        // Step 5: Add minimum connections
+        int addedRoutes = 0;
+        for (String airport : unreachableAirports) {
+            if (reachable.contains(airport)) continue; // might be reachable by now
+            addedRoutes++;
+            reachable.addAll(unreachableComponents.get(airport));
+        return addedRoutes;
+void dfs(String airport, Map<String, List<String>> graph, Set<String> visited)
+    if (visited.contains(airport)) return;
+    visited.add(airport);
+    for (String next : graph.get(airport))
+        dfs(next, graph, visited);
+

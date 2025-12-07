@@ -55,7 +55,7 @@ public class Knapsack {
 		//		int[][] input = {{1, 2}, {4, 3}, {5, 6}, {6, 7}};
 		//		int[][] expected = {{10}, {1, 3}};
 
-		int[][] input = {{1, 2}, {4, 3}};
+		int[][] input = {{1, 2}, {6, 3}};
 		int[][] expected = {{10}, {1, 3}};
 
 		// List<List<Integer>> result = knapsackProblem(input, 10);
