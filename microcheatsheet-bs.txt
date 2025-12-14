@@ -11,7 +11,7 @@ int KOKO-BANANAS(int[] piles, int h)
     	else left = middle + 1;
     return left;
 
-int CAPACITY-TO_SHIP(int[] weights, int days)
+int CAPACITY-TO-SHIP(int[] weights, int days)
     int left = 0, right = 0;
     for (int weight : weights)
         left = Math.max(left, weight);

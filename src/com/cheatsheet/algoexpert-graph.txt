@@ -136,7 +136,7 @@ int ROTTEN-ORANGES(int[][] grid)
                 int y = ymoves[k] + coord[1];
                 if(isValid(grid, x, y) && grid[x][y] == 1)
                     grid[x][y] = 2; q.add(new int[]x,y);
-        count++;
+        count++;S
     for(int row[]: grid)
         for(int cell: row)
             if(cell == 1) return -1;

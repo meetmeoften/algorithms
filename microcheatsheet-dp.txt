@@ -37,6 +37,20 @@ int BUY-SELL(int[] prices, int buySell, int ind)
     if (buySell == 1) profit = Math.max(dfs(prices, 1, ind + 1),
                 prices[ind] + dfs(prices, 0, ind + 1));
     return profit;
+
+int BUY-SELL-STOCK(int[] arr, int n, int ind, int buy, int cap, Map<String, Integer> map)
+    if (ind >= n || cap == 0) return 0; // base case
+    String key = ind + "|" + buy + "|" + cap;
+    if (map.containsKey(key)) return map.get(key);
+    int profit = 0;
+    if (buy == 0)// We can buy the stock
+    	profit = Math.max(0 + helper(arr, n, ind + 1, 0, cap, map),
+    			-arr[ind] + helper(arr, n, ind + 1, 1, cap, map));
+    if (buy == 1)// We can sell the stock
+    	profit = Math.max(0 + helper(arr, n, ind + 1, 1, cap, map),
+    			arr[ind] + helper(arr, n, ind + 1, 0, cap - 1, map));
+    map.put(key, profit);
+    return profit;
     
 long BALL-ARRANGEMENT(int r, int g, int b, char prev)
         if (r == 0 && g == 0 && b == 0) return 1;
@@ -201,7 +215,6 @@ int ACTIVITY-SELECTION(Activity[] activities, int i, Integer[] memo)
     memo[i] = maxActivities;
     return maxActivities;
     
-
 int JOB-SCHEDULING(int[] start, int[] end, int[] profit)
     int n = start.length;
     Job[] jobs = new Job[n];
@@ -227,4 +240,3 @@ int JOB-SCHEDULING(int[] start, int[] end, int[] profit)
          else break;
     Collections.reverse(selectedJobs);
     return dp.lastEntry().getValue();
-    

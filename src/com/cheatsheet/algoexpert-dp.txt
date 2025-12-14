@@ -284,7 +284,7 @@ int LONGEST-STRING-CHAIN(String[] words)
     Collections.reverse(chain);
     return longest;
 
-int BUY-SELL-STOCK(int[] arr, int n, int ind, int buy, int cap, Map<String, Integer> map) {
+int BUY-SELL-STOCK(int[] arr, int n, int ind, int buy, int cap, Map<String, Integer> map)
     if (ind >= n || cap == 0)
     	return 0; // base case
     String key = ind + "|" + buy + "|" + cap;

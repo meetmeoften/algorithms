@@ -24,6 +24,22 @@ Node LCA(Node root, Integer node1, Integer node2)
     else if (right == null) return left;
     else return root;
 
+LCA of Deepest Leaves
+// maxDepth method
+TreeNode dfs(TreeNode root,int maxDepth, int d)
+    if(root==null) return null;
+    if(d==maxDepth) return root;
+    TreeNode left=dfs(root.left,maxDepth,d+1), right=dfs(root.right,maxDepth,d+1);
+    if(left!=null&&right!=null) return root;
+    return left!=null?left:right;
+
+LCA of Binary Tree IV
+TreeNode dfs(TreeNode root,Set<TreeNode>set)
+    if(root==null||set.contains(root)) return root;
+    TreeNode left=dfs(root.left,set), right=dfs(root.right,set);
+    if(left!=null&&right!=null) return root;
+    return left!=null?left:right;
+
 boolean IS-CHILDREN-SUM(Node root)
     if(root == null || (root.left == null & root.right == null)
         return true
@@ -55,6 +71,7 @@ int DIAMETER-HEIGHT(Node node)
     int rightHeight = height(node.right);
     diameter = Math.max(diameter, leftHeight + rightHeight);
     return 1 + Math.max(leftHeight, rightHeight);
+
 
 boolean IDENTICAL(Node node1, Node node2)
     if (node1 == null && node2 == null) return true;
@@ -128,6 +145,7 @@ PATH-SUM(TreeNode node, int targetSum, List<Integer> tempList, List<List<Integer
 		helper(node.right, targetSum - node.val, tempList, list);
 		tempList.remove(tempList.size() - 1);
 
+
 void SPIRAL-RECURSIVE(Node node, int level, List<List<Integer>> result)
     if (node == null) return;
     if (result.size() <= level)
@@ -137,15 +155,35 @@ void SPIRAL-RECURSIVE(Node node, int level, List<List<Integer>> result)
     dfs(node.left, level + 1, result);
     dfs(node.right, level + 1, result);
     
+
 void LEFT-VIEW(Node root)
     Queue<Node> q;
     q.add(root);
     while (!q.isEmpty())
         for (int i = 0; i < q.size(); i++)
             Node node = q.poll();
-            if (i == 0)  print(node.data)
+            if (i == 0)  print(node.data) //  if (i == size - 1) (right side)
             if (node.left != null) q.add(node.left);
             if (node.right != null) q.add(node.right);
+
+
+void TOP-VIEW(Node root)
+    Queue<Pair<Node, Integer>> q;
+    Map<Integer, Integer> map;
+    q.add(new Pair<>(root, 0));
+    while(!q.isEmpty())
+        for(int i=0; i < q.size(); i++)
+            Pair<Node, Integer> pair = q.poll();
+            Node node = pair.getKey();
+            Integer dist = pair.getValue();
+            if(!map.containsKey(dist)) // IF TOP VIEW - no IF BOTTOM VIEW
+                map.put(dist, node.data);
+           if(node.left != null)
+               q.add(new Pair<>(node.left, dist-1));
+            if(node.right != null)
+                q.add(new Pair<>(node.right, dist+1));
+        for(Map.Entry<Integer, Integer> entry : map.entrySet())
+            println(entry.getValue());
 
 void VERTICAL-VIEW(Node root)
     Map<Integer, List<Integer>> map;
@@ -168,24 +206,61 @@ void VERTICAL-VIEW(Node root)
                 max = Math.max(max, dist + 1);
         for(int i=min; i <= max; i++)
             println(map.get(i));
-            
-void TOP-VIEW(Node root)
-    Queue<Pair<Node, Integer>> q;
-    Map<Integer, Integer> map;
-    q.add(new Pair<>(root, 0));
-    while(!q.isEmpty())
-        for(int i=0; i < q.size(); i++)
-            Pair<Node, Integer> pair = q.poll();
-            Node node = pair.getKey();
-            Integer dist = pair.getValue();
-            if(!map.containsKey(dist))
-                map.put(dist, node.data);
-           if(node.left != null)
-               q.add(new Pair<>(node.left, dist-1));
-            if(node.right != null)
-                q.add(new Pair<>(node.right, dist+1));
-        for(Map.Entry<Integer, Integer> entry : map.entrySet())
-            println(entry.getValue());
+
+
+List<Integer> BOUNDARY-TRAVERSAL(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    if (root == null) return res;
+    res.add(root.val);
+    addLeftBoundary(root.left, res);
+    addLeaves(root.left, res);
+    addLeaves(root.right, res);
+    addRightBoundary(root.right, res);
+    return res;
+void addLeftBoundary(TreeNode node, List<Integer> res)
+    while (node != null)
+        if (!isLeaf(node)) res.add(node.val);
+        node = (node.left != null) ? node.left : node.right;
+void addRightBoundary(TreeNode node, List<Integer> res)
+    Stack<Integer> stack = new Stack<>();
+    while (node != null)
+        if (!isLeaf(node)) stack.push(node.val);
+        node = (node.right != null) ? node.right : node.left;
+    while (!stack.isEmpty()) {
+        res.add(stack.pop());
+void addLeaves(TreeNode node, List<Integer> res)
+    if (node == null) return;
+    if (isLeaf(node))
+        res.add(node.val);
+        return;
+    addLeaves(node.left, res);
+    addLeaves(node.right, res);
+boolean isLeaf(TreeNode node)
+    return node.left == null && node.right == null;
+
+
+int MAX-WIDTH-OF-BINARY-TREE(TreeNode root)
+    if (root == null) return 0;
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(root.val, 1);
+    int maxWidth = Integer.MIN_VALUE;
+    while (!q.isEmpty())
+    	int start = 0, end = 0;
+    	int size = q.size();
+    	for (int i = 0; i < size; i++)
+    		TreeNode t = q.poll();
+    		if (i == 0) start = map.get(t.val);
+    		if (i == size - 1) end = map.get(t.val);
+    		if (t.left != null)
+    			q.offer(t.left);
+    			map.put(t.left.val, map.get(t.val) * 2);
+    		if (t.right != null)
+    			q.offer(t.right);
+    			map.put(t.right.val, map.get(t.val) * 2 + 1);
+    	maxWidth = Math.max(maxWidth, end - start + 1);
+    return maxWidth;
 
 void ROOT-PATH(Node root) 
     Queue<Pair> queue;
@@ -207,6 +282,7 @@ void VERTICAL-SUM(Node node, int dist, Map<Integer, Integer> map)
     printVerticalSum(node.left, dist - 1, map);
     printVerticalSum(node.right, dist + 1, map);
     
+
 void SUM-TO-LEAF(TreeNode node, StringBuilder sb)
     if(node == null)  return;
     sb.append(node.val);
@@ -249,8 +325,22 @@ Node DESERIALIZE(String data)
             q.offer(right);
      return root;
      
+String SERIALIZE-2(TreeNode root) {
+        if (root == null) return "X";
+        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+TreeNode DESERIALIZE-2(String data)
+        String[] nodes = data.split(",");
+        Queue<String> queue = new LinkedList<>(Arrays.asList(nodes));
+        return deserializeHelper(queue);
+TreeNode deserializeHelper(Queue<String> queue)
+        String val = queue.poll();
+        if (val.equals("X")) return null;
+        TreeNode node = new TreeNode(Integer.parseInt(val));
+        node.left = deserializeHelper(queue);
+        node.right = deserializeHelper(queue);
+        return node;
 
-Node NEXT-RIGHT-POINTER(Node root) 
+Node NEXT-RIGHT-POINTER(Node root)
     Node curr = root;
     while (curr != null) 
     	Node next = curr.left;
@@ -287,3 +377,70 @@ Node buildUsingPreOrder(int[] preorder, int inStart, int inEnd)
     root.left = buildUsingPreOrder(preorder, inStart, rootIndex - 1);
     root.right = buildUsingPreOrder(preorder, rootIndex + 1, inEnd);
     return root;
+
+int MAX-PATH-SUM(TreeNode root)
+    helper(root);
+    return maxSum;
+int helper(TreeNode node)
+    if (node == null) return 0;
+    int left = Math.max(0, helper(node.left));
+    int right = Math.max(0, helper(node.right));
+    maxSum = Math.max(maxSum, left + right + node.val);
+    return Math.max(left, right) + node.val;
+
+int cam=0; // binary tree cameras
+int MIN-CAMERAS-COVER(TreeNode root)
+        if (root == null) return 0;
+        int top = dfs(root);
+        return cam + (top == 0 ? 1 : 0);
+int dfs(TreeNode root)
+    if(root==null) return 1;
+    int left=dfs(root.left);
+    int right=dfs(root.right);
+    if(left==0||right==0){cam++; return 2;}
+    if(left==2||right==2) return 1;
+    return 0;
+
+int ans=0; // LONGEST-ZIG-ZAG-PATH
+void dfs(TreeNode node,int left,int right)
+    if(node==null) return;
+    ans=Math.max(ans,Math.max(left,right));
+    dfs(node.left,right+1,0);
+    dfs(node.right,0,left+1);
+
+
+int moves = 0; // DISTRIBUTE-COINS
+int DISTRIBUTE-COINS(TreeNode root)
+    dfs(root);
+    return  moves;
+int dfs(TreeNode root)
+    if(root == null ) return 0;
+    int left = dfs(root.left);
+    int right = dfs(root.right);
+    moves += Math.abs(left) + Math.abs(right);
+    return root.val + left + right - 1;
+
+
+int[] SUM-OF-DISTANCES-IN-TREE(int n, int[][] edges)  // 834 LEET CODE
+    List<Integer>[] tree = new ArrayList[n];
+    for (int i = 0; i < n; i++) tree[i] = new ArrayList<>();
+    for (int[] e : edges)
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    int[] count = new int[n]; // subtree sizes
+    int[] res = new int[n];   // distance sums
+    dfs(0, -1, tree, count, res);    // Step 1
+    dfs2(0, -1, tree, count, res, n); // Step 2
+    return res;
+void dfs(int node, int parent, List<Integer>[] tree, int[] count, int[] res)
+    count[node] = 1;
+    for (int child : tree[node])
+        if (child == parent) continue;
+        dfs(child, node, tree, count, res);
+        count[node] += count[child];
+        res[node] += res[child] + count[child];
+void dfs2(int node, int parent, List<Integer>[] tree, int[] count, int[] res, int n)
+    for (int child : tree[node])
+        if (child == parent) continue;
+        res[child] = res[node] - count[child] + (n - count[child]);
+        dfs2(child, node, tree, count, res, n);
