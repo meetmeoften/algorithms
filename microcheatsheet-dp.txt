@@ -53,18 +53,18 @@ int BUY-SELL-STOCK(int[] arr, int n, int ind, int buy, int cap, Map<String, Inte
     return profit;
     
 long BALL-ARRANGEMENT(int r, int g, int b, char prev)
-        if (r == 0 && g == 0 && b == 0) return 1;
-        String key = r + "," + g + "," + b + "," + prev;
-        if (memo.containsKey(key)) return memo.get(key);
-        long ways = 0;
-        if (r > 0 && prev != 'R') 
-            ways += countWays(r - 1, g, b, 'R');
-        if (g > 0 && prev != 'G')
-            ways += countWays(r, g - 1, b, 'G');
-        if (b > 0 && prev != 'B')
-            ways += countWays(r, g, b - 1, 'B');
-        memo.put(key, ways);
-        return ways;
+    if (r == 0 && g == 0 && b == 0) return 1;
+    String key = r + "," + g + "," + b + "," + prev;
+    if (memo.containsKey(key)) return memo.get(key);
+    long ways = 0;
+    if (r > 0 && prev != 'R')
+        ways += countWays(r - 1, g, b, 'R');
+    if (g > 0 && prev != 'G')
+        ways += countWays(r, g - 1, b, 'G');
+    if (b > 0 && prev != 'B')
+        ways += countWays(r, g, b - 1, 'B');
+    memo.put(key, ways);
+    return ways;
 
 int DISTINCT-SUBSEQUENCE(String s, String t, int sIdx, int tIdx)
     if (memo[sIdx][tIdx] != -1) return memo[sIdx][tIdx];
@@ -203,7 +203,7 @@ int helper  (int[] nums, int left, int right)
             + helper(nums, i, right);
         maxCoins = Math.max(coins, maxCoins);
     return maxCoins;
-
+=================================================================================
 int ACTIVITY-SELECTION(Activity[] activities, int i, Integer[] memo)
     if (i >= activities.length) return 0;
     if (memo[i] != null)  return memo[i];
@@ -240,3 +240,104 @@ int JOB-SCHEDULING(int[] start, int[] end, int[] profit)
          else break;
     Collections.reverse(selectedJobs);
     return dp.lastEntry().getValue();
+
+
+=================================================================================
+String SHORTEST-SUPERSTRING(String[] words)
+    int n = words.length;
+    int[][] overlap = new int[n][n];
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            if (i == j) continue;
+            int max = Math.min(words[i].length(), words[j].length());
+            for (int k = max; k >= 0; k--)
+                if (words[i].endsWith(words[j].substring(0, k)))
+                    overlap[i][j] = k;
+                    break;
+    int FULL = (1 << n) - 1;
+    int[][] dp = new int[1 << n][n];
+    int[][] parent = new int[1 << n][n];
+    for (int mask = 0; mask <= FULL; mask++)
+        Arrays.fill(dp[mask], Integer.MAX_VALUE / 2);
+        Arrays.fill(parent[mask], -1);
+    for (int i = 0; i < n; i++) dp[1 << i][i] = words[i].length();
+    for (int mask = 1; mask <= FULL; mask++)
+        for (int j = 0; j < n; j++)
+            if ((mask & (1 << j)) == 0) continue;
+            int prevMask = mask ^ (1 << j);
+            if (prevMask == 0) continue;
+            for (int k = 0; k < n; k++)
+                if ((prevMask & (1 << k)) == 0) continue;
+                int val = dp[prevMask][k] + words[j].length() - overlap[k][j];
+                if (val < dp[mask][j])
+                    dp[mask][j] = val;
+                    parent[mask][j] = k;
+    int minLen = Integer.MAX_VALUE, last = -1;
+    for (int i = 0; i < n; i++)
+        if (dp[FULL][i] < minLen)
+            minLen = dp[FULL][i];
+            last = i;
+    StringBuilder sb = new StringBuilder();
+    boolean[] used = new boolean[n];
+    int mask = FULL;
+    List<Integer> path = new ArrayList<>();
+    while (last != -1)
+        path.add(last);
+        int temp = parent[mask][last];
+        mask ^= (1 << last);
+        last = temp;
+    Collections.reverse(path);
+    sb.append(words[path.get(0)]);
+    for (int i = 1; i < path.size(); i++)
+        int overlapLen = overlap[path.get(i-1)][path.get(i)];
+        sb.append(words[path.get(i)].substring(overlapLen));
+    return sb.toString();
+
+int[] SMALLEST-SUFFICIENT-TEAM(String[] req_skills, List<List<String>> people) {
+    int m = req_skills.length;
+    int n = people.size();
+    Map<String, Integer> skillIndex = new HashMap<>();
+    for (int i = 0; i < m; i++)
+        skillIndex.put(req_skills[i], i);
+    int[] personMask = new int[n];
+    for (int i = 0; i < n; i++)
+        int mask = 0;
+        for (String skill : people.get(i))
+            if (skillIndex.containsKey(skill))
+                mask |= 1 << skillIndex.get(skill);
+        personMask[i] = mask;
+    int FULL = (1 << m) - 1;
+    List<Integer>[] dp = new List[1 << m];
+    dp[0] = new ArrayList<>();
+    for (int i = 0; i < n; i++)
+        int pMask = personMask[i];
+        if (pMask == 0) continue;
+        List<Integer>[] dpCopy = dp.clone();
+        for (int mask = 0; mask <= FULL; mask++)
+            if (dpCopy[mask] == null) continue;
+            int newMask = mask | pMask;
+            if (dp[newMask] == null || dp[mask].size() + 1 < dp[newMask].size())
+                List<Integer> newTeam = new ArrayList<>(dpCopy[mask]);
+                newTeam.add(i);
+                dp[newMask] = newTeam;
+    List<Integer> result = dp[FULL];
+    return result.stream().mapToInt(i -> i).toArray();
+
+int NUMBER-WAYS-TO-WEAR-DIFF-HATS-TO-EACH-OTHER(List<List<Integer>> hats)
+    int MOD = 1_000_000_007;
+    int n = hats.size();
+    List<Integer>[] hatToPeople = new List[41];
+    for (int i = 1; i <= 40; i++) hatToPeople[i] = new ArrayList<>();
+    for (int i = 0; i < n; i++)
+        for (int h : hats.get(i))
+            hatToPeople[h].add(i);
+    int[][] dp = new int[41][1 << n];
+    dp[0][0] = 1;
+    for (int h = 1; h <= 40; h++)
+        for (int mask = 0; mask < (1 << n); mask++)
+            dp[h][mask] = dp[h - 1][mask];
+            for (int p : hatToPeople[h])
+                if ((mask & (1 << p)) != 0)
+                    int prevMask = mask ^ (1 << p);
+                    dp[h][mask] = (dp[h][mask] + dp[h - 1][prevMask]) % MOD;
+    return dp[40][(1 << n) - 1];

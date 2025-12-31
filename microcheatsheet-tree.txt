@@ -326,19 +326,19 @@ Node DESERIALIZE(String data)
      return root;
      
 String SERIALIZE-2(TreeNode root) {
-        if (root == null) return "X";
-        return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+    if (root == null) return "X";
+    return root.val + "," + serialize(root.left) + "," + serialize(root.right);
 TreeNode DESERIALIZE-2(String data)
-        String[] nodes = data.split(",");
-        Queue<String> queue = new LinkedList<>(Arrays.asList(nodes));
-        return deserializeHelper(queue);
+    String[] nodes = data.split(",");
+    Queue<String> queue = new LinkedList<>(Arrays.asList(nodes));
+    return deserializeHelper(queue);
 TreeNode deserializeHelper(Queue<String> queue)
-        String val = queue.poll();
-        if (val.equals("X")) return null;
-        TreeNode node = new TreeNode(Integer.parseInt(val));
-        node.left = deserializeHelper(queue);
-        node.right = deserializeHelper(queue);
-        return node;
+    String val = queue.poll();
+    if (val.equals("X")) return null;
+    TreeNode node = new TreeNode(Integer.parseInt(val));
+    node.left = deserializeHelper(queue);
+    node.right = deserializeHelper(queue);
+    return node;
 
 Node NEXT-RIGHT-POINTER(Node root)
     Node curr = root;
@@ -390,9 +390,9 @@ int helper(TreeNode node)
 
 int cam=0; // binary tree cameras
 int MIN-CAMERAS-COVER(TreeNode root)
-        if (root == null) return 0;
-        int top = dfs(root);
-        return cam + (top == 0 ? 1 : 0);
+    if (root == null) return 0;
+    int top = dfs(root);
+    return cam + (top == 0 ? 1 : 0);
 int dfs(TreeNode root)
     if(root==null) return 1;
     int left=dfs(root.left);
@@ -400,6 +400,16 @@ int dfs(TreeNode root)
     if(left==0||right==0){cam++; return 2;}
     if(left==2||right==2) return 1;
     return 0;
+
+int MAX-PATH-SUM(TreeNode root)
+    helper(root);
+    return max;
+int helper(TreeNode root)
+    if (root == null)  return 0;
+    int leftSum = Math.max(0, helper(root.left));
+    int rightSum = Math.max(0, helper(root.right));
+    max = Math.max(max, root.val + leftSum + rightSum);
+    return Math.max(root.val, root.val + Math.max(leftSum, rightSum));
 
 int ans=0; // LONGEST-ZIG-ZAG-PATH
 void dfs(TreeNode node,int left,int right)

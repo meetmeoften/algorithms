@@ -156,6 +156,17 @@ String SHORTEN-PATH(String path)
     List<String> list = new ArrayList<>(stack);
     return "/" + String.join("/", list);
 
+int MAXIMAL-RECTANGLE(char[][] matrix)
+    if (matrix.length == 0) return 0;
+    int m = matrix.length; int n = matrix[0].length;
+    int[] heights = new int[n];
+    int maxArea = 0;
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            if (matrix[i][j] == '1') heights[j]++;
+            else heights[j] = 0;
+        maxArea = Math.max(maxArea, largestRectangle(heights));
+    return maxArea;
 int LARGEST-RECTANGLE(int[] heights)
     int n = heights.length; int max =0;
     for(int i=0; i <=n ; i++)

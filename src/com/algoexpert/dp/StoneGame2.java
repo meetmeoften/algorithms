@@ -33,6 +33,6 @@ public class StoneGame2 {
 
     public static void main(String[] args) {
         StoneGame2 stoneGame2 = new StoneGame2();
-        stoneGame2.stoneGameII(new int[] {2, 7, 9, 4, 4, 4});
+        stoneGame2.stoneGameII(new int[] {2, 7, 9, 4, 4});
     }
 }

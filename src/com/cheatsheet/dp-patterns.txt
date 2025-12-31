@@ -1,0 +1,1305 @@
+public int CLIMB-STAIRS(int n)
+    if(n == 0) return 1;
+    if(n == 1)  return 1;
+    return climbStairs(n-1) + climbStairs(n-2);
+
+int MIN-COST-CLIMIBING-STAIRS(int[] cost)  (either 1 step or 2 steps)
+    int[] dp = new int[cost.length];
+    dp[0] = cost[0]; dp[1] = cost[1];
+    for(int i= 2; i < cost.length; i++)
+        dp[i] = cost[i] + Math.min(dp[i - 1], dp[i - 2]);
+    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+
+int HOUSE-ROBBER-1(int[] array)
+    int rob1, rob2 = 0;
+    for(int i= 0; i < array.length; i++)
+        int temp = Math.max(rob1 + array[i], rob2);
+        rob1 = rob2;
+        rob2 = temp;
+    return rob2;
+
+int HOUSE-ROBBER-2(int[] nums)
+    if (nums == null || nums.length == 0) return 0;
+    if (nums.length == 1) return nums[0];
+    if (nums.length == 2)  return Math.max(nums[0], nums[1]);
+    return Math.max(HOUSE-ROBBER-1(nums, 0, nums.length-2), HOUSE-ROBBER-1(nums, 1, nums.length-1));
+
+int MAX-SUBSET-NO-ADJACENT(int index, int[] arr) HOUSE-ROBBER
+    if (index >= arr.length) return 0;
+    int include = arr[index] + helper(index + 2, arr, memo);
+    int exclude = helper(index + 1, arr, memo);
+    int result = Math.max(include, exclude);
+    return result;
+
+int HOUSE-ROBBER-2(int[] array)
+    if(array.length ==0) return 0;
+    if(array.length == 1) return array[0];
+    int[] maxSums = new int[array.length];
+    maxSums[0] = array[0];
+    maxSums[1] = Math.max(array[0], array[1]);
+    for(int i= 2; i< array.length; i++)
+        maxSums[i] = Math.max(maxSums[i-1], maxSums[i-2] + array[i]);
+    return maxSums[array.length-1];
+
+int MIN-JUMPS(int[] array)
+    if(array.length == 1)  return 0;
+    int[] jumps = new int[array.length];
+    Arrays.fill(jumps, Integer.MAX_VALUE);
+    jumps[0] = 0;
+    for(int i=1; i< array.length; i++)
+    	for(int j= 0; j < i; j++)
+    		if(array[j] + j >= i)
+    			jumps[i] = Math.min(jumps[i] , jumps[j]+1);
+    return jumps[jumps.length-1];
+
+int WATER-AREA(int[] heights)
+    if (heights.length == 0) return 0;
+    var leftIndex = 0, rightIndex = heights.length - 1;
+    var leftMax = heights[leftIndex], rightMax = heights[rightIndex];
+    var surfaceArea = 0;
+    while (leftIndex < rightIndex)
+    	if (heights[leftIndex] < heights[rightIndex])
+    		leftIndex++;
+    		leftMax = Math.max(leftMax, heights[leftIndex]);
+    		surfaceArea += leftMax - heights[leftIndex];
+    	else
+    		rightIndex--;
+    		rightMax = Math.max(rightMax, heights[rightIndex]);
+    		surfaceArea += rightMax - heights[rightIndex];
+    return surfaceArea;
+
+boolean WORD-BREAK-1-DP(String s, List<String> wordDict)
+    if (s == null || s.length() == 0) return false;
+    Set<String> dict = new HashSet<>(wordDict);
+    boolean[] dp = new boolean[s.length() +1];
+    dp[0]  = true;
+    for(int i= 1; i <= s.length(); i++)
+        for(int j= 0; j < i; j++)
+            if(dp[j] && dict.contains(s.substring(j, i)))
+                dp[i] = true;
+    return dp[s.length()];
+
+List<String> WORD-BREAK-2(String s, List<String> wordDict)
+    Set<String> dict = new HashSet<>(wordDict);
+    Map<Integer, List<String>> memo = new HashMap<>();
+    return dfs(0, s, dict, memo);
+List<String> dfs(int start, String s, Set<String> dict, Map<Integer, List<String>> memo)
+    if (memo.containsKey(start)) return memo.get(start);
+    List<String> results = new ArrayList<>();
+    if (start == s.length())
+    	results.add("");
+    	return results;
+    for (int end = start + 1; end <= s.length(); end++)
+    	String prefix = s.substring(start, end);
+    	if (dict.contains(prefix))
+    		List<String> suffixSentences = dfs(end, s, dict, memo);
+    		for (String sentence : suffixSentences)
+    			if (sentence.isEmpty()) results.add(prefix);
+    			else results.add(prefix + " " + sentence);
+    memo.put(start, results);
+    return results;
+
+int DECODE-WAYS(String s, int i)
+    if (i == s.length()) return 1;
+    if (s.charAt(i) == '0') return 0;
+    int count = dfs(s, i + 1);
+    if (i + 1 < s.length())
+        int num = Integer.parseInt(s.substring(i, i + 2));
+        if (num <= 26) count += dfs(s, i + 2);
+    return count
+
+int ROD-CUT(int[] price, int n)
+   if (n == 0) return 0;
+   int max = Integer.MIN_VALUE;
+   for (int i = 1; i <= n; i++)
+       int cost = price[i - 1] + rodCut(price, n - i);
+       if (cost > max) max = cost;
+    return max;
+
+long BALL-ARRANGEMENT(int r, int g, int b, char prev)
+    if (r == 0 && g == 0 && b == 0) return 1;
+    String key = r + "," + g + "," + b + "," + prev;
+    if (memo.containsKey(key)) return memo.get(key);
+    long ways = 0;
+    if (r > 0 && prev != 'R')
+        ways += countWays(r - 1, g, b, 'R');
+    if (g > 0 && prev != 'G')
+        ways += countWays(r, g - 1, b, 'G');
+    if (b > 0 && prev != 'B')
+        ways += countWays(r, g, b - 1, 'B');
+    memo.put(key, ways);
+    return ways;
+
+boolean INTERLEAVING(String A, String B, String C,
+int i, int j, int k)
+    if (k == C.length())
+        return i == A.length() && j == B.length();
+    String key = i + "," + j;
+    if (memo.containsKey(key)) return memo.get(key);
+    boolean valid = false;
+    if (i < A.length() && A.charAt(i) == C.charAt(k))
+        valid |= dfs(A, i+1, B, j, C, k+1, memo);
+    if (j < B.length() && B.charAt(j) == C.charAt(k))
+        valid |= dfs(A, i, B, j + 1, C, k + 1, memo);
+    memo.put(key, valid);
+    return valid;
+
+int KNAPSACK(int[] v, int[] w, int n, int W)
+    if (W < 0)  return Integer.MIN_VALUE;
+    if (n < 0 || W == 0)  return 0;
+    int include = v[n] + knapsack(v, w, n - 1, W - w[n]);
+    int exclude = knapsack(v, w, n - 1, W);
+    return Integer.max(include, exclude);
+
+int CHERRY-PICKUP-1(int[][] grid) {
+    this.memo = new Integer[n][n][n];
+    return Math.max(0, dfs(0, 0, 0));
+int dfs(int r1, int c1, int r2)
+    int c2 = r1 + c1 - r2;
+    if (r1 >= n || c1 >= n || r2 >= n || c2 >= n || grid[r1][c1] == -1 || grid[r2][c2] == -1)
+        return Integer.MIN_VALUE;
+    if (r1 == n-1 && c1 == n-1) return grid[r1][c1];
+    if (memo[r1][c1][r2] != null) return memo[r1][c1][r2];
+    int cherries = grid[r1][c1];
+    if (r1 != r2) cherries += grid[r2][c2];
+    int maxNext = Math.max( Math.max(dfs(r1+1, c1, r2+1), dfs(r1, c1+1, r2)),
+                            Math.max(dfs(r1+1, c1, r2), dfs(r1, c1+1, r2+1)));
+    memo[r1][c1][r2] = cherries + maxNext;
+    return memo[r1][c1][r2];
+
+int CHERRY-PICKUP-2(int[][] grid)
+    this.m = grid.length;
+    this.n = grid[0].length;
+    this.memo = new Integer[m][n][n];
+    return dfs(0, 0, n-1);
+int dfs(int row, int col1, int col2)
+    if (col1 < 0 || col1 >= n || col2 < 0 || col2 >= n) return Integer.MIN_VALUE;
+    if (row == m) return 0;
+    if (memo[row][col1][col2] != null) return memo[row][col1][col2];
+    int cherries = grid[row][col1];
+    if (col1 != col2) cherries += grid[row][col2];
+    int maxNext = Integer.MIN_VALUE;
+    for (int newCol1 = col1-1; newCol1 <= col1+1; newCol1++)
+        for (int newCol2 = col2-1; newCol2 <= col2+1; newCol2++)
+            maxNext = Math.max(maxNext, dfs(row+1, newCol1, newCol2));
+    memo[row][col1][col2] = cherries + maxNext;
+    return memo[row][col1][col2];
+=================================================================================
+List<Integer> LIS(int[] nums)
+    int[] lengths, sequences = new int[n];
+    Arrays.fill(lengths, 1);
+    Arrays.fill(sequences, -1);
+    int maxLen =1; int lastIndex = 0;
+    for(int i=1; i < n; i++)
+        for(int j=0; j < i; j++)
+            if(nums[i] >  nums[j] && lengths[i] < lengths[j] + 1 )
+                lengths[i] = lengths[j] + 1;
+                sequences[i] = j;
+        if (lengths[i] > maxLen)
+            maxLen = lengths[i];
+            lastIndex = i;
+    List<Integer> lis = new ArrayList<>();
+    int index = lastIndex;
+    while (index != -1)
+        lis.add(0, nums[index]);
+        index = sequences[index];
+    return lis; or maxLen (LengthofLis)
+
+int NUMBER-OF-LIS(int[] nums)
+    int[] dp, cnt = new int[nums.length];
+    Arrays.fill(dp, 1);
+    Arrays.fill(cnt, 1);
+    int result = 0, max = 1;
+    for(int i= 0; i < nums.length; i++)
+        for(int j= 0; j < i ; j++)
+            if(nums[i] > nums[j])
+                if(dp[j]+1 == dp[i])
+                    cnt[i] += cnt[j];
+                else if(dp[j] + 1 > dp[i])
+                    dp[i] = dp[j] +1;
+                    cnt[i] = cnt[j];
+        if (dp[i] == max)
+            result += cnt[i];
+        else if(dp[i] > max)
+            max = dp[i];
+            result = cnt[i];
+    return result;
+
+List<Integer[]> DISK-STACKING(List<Integer[]> disks)
+    disks.sort((d1, d2) -> d1[2].compareTo(d2[2]));
+    int[] heights = new int[disks.size()];
+    for(int i=0; i < disks.size(); i++)
+    	heights[i] = disks.get(i)[2];
+    int[] sequences = new int[disks.size()];
+    Arrays.fill(sequences, Integer.MIN_VALUE);
+    int maxHeightIndex = 0;
+    for(int i= 1; i < disks.size(); i++)
+    	Integer[] current = disks.get(i);
+    	for(int j= 0; j<i; j++) {
+    		Integer[] other = disks.get(j);
+    		if(valid(other, current))
+    			int currHeight = current[2] + heights[j];
+    			if(currHeight >= heights[i]) {
+    				heights[i] = currHeight;
+    				sequences[i] = j;
+    	if(heights[i] >= heights[maxHeightIndex])
+    		maxHeightIndex = i;
+    return buildSequence(disks, sequences, maxHeightIndex);
+List<Integer[]> buildSequence(List<Integer[]> array, int[] sequences, int currentIndex)
+    List<Integer[]> sequence = new ArrayList<>();
+    while(currentIndex != Integer.MIN_VALUE) {
+    	sequence.add(0, array.get(currentIndex));
+    	currentIndex = sequences[currentIndex];
+    return sequence;
+boolean valid(Integer[] other, Integer[] current)
+    return current[0] > other[0] && current[1] > other[1] && current[2] > other[2];
+
+int RUSSIAN-DOLL-ENVELOPES(int[][] envelopes)
+    Arrays.sort(envelopes, (a, b) ->  if (a[0] == b[0])  return b[1] - a[1]; else return a[0] - b[0];
+    int[] heights = new int[envelopes.length];
+    for (int i = 0; i < envelopes.length; i++)
+        heights[i] = envelopes[i][1];
+    return lengthOfLIS(heights);
+
+int JUICE-BOTTLE(int[] cost, int remaining, Integer[] memo) {
+    if (remaining == 0) return 0;
+    if (memo[remaining] != null) return memo[remaining];
+    int minCost = Integer.MAX_VALUE;
+    for (int size = 1; size <= remaining; size++) {
+        if (size >= cost.length || cost[size] == -1) continue;
+        int sub = helper(cost, remaining - size, memo);
+        if (sub != Integer.MAX_VALUE)
+            minCost = Math.min(minCost, sub + cost[size]);
+    memo[remaining] = minCost;
+    return minCost;
+
+int LONGEST-STRING-CHAIN(int[][] pairs)
+    Arrays.sort(pairs, (a, b) -> Integer.compare(a[0], b[0]));
+    int n = pairs.length;
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    for(int i= 1; i < n; i++)
+       for(int j= 0; j < i; j++)
+           if(pairs[i][0] > pairs[j][1] )
+               dp[i] = Math.max(1 + dp[j], dp[i]);
+    return dp[n-1];
+
+int LONGEST-STRING-CHAIN-2(String[] words)
+    Arrays.sort(words, (a, b) -> a.length() - b.length());
+    Map<String, Integer> dp = new HashMap<>();    // chain length
+    Map<String, String> parent = new HashMap<>(); // predecessor for reconstruction
+    int longest = 1;
+    String lastWord = words[0]; // will store last word of the longest chain
+    for (String word : words)
+        int best = 1;
+        String bestPred = null;
+        for (int i = 0; i < word.length(); i++)
+            String pred = word.substring(0, i) + word.substring(i + 1);
+            if (dp.containsKey(pred) && dp.get(pred) + 1 > best)
+                best = dp.get(pred) + 1;
+                bestPred = pred;
+        dp.put(word, best);
+        parent.put(word, bestPred);
+        if (best > longest)
+            longest = best;
+            lastWord = word;
+    List<String> chain = new ArrayList<>();
+    while (lastWord != null)
+        chain.add(lastWord);
+        lastWord = parent.get(lastWord);
+    Collections.reverse(chain);
+    return longest;
+
+int[] LONGEST-VALID-OBSTACLE-COURSE-AT-EACH-POSITION(int[] obstacles)
+    int n = obstacles.length;
+    int[] result = new int[n];
+    List<Integer> tails = new ArrayList<>();
+    for (int i = 0; i < n; i++)
+        int x = obstacles[i];
+        int left = 0, right = tails.size();
+        while (left < right)
+            int mid = left + (right - left) / 2;
+            if (tails.get(mid) <= x) left = mid + 1;
+            else right = mid;
+        result[i] = left + 1;
+        if (left == tails.size()) tails.add(x);
+        else tails.set(left, x);
+    return result;
+=================================================================================
+boolean PARTITION-EQUAL-SUBSET-SUM(int[] arr)
+    int sum = 0; int n = arr.length;
+    for (int i = 0; i < n; i++) sum += arr[i];
+    if(sum % 2 != 0) return  false;
+    int k = sum/2;
+    return helper(n-1, k, arr);
+boolean helper(int i, int k, int[] arr)
+    if(i == 0) return arr[0] == k;
+    boolean notTake = helper(i-1, k, arr);
+    boolean take = false;
+    if(arr[i] <= k)
+        take = helper(i-1, k-arr[i], arr);
+    return notTake || take;
+
+int TARGET-SUM-WAYS(int[] nums, int target)
+    return helper(nums, target, 0);
+int helper(int[] nums, int sum, int idx)
+    if (idx == nums.length) return sum == 0 ? 1 : 0;
+    int result = 0;
+    result += helper(nums, sum + nums[idx], idx + 1);
+    result += helper(nums, sum - nums[idx], idx + 1);
+    return result;
+
+public int LAST-WEIGHT-STONE-II(int[] stones)
+    int sumStWt = 0;
+    for (int stone: stones) sumStWt += stone;
+    Integer[][] dp = new Integer[stones.length][sumStWt];
+    return helper3(stones, 0, 0, 0, dp);
+int  helper3(int[] stones, int index, int sumL, int sumR, Integer[][] dp)
+    if (index == stones.length) return Math.abs(sumL - sumR);
+    if (dp[index][sumL] != null) return dp[index][sumL];
+    dp[index][sumL] = Math.min(helper3(stones, index + 1, sumL + stones[index], sumR, dp),
+        helper3(stones, index + 1, sumL, sumR + stones[index], dp));
+    return dp[index][sumL];
+
+int ONES-AND-ZEROS(String[] strs, int m, int n)
+    return calcFindMaxForm(strs, m, n, 0);
+int calcFindMaxForm(String[] strs, int m, int n, int i)
+    if (i > strs.length - 1) return 0;
+    if (m < 0 || n < 0) return 0;
+    if (m == 0 && n == 0) return 0;
+    int zerosCount = calcCount(strs[i], '0');
+    int onesCount = strs[i].length() - zerosCount;
+    if (zerosCount <= m && onesCount <= n)
+    	return Math.max(1 + calcFindMaxForm(strs, m - zerosCount, n - onesCount, i + 1),
+    	                    calcFindMaxForm(strs, m, n, i + 1));
+    else
+        return calcFindMaxForm(strs, m, n, i + 1);
+int calcCount(String str, char ch)
+    int count = 0;
+    for (char tempCh : str.toCharArray())
+    	if (tempCh == ch) count++;
+    return count;
+
+public int MINIMUM-DIFFERENCE(int[] nums)
+    int n = nums.length / 2;
+    int total = Arrays.stream(nums).sum();
+    return dfs(nums, 0, 0, 0, n, total);
+int dfs(int[] nums, int index, int count, int currSum, int n, int total)
+    if(count > n) return Integer.MAX_VALUE;
+    if(index == nums.length)
+        if(count == n)
+            return Math.abs(total - 2 * currSum);
+        return Integer.MAX_VALUE;
+    int pick = dfs(nums, index +1, count+1, currSum + nums[index], n, total);
+    int skip = dfs(nums, index +1, count, currSum, n, total);
+    return Math.min(pick, skip);
+=================================================================================
+int FIND-MIN-COINS(int[] arr, int i, int target)
+    if (target == 0) return 0;
+    if (i < 0 || target < 0) return Integer.MAX_VALUE
+    int exclude = findMinCoins(arr, i - 1, target);
+    int include = 1 + findMinCoins(arr, i, target - arr[i]);
+    return Math.min(exclude, include);
+
+int FIND-MIN-COINS-NO-OF-WAYS(int[] arr, int i, int target)
+    if (target == 0) return 1;
+    if (i < 0 || target < 0) return 0;
+    int exclude = findWays(arr, i - 1, target);
+    int include = findWays(arr, i, target - arr[i]);
+    return exclude + include;
+
+int COMBINATION-SUM-4(int[] nums, int target)
+    return dfs(nums, target, nums.length -1);
+int dfs(int[] nums, int target, int index)
+    if(target == 0) return 1;
+    if(index < 0 || target < 0) return 0;
+    int res = 0;
+    for (int i = 0; i < nums.length; i++)
+        res += dfs(nums, target - nums[i], index);
+    return res;
+
+int PERFECT-SQUARES(int n)
+    int[] dp = new int[n+1];
+    Arrays.fill(dp, Integer.MAX_VALUE);
+    dp[0] = 0;
+    for(int i= 1; i*i <= n; i++)
+        int square = i*i;
+        for(int j= square; j <= n; j++)
+            dp[j] = Math.min(dp[j-square] + 1, dp[j]);
+    return dp[n];
+
+int MIN-COST-TICKETS(int[] days, int[] costs)
+    int n = days[days.length-1];
+    boolean[] travelDays = new boolean[n+1];
+    for(int day: days) travelDays[day] = true;
+    int[] dp = new int[n+1];
+    dp[0] = 0;
+    for(int i=1; i <= n; i++)
+        if(!travelDays[i])
+            dp[i] = dp[i-1];
+            continue;
+        int minCost = dp[i-1] + costs[0];
+        minCost = Math.min(minCost, dp[Math.max(0, i-7)] + costs[1]);
+        minCost = Math.min(minCost, dp[Math.max(0, i-30)] + costs[2]);
+        dp[i] = minCost;
+    return dp[n];
+=================================================================================
+int UNIQUE-PATHS-1(int m, int n)
+    if(m == 1 || n == 1) return 1;
+    return uniquePaths(m-1, n) + uniquePaths(m, n-1);
+
+int UNIQUE-PATHS-1(int m, int n)
+    int[][] ways = new int[m][n];
+    for(int i= 0; i< m ; i++)
+        for(int j= 0; j< n; j++)
+            if(i== 0 || j== 0) ways[i][j] = 1;
+            else ways[i][j] = ways[i-1][j] + ways[i][j-1];
+    return ways[m-1][n-1];
+
+int UNIQUE-PATHS-WITH OBSTACLES(int[][] obstacleGrid)
+    return helper(obstacleGrid, obstacleGrid.length - 1, obstacleGrid[0].length - 1);
+int helper(int[][] matrix, int i, int j)
+    if(i < 0 || j < 0 || matrix[i][j] == 1) return 0;
+    if(i ==0 && j == 0) return 1;
+    return helper(matrix, i-1, j) + helper(matrix, i, j-1);
+
+int UNIQUE-PATHS-WITH OBSTACLES(int[][] obstacleGrid)
+    int m = obstacleGrid.length; int n = obstacleGrid[0].length;
+    int[][] ways = new int[m + 1][n + 1];
+    for (int i = 1; i < m + 1; i++)
+    	for (int j = 1; j < n + 1; j++)
+    		if (obstacleGrid[i - 1][j - 1] == 1) ways[i][j] = 0;
+    		else if (i == 1 && j == 1) ways[i][j] = 1;
+    		else ways[i][j] = ways[i - 1][j] + ways[i][j - 1];
+    return ways[m][n];
+
+int MINIMUM-PATH-SUM(int[][] grid)
+    int[][] ways = new int[grid.length][grid[0].length];
+    for(int i= 0; i < grid.length; i++)
+        for(int j= 0; j < grid[0].length; j++)
+            if(i==0 && j== 0) ways[i][j] = grid[i][j];
+            else if(i == 0)  ways[i][j] = grid[i][j] + ways[i][j-1];
+            else if(j == 0) ways[i][j] = grid[i][j] + ways[i-1][j];
+            else ways[i][j] = grid[i][j] + Math.min(ways[i-1][j], ways[i][j-1]);
+    return ways[grid.length-1][grid[0].length-1];
+
+
+MAXIMAL-SQUARE
+    char[][] matrix; int[][] memo;
+    int m, n; int maxSize = 0;
+int MAXIMAL-SQUARE(char[][] matrix)
+    this.matrix = matrix; this.memo = new int[m][n];
+    this.m = matrix.length; this.n = matrix[0].length;
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            maxSize = Math.max(maxSize, dfs(i, j));
+    return maxSize * maxSize;
+int dfs(int i, int j)
+    if (i >= m || j >= n)  return 0;
+    if (matrix[i][j] == '0')  return 0;
+    if (memo[i][j] != 0) return memo[i][j];
+    memo[i][j] = 1 + Math.min(dfs(i + 1, j), Math.min(dfs(i, j + 1), dfs(i + 1, j + 1))
+    return memo[i][j];
+
+COUNT-SQUARES
+    int[][] matrix; int[][] memo;
+    int m, n;
+int COUNT-SQUARES(int[][] matrix)
+    this.matrix = matrix; this.memo = new int[m][n];
+    this.m = matrix.length; this.n = matrix[0].length;
+    int total = 0;
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            total += dfs(i, j);
+    return total;
+int dfs(int i, int j)
+    if (i >= m || j >= n)  return 0;
+    if (matrix[i][j] == '0')  return 0;
+    if (memo[i][j] != 0) return memo[i][j];
+    memo[i][j] = 1 + Math.min(dfs(i + 1, j), Math.min(dfs(i, j + 1), dfs(i + 1, j + 1))
+    return memo[i][j];
+
+MINIMUM-FALLING-PATH-SUM
+    int n; int[][] matrix; int[][] memo;
+int MINIMUM-FALLING-PATH-SUM(int[][] matrix)
+    this.matrix = matrix; this.memo = new int[n][n];
+    this.n = matrix.length;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            memo[i][j] = Integer.MAX_VALUE;
+    int result = Integer.MAX_VALUE;
+    for (int col = 0; col < n; col++)
+        result = Math.min(result, dfs(0, col));
+    return result;
+int dfs(int row, int col)
+    if (col < 0 || col >= n) return Integer.MAX_VALUE;
+    if (row == n - 1) return matrix[row][col];
+    if (memo[row][col] != Integer.MAX_VALUE) return memo[row][col];
+    int downLeft = dfs(row + 1, col - 1);
+    int down = dfs(row + 1, col);
+    int downRight = dfs(row + 1, col + 1);
+    memo[row][col] = matrix[row][col] + Math.min(down, Math.min(downLeft, downRight));
+    return memo[row][col];
+
+int TRIANGLE(List<List<Integer>> triangle)
+    int l = triangle.size();
+    int[] dp = new int[l+1];
+    for(int row = l-1; row >= 0; row--)
+        for(int col = 0; col < row+1; col++)
+            dp[col] = triangle.get(row).get(col) + Math.min(dp[col], dp[col+1]);
+    return dp[0];
+
+TRIANGLE
+    Integer[][] memo; List<List<Integer>> triangle;
+int TRIANGLE-MINIMUM-TOTAL(List<List<Integer>> triangle)
+    int n = triangle.size(); this.triangle = triangle;
+    memo = new Integer[n][n];
+    return dfs(0, 0);
+int dfs(int row, int col)
+    if (row == triangle.size() - 1)  return triangle.get(row).get(col);
+    if (memo[row][col] != null) return memo[row][col];
+    int down = dfs(row + 1, col);
+    int diagonal = dfs(row + 1, col + 1);
+    memo[row][col] = triangle.get(row).get(col) + Math.min(down, diagonal);
+    return memo[row][col];
+=================================================================================
+String LCS(String s1, String s2)
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            if (s1.charAt(i - 1) == s2.charAt(j - 1)) dp[i][j] = 1 + dp[i - 1][j - 1];
+             else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+    StringBuilder lcs = new StringBuilder();
+    int i = m, j = n;
+    while (i > 0 && j > 0)
+        if (s1.charAt(i - 1) == s2.charAt(j - 1)) lcs.append(s1.charAt(i - 1)); i--; j--;
+        else if (dp[i - 1][j] > dp[i][j - 1]) i--;
+        else j--;
+    return lcs.reverse().toString();
+
+int LCSLength2(String X, String Y, int m, int n)
+    if (m == 0 || n == 0) return 0;
+    if (X.charAt(m - 1) == Y.charAt(n - 1))
+    	return 1 + LCSLength2(X, Y, m - 1, n - 1);
+    return Integer.max(LCSLength2(X, Y, m - 1, n), LCSLength2(X, Y, m, n - 1));
+
+int EDIT-DISTANCE(int i, int j, String s1, String s2)
+    if (i == s1.length()) return s2.length() - j;
+    if (j == s2.length()) return s1.length() - i;
+    if (s1.charAt(i) == s2.charAt(j))
+        dfs(i + 1, j + 1, s1, s2);
+    int insert = 1 + dfs(i, j + 1, s1, s2, memo);
+    int delete = 1 + dfs(i + 1, j, s1, s2, memo);
+    int replace = 1 + dfs(i + 1, j + 1, s1, s2, memo);
+    return Math.min(insert, Math.min(delete, replace));
+
+int DELETE-OPERATION-FOR-TWO-STRINGS(String word1, String word2)
+    HashMap<String, Integer> map = new HashMap<>();
+    return helper(word1, word2, word1.length()-1, word2.length()-1, map);
+int helper(String s1, String s2, int m, int n, HashMap<String, Integer> map)
+    if(m < 0) return n+1;
+    if(n < 0) return m+1;
+    String key =m + "|" + n;
+    if(map.containsKey(key)) return map.get(key);
+     if(s1.charAt(m) == s2.charAt(n))
+        int value =  helper(s1, s2, m-1, n-1, map);
+        map.put(key, value);
+        return value;
+    int deleteIns1 = 1+helper(s1, s2, m-1, n, map);
+    int deleteIns2 = 1+helper(s1, s2, m, n-1, map);
+    int value =  Math.min(deleteIns1, deleteIns2);
+    map.put(key, value);
+    return value;
+
+int MINIMUM-ASCII-DELETE-SUM-FOR-TWO-STRINGS(String s1, String s2)
+    memo = new int[s1.length()][s2.length()];
+    for (int i = 0; i < s1.length(); i++) Arrays.fill(memo[i], -1);
+    return dfs(0, 0);
+int dfs(int i, int j)
+    if (i == s1.length())
+        int sum = 0;
+        for (int k = j; k < s2.length(); k++)
+            sum += s2.charAt(k);
+        return sum;
+    if (j == s2.length())
+        int sum = 0;
+        for (int k = i; k < s1.length(); k++)
+            sum += s1.charAt(k);
+        return sum;
+    if (memo[i][j] != -1)  return memo[i][j];
+    if (s1.charAt(i) == s2.charAt(j))
+        memo[i][j] = dfs(i + 1, j + 1);
+    else
+        int deleteS1 = s1.charAt(i) + dfs(i + 1, j);
+        int deleteS2 = s2.charAt(j) + dfs(i, j + 1);
+        memo[i][j] = Math.min(deleteS1, deleteS2);
+    return memo[i][j];
+
+
+String SHORTEST-COMMON-SUPERSEQUENCE(String s1, String s2)
+    int n = s1.length(); int m = s2.length();
+    int[][] dp =new int[n+1][m+1];
+    for (int i = 0; i <= n; i++) dp[i][0] = 0;
+    for (int i = 0; i <= m; i++) dp[0][i] = 0;
+    for (int ind1 = 1; ind1 <= n; ind1++)
+        for (int ind2 = 1; ind2 <= m; ind2++)
+            if (s1.charAt(ind1 - 1) == s2.charAt(ind2 - 1))
+                dp[ind1][ind2] = 1 + dp[ind1 - 1][ind2 - 1];
+            else
+                dp[ind1][ind2] = 0 + Math.max(dp[ind1 - 1][ind2], dp[ind1][ind2 - 1]);
+    int len = dp[n][m];
+    int i = n;  int j = m;
+    int index = len - 1; String ans = "";
+    while (i > 0 && j > 0)
+        if (s1.charAt(i - 1) == s2.charAt(j - 1))
+            ans += s1.charAt(i-1); index--; i--;  j--;
+        else if (dp[i - 1][j] > dp[i][j - 1])
+            ans += s1.charAt(i-1); i--;
+        else
+            ans += s2.charAt(j-1);  j--;
+    while(i>0)
+        ans += s1.charAt(i-1); i--;
+    while(j>0)
+        ans += s2.charAt(j-1); j--;
+    String ans2=new StringBuilder(ans).reverse().toString();
+    return ans2;
+
+boolean REGULAR-EXPRESSION-MATCHING(String s, String p)
+    boolean[][] cache = new boolean[s.length() + 1][p.length() + 1];
+    return dfs(cache, s, p, 0, 0);
+boolean dfs(boolean[][] cache, String s, String p, int i, int j)
+    if (i >= s.length() && j >= p.length()) return true;
+    if (j >= p.length()) return false;
+    if (cache[i][j] != false) return cache[i][j];
+    boolean match = i < s.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.');
+    if (j + 1 < p.length() && p.charAt(j + 1) == '*')
+    	cache[i][j] = dfs(cache, s, p, i, j + 2) || (match && dfs(cache, s, p, i + 1, j));
+    else
+    	cache[i][j] = match && dfs(cache, s, p, i + 1, j + 1);
+    return cache[i][j];
+
+boolean WILD-CARD-MATCHING(String s, String p)
+    this.s = s; this.p = p;
+    memo = new Boolean[s.length() + 1][p.length() + 1];
+    return dfs(0, 0);
+boolean dfs(int i, int j)
+    if (memo[i][j] != null) return memo[i][j];
+    if (j == p.length()) return memo[i][j] = (i == s.length());
+    if (i == s.length())
+        for (int k = j; k < p.length(); k++)
+            if (p.charAt(k) != '*')
+                return memo[i][j] = false;
+        return memo[i][j] = true;
+    char sc = s.charAt(i); pc = p.charAt(j); boolean result;
+    if (pc == '*')
+        result = dfs(i, j + 1) || dfs(i + 1, j);
+    else if (pc == '?' || pc == sc)
+        result = dfs(i + 1, j + 1);
+    else
+        result = false;
+    return memo[i][j] = result;
+=================================================================================
+int LONGEST-PALINDROME-SUBSEQUENCE(String s)
+    int size = s.length();
+    if(size==0 || s==null)  return 0;
+    int [][] dp = new int[size][size];
+    for (int[] row : dp)  Arrays.fill(row, -1);
+    return helper(s, 0, s.length()-1,dp);
+int helper(String s, int left, int right, int [][] cache)
+    if(left > right) return 0;
+    if(left == right) return 1;
+    if(cache[left][right] != -1 )  return cache[left][right];
+    if(s.charAt(left) == s.charAt(right)) return 2 + helper(s, left+1, right-1, cache);
+    int leftV = helper(s, left+1, right, cache);
+    int rightV = helper(s, left, right-1, cache);
+    cache[left][right] = Math.max(leftV, rightV);
+    return cache[left][right];
+
+String LONGEST-PALINDROME-SUBSTRING(String str)
+    int[] currentLongest = new int[]{0, 1};
+    for(int i=0; i < str.length(); i++)
+        int[] odd = getLongestPalindromeFrom(str, i, i+1);
+        int[] even = getLongestPalindromeFrom(str, i, i);
+        int[] longest = odd[1] - odd[0] > even[1] - even[0] ? odd : even;
+        currentLongest = currentLongest[1] - currentLongest[0] > longest[1] - longest[0] ? currentLongest : longest;
+    return str.substring(currentLongest[0], currentLongest[1]);
+int[] getLongestPalindromeFrom(String str, int left, int right)
+    while (left >= 0 && right < str.length())
+        if(str.charAt(left) != str.charAt(right)) break;
+        left--; right++;
+    return new int[]{left+1, right};
+
+int COUNT-PALINDROME-SUBSTRINGS(String s)
+    int result = 0;
+    for (int i = 0; i < s.length(); i++)
+        result += helper(s, i, i);
+        result += helper(s, i, i + 1);
+    return result;
+int helper(String s, int left, int right)
+    int count = 0;
+    while (left >= 0 && right < s.length())
+        if(s.charAt(left) != s.charAt(right)) break;
+        count++; left--; right++;
+    return count;
+
+int PALINDROME-MIN-CUTS(String s, int start) (s, 0)
+    if (start == s.length()) return 0;
+    if (memo[start] != -1) return memo[start];
+    int minCuts = Integer.MAX_VALUE;
+    for (int end = start; end < s.length(); end++)
+        if (isPalindrome(s, start, end))
+            int cuts = 1 + minCutsFrom(s, end + 1);
+            minCuts = Math.min(minCuts, cuts);
+    memo[start] = minCuts;
+    return minCuts;
+=================================================================================
+int BURST-BALLOONS(int[] nums)
+    int[] newNums = new int[n+2];
+    newNums[0] =1; newNums[n+1] = 1;
+    for(int i=0; i < n; i++)
+        newNums[i + 1] = nums[i];
+    return helper(newNums, 0, n+1); // TWO METHODS SAME
+int helper(int[] nums, int left, int right)
+    if(left + 1 == right)  return 0;
+    int maxCoins = 0;
+    for(int i=left+1; i < right; i++)
+        int coins = nums[left] * nums[i] * nums[right] + helper(nums, left, i) + helper(nums, i, right);
+        maxCoins = Math.max(coins, maxCoins);
+    return maxCoins;
+int helper2(int[] nums, int[][] memo, int start, int end)
+    if(start > end) return 0;
+    if(memo[start][end] != 0) return memo[start][end];
+    for(int i= start; i <= end; i++)
+    	int value  = nums[start - 1] * nums[i] * nums[end + 1] +
+    	value += helper2(nums, memo, start, i - 1) + helper2(nums, memo, i + 1, end);
+    	memo[start][end] = Math.max(memo[start][end], value);
+    return memo[start][end];
+
+int MIN-SCORE-TRIANGULATION-POLYGON(int[] values)
+    int n = values.length; this.values = values;
+    this.memo = new int[n][n];
+    return dfs(0, n - 1);
+int dfs(int i, int j)
+    if (j - i < 2) return 0;
+    if (memo[i][j] != 0) return memo[i][j];
+    int res = Integer.MAX_VALUE;
+    for (int k = i + 1; k < j; k++)
+        res = Math.min(res, values[i] * values[k] * values[j] + dfs(i, k) + dfs(k, j));
+    memo[i][j] = res;
+    return res;
+
+int MINIMUM-COST-TO-MERGE-STONES(int[] stones, int k)
+    int n = stones.length;
+    if ((n - 1) % (k - 1) != 0) return -1;
+    this.memo = new int[n][n];
+    this.prefix = new int[n + 1];
+    for (int i = 0; i < n; i++)
+        prefix[i + 1] = prefix[i] + stones[i];
+    return dfs(0, n - 1);
+int dfs(int l, int r)
+    if (l == r) return 0;
+    if (memo[l][r] != 0) return memo[l][r];
+    int res = Integer.MAX_VALUE;
+    for (int m = l; m < r; m += k - 1)
+        res = Math.min(res, dfs(l, m) + dfs(m + 1, r));
+    if ((r - l) % (k - 1) == 0)
+        res += prefix[r + 1] - prefix[l];
+    memo[l][r] = res;
+    return res;
+
+int GUESS-NUMBER-HIGHER-LOWER-II(int n)
+    this.memo = new int[n + 1][n + 1];
+    return dfs(1, n);
+int dfs(int l, int r)
+    if (l >= r) return 0;
+    if (memo[l][r] != 0) return memo[l][r];
+    int res = Integer.MAX_VALUE;
+    for (int x = l; x <= r; x++)
+        int cost = x + Math.max(dfs(l, x - 1), dfs(x + 1, r));
+        res = Math.min(res, cost);
+    memo[l][r] = res;
+    return res;
+
+int UNIQUE-BINARY-SEARCH-TREES-I(int n)
+    int[] dp = new int[n+1];
+    dp[0] = dp[1] = 1;
+    for(int i= 2; i <= n; i++)
+        for(int j= 0; j < i ; j++)
+            dp[i] += dp[j] * dp[i-j-1];
+    return dp[n];
+
+ListTreeNode> UNIQUE-BINARY-SEARCH-TREES-II(int n)
+    if (n == 0) return new ArrayList<>();
+    return build(1, n);
+List<TreeNode> build(int start, int end)
+    String key = start + "," + end;
+    if (memo.containsKey(key)) return memo.get(key);
+    List<TreeNode> result = new ArrayList<>();
+    if (start > end) result.add(null); return result;
+    for (int root = start; root <= end; root++)
+        List<TreeNode> leftTrees = build(start, root - 1);
+        List<TreeNode> rightTrees = build(root + 1, end);
+        for (TreeNode left : leftTrees)
+            for (TreeNode right : rightTrees)
+                TreeNode node = new TreeNode(root);
+                node.left = left;
+                node.right = right;
+                result.add(node);
+    memo.put(key, result);
+    return result;
+
+int MINIMUM-COST-TREE-FROM-LEAF-VALUES(int[] arr)
+    int res = 0;
+    Stack<Integer> stack = new Stack<>();
+    stack.push(Integer.MAX_VALUE);
+    for (int num : arr)
+        while (stack.peek() <= num)
+            int mid = stack.pop();
+            res += mid * Math.min(stack.peek(), num);
+        stack.push(num);
+    while (stack.size() > 2)
+        res += stack.pop() * stack.peek();
+    return res;
+int MINIMUM-COST-TREE-FROM-LEAF-VALUES(int[] arr)
+    this.memo = new int[n][n];
+    this.max = new int[n][n];
+    for (int i = 0; i < n; i++)
+        max[i][i] = arr[i];
+        for (int j = i + 1; j < n; j++)
+            max[i][j] = Math.max(max[i][j - 1], arr[j]);
+    return dfs(0, n - 1);
+int dfs(int l, int r)
+    if (l == r) return 0;
+    if (memo[l][r] != 0) return memo[l][r];
+    int res = Integer.MAX_VALUE;
+    for (int k = l; k < r; k++)
+        res = Math.min(res, dfs(l, k) + dfs(k + 1, r) + max[l][k] * max[k + 1][r]);
+    memo[l][r] = res;
+    return res;
+=================================================================================
+int BUY-SELL(int[] prices, int buySell, int ind)
+    if (ind >= prices.length)  return 0;
+    int profit = 0;
+    if (buySell == 0)
+        profit = Math.max(dfs(prices, 0, ind + 1), -prices[ind] + dfs(prices, 1, ind + 1));
+    if (buySell == 1)
+        profit = Math.max(dfs(prices, 1, ind + 1), prices[ind] + dfs(prices, 0, ind + 1));
+    return profit;
+
+int BUY-SELL-STOCK(int[] arr, int n, int ind, int buy, int cap, Map<String, Integer> map)
+    if (ind >= n || cap == 0) return 0; // base case
+    String key = ind + "|" + buy + "|" + cap;
+    if (map.containsKey(key)) return map.get(key);
+    int profit = 0;
+    if (buy == 0)// We can buy the stock
+    	profit = Math.max(0 + helper(arr, n, ind + 1, 0, cap, map),
+    			-arr[ind] + helper(arr, n, ind + 1, 1, cap, map));
+    if (buy == 1)// We can sell the stock
+    	profit = Math.max(0 + helper(arr, n, ind + 1, 1, cap, map),
+    			arr[ind] + helper(arr, n, ind + 1, 0, cap - 1, map));
+    map.put(key, profit);
+    return profit;
+=================================================================================
+int HOUSE-ROBBER-3(Node node, Map<Node, Integer> memo)
+    if(node == null) return 0;
+    if (memo.containsKey(node)) return memo.get(node);
+    int sum = 0;
+    if(node.left != null)
+        sum += robHelper(node.left.left, memo) + robHelper(node.left.right, memo);
+    if(node.right != null)
+        sum += robHelper(node.right.left, memo) + robHelper(node.right.right, memo);
+    sum = Math.max(sum+ node.val, robHelper(node.left, memo) + robHelper(node.right, memo));
+    memo.put(node, sum);
+    return sum;
+
+int MAX-PATH-SUM(TreeNode root)
+    helper(root);
+    return max;
+int helper(TreeNode root)
+    if (root == null)  return 0;
+    int leftSum = Math.max(0, helper(root.left));
+    int rightSum = Math.max(0, helper(root.right));
+    max = Math.max(max, root.val + leftSum + rightSum);
+    return Math.max(root.val, root.val + Math.max(leftSum, rightSum));
+
+int cam=0; // binary tree cameras
+int MIN-CAMERAS-COVER(TreeNode root)
+    if (root == null) return 0;
+    int top = dfs(root);
+    return cam + (top == 0 ? 1 : 0);
+int dfs(TreeNode root)
+    if(root==null) return 1;
+    int left=dfs(root.left);
+    int right=dfs(root.right);
+    if(left==0||right==0){cam++; return 2;}
+    if(left==2||right==2) return 1;
+    return 0;
+
+int maxSum = 0; // using post-order
+int MAX-SUM-BST(TreeNode root)
+    dfs(root); return maxSum;
+int[] dfs(TreeNode node)
+    // [isBST, sum, min, max]
+    if (node == null) return new int[]{1, 0, Integer.MAX_VALUE, Integer.MIN_VALUE};
+    int[] left = dfs(node.left);
+    int[] right = dfs(node.right);
+    if (left[0] == 1 && right[0] == 1 && node.val > left[3] && node.val < right[2])
+        int sum = left[1] + right[1] + node.val;
+        maxSum = Math.max(maxSum, sum);
+        int min = Math.min(left[2], node.val);
+        int max = Math.max(right[3], node.val);
+        return new int[]{1, sum, min, max};
+    return new int[]{0, 0, 0, 0}; // Not a BST
+
+DIFF-BETWEEN-MAX-MIN-PRICE-PATH-SUM
+long ans = 0; int[] price; List<Integer>[] tree;
+long maxOutput(int n, int[][] edges, int[] price)
+    this.price = price; tree = new ArrayList[n];
+    for (int i = 0; i < n; i++) tree[i] = new ArrayList<>();
+    for (int[] e : edges)
+        tree[e[0]].add(e[1]);
+        tree[e[1]].add(e[0]);
+    dfs(0, -1);
+    return ans;
+long[] dfs(int u, int parent)     // returns [maxDown, minDown]
+    long maxDown = price[u];
+    long minDown = price[u];
+    for (int v : tree[u])
+        if (v == parent) continue;
+        long[] child = dfs(v, u);
+        maxDown = Math.max(maxDown, price[u] + child[0]);
+        minDown = Math.min(minDown, price[u] + child[1]);
+    ans = Math.max(ans, maxDown - minDown);
+    return new long[]{maxDown, minDown};
+=================================================================================
+boolean STONE-GAME-1(int[] piles) // Predict the winner also
+    Integer[][] dp = new Integer[501][501];
+    return recursion(piles, 0, piles.length-1) > 0;
+int recursion(int[] piles, int start, int end)
+    if(start > end) return 0;
+    if(dp[start][end] != null) return dp[start][end];
+    Integer option1 = piles[start] - recursion(piles, start+1, end);
+    Integer option2 = piles[end] - recursion(piles, start, end-1);
+    dp[start][end] = Math.max(option1, option2);
+    return dp[start][end];
+
+int STONE-GAME-2(int[] piles)
+    this.piles = piles; this.n = piles.length;
+    suffixSum = new int[n];
+    suffixSum[n - 1] = piles[n - 1];
+    for (int i = n - 2; i >= 0; i--)
+        suffixSum[i] = piles[i] + suffixSum[i + 1];
+    memo = new Integer[n][n + 1];
+    return dfs(0, 1);
+int dfs(int i, int M)
+    if (i >= n) return 0;
+    if (2 * M >= n - i) return suffixSum[i];
+    if (memo[i][M] != null) return memo[i][M];
+    int minOpponent = Integer.MAX_VALUE;
+    for (int X = 1; X <= 2 * M; X++)
+        minOpponent = Math.min(minOpponent, dfs(i + X, Math.max(M, X)) );
+    memo[i][M] = suffixSum[i] - minOpponent;
+    return memo[i][M];
+
+String STONE-GAME-3(int[] stoneValue)
+    this.stones = stoneValue; this.n = stoneValue.length;
+    this.memo = new Integer[n];
+    int diff = dfs(0);
+    if (diff > 0) return "Alice";
+    if (diff < 0) return "Bob";
+    return "Tie";
+int dfs(int i)
+    if (i >= n) return 0;
+    if (memo[i] != null) return memo[i];
+    int best = Integer.MIN_VALUE;
+    int sum = 0;
+    for (int k = 0; k < 3 && i + k < n; k++)
+        sum += stones[i + k];
+        best = Math.max(best, sum - dfs(i + k + 1));
+    memo[i] = best;
+    return best;
+
+boolean STONE-GAME-4-SQUARE-GAME(int n)
+    memo = new Boolean[n + 1];
+    return dfs(n);
+boolean dfs(int n)
+    if (n == 0) return false;
+    if (memo[n] != null) return memo[n];
+    for (int k = 1; k * k <= n; k++)
+        if (!dfs(n - k * k))
+            memo[n] = true;
+            return true;
+    memo[n] = false;
+    return false;
+
+boolean CAN-I-WIN(int maxChoosableInteger, int desiredTotal)
+    int sum = maxChoosableInteger * (maxChoosableInteger + 1) / 2;
+    if (desiredTotal <= 0) return true;
+    if (sum < desiredTotal) return false;
+    this.max = maxChoosableInteger;
+    memo = new Boolean[1 << maxChoosableInteger];
+    return dfs(0, desiredTotal);
+boolean dfs(int usedMask, int remaining)
+    if (remaining <= 0) return false;
+    if (memo[usedMask] != null) return memo[usedMask];
+    for (int i = 0; i < max; i++)
+        if ((usedMask & (1 << i)) == 0)
+            int pick = i + 1;
+            if (pick >= remaining || !dfs(usedMask | (1 << i), remaining - pick))
+                memo[usedMask] = true;
+                return true;
+    memo[usedMask] = false;
+    return false;
+=================================================================================
+boolean PARTITION-K-SUBSETS(int[] nums, int k)
+		int sum = Arrays.stream(nums).sum();
+		if (sum % k != 0) return false;
+		Arrays.sort(nums);
+		boolean[] visited = new boolean[nums.length];
+		return dfs(nums, k, sum / k, 0, 0, visited);
+boolean dfs(int[] nums, int k, int target, int start, int curSum, boolean[] visited)
+		if (k == 1) return true;
+		if (curSum > target) return false;
+		if (curSum == target) return dfs(nums, k - 1, target, 0, 0, visited);
+		for (int i = start; i < nums.length; i++)
+			if (visited[i]) continue;
+			visited[i] = true;
+			if (dfs(nums, k, target, i + 1, curSum + nums[i], visited))
+				return true;
+			visited[i] = false;
+		return false;
+
+int SHORTEST-PATH-VISITING-ALL-NODES(int[][] graph)
+    int n = graph.length;
+    int finalMask = (1 << n) - 1;  // all nodes visited
+    Queue<int[]> queue = new LinkedList<>();
+    boolean[][] visited = new boolean[n][1 << n];
+    for (int i = 0; i < n; i++)
+        queue.offer(new int[]{i, 1 << i, 0});  // {node, mask, steps}
+        visited[i][1 << i] = true;
+    while (!queue.isEmpty())
+        int[] cur = queue.poll();
+        int node = cur[0], mask = cur[1], steps = cur[2];
+        if (mask == finalMask) return steps;
+        for (int nei : graph[node])
+            int nextMask = mask | (1 << nei);
+            if (!visited[nei][nextMask])
+                visited[nei][nextMask] = true;
+                queue.offer(new int[]{nei, nextMask, steps + 1});
+    return -1; // should not happen
+
+int MINIMUM-NUMBER-OF-WORK-SESSIONS-TO-FINISH-TASK(int[] tasks,int t,int mask,int[][] dp)
+   int sess=0; // this is a global variable // using bitmask
+    if(mask==((1<<tasks.length)-1)){
+        if(t==sess) return 0;
+        else return 1;
+    if(dp[mask][t]!=-1) return dp[mask][t];
+    int ans=Integer.MAX_VALUE;
+    for(int i=0;i<tasks.length;i++){
+        if(((mask>>i)&1)==1 || tasks[i]>t) continue;
+        int nm=mask|(1<<i);
+        ans=Math.min(ans,1+solve(tasks,sess,nm,dp));
+        ans=Math.min(ans,solve(tasks,t-tasks[i],nm,dp));
+    return dp[mask][t]=ans;
+int minSessions(int[] tasks, int sessionTime) {
+    sess=sessionTime;
+    int[][] dp=new int[(1<<(tasks.length+1))][sessionTime+1];
+    for(int[] i:dp) Arrays.fill(i,-1);
+    return solve(tasks,sessionTime,0,dp);
+
+int  MINIMUM-NUMBER-OF-WORK-SESSIONS-TO-FINISH-TASK(int[] tasks, int sessionTime)
+    Arrays.sort(tasks); // Sort tasks descending
+    for (int i = 0, j = tasks.length - 1; i < j; i++, j--) {
+        int tmp = tasks[i];
+        tasks[i] = tasks[j];
+        tasks[j] = tmp;
+    this.tasks = tasks;
+    return dfs(0, new ArrayList<>());
+int dfs(int idx, List<Integer> sessions)
+    if (idx == tasks.length) return sessions.size();
+    List<Integer> sorted = new ArrayList<>(sessions);
+    Collections.sort(sorted);
+    String key = idx + "|" + sorted.toString();
+    if (memo.containsKey(key))return memo.get(key);
+    int ans = Integer.MAX_VALUE;
+    for (int i = 0; i < sessions.size(); i++) {
+        if (sessions.get(i) + tasks[idx] <= sessionTime) {
+            sessions.set(i, sessions.get(i) + tasks[idx]);
+            ans = Math.min(ans, dfs(idx + 1, sessions));
+            sessions.set(i, sessions.get(i) - tasks[idx]);
+        if (sessions.get(i) == 0) break;
+    sessions.add(tasks[idx]);
+    ans = Math.min(ans, dfs(idx + 1, sessions));
+    sessions.remove(sessions.size() - 1);
+    memo.put(key, ans);
+    return ans;
+=================================================================================
+int DISTINCT-SUBSEQUENCE(String s, String t, int sIdx, int tIdx)
+    if (memo[sIdx][tIdx] != -1) return memo[sIdx][tIdx];
+    if (tIdx >= t.length()) return 1;
+    if (sIdx >= s.length()) return 0;
+    if (t.charAt(tIdx) == s.charAt(sIdx))
+    	memo[sIdx][tIdx] = recursion(s, t, sIdx + 1, tIdx + 1, memo) + recursion(s, t, sIdx + 1, tIdx, memo);
+    	return memo[sIdx][tIdx];
+    memo[sIdx][tIdx] = recursion(s, t, sIdx + 1, tIdx, memo);
+    return memo[sIdx][tIdx];
+
+int DISTINCT-SUBSEQUENCE-II(String s)
+    memo = new Integer[n];
+    return dfs(0);
+int dfs(int index)
+    if (index == n) return 0;
+    if (memo[index] != null) return memo[index];
+    boolean[] used = new boolean[26];
+    long count = 0;
+    for (int i = index; i < n; i++)
+        int c = s.charAt(i) - 'a';
+        if (used[c]) continue;
+        used[c] = true;
+        count = (count + 1 + dfs(i + 1)) % MOD;
+    memo[index] = (int) count;
+    return memo[index];
+
+int ARITHMETIC-SLICES-II(int[] nums)
+    int n = nums.length;
+    long result = 0;
+    Map<Long, Integer>[] dp = new HashMap[n];
+    for (int i = 0; i < n; i++)  dp[i] = new HashMap<>();
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < i; j++)
+            long diff = (long) nums[i] - nums[j];
+            int countAtJ = dp[j].getOrDefault(diff, 0);
+            int countAtI = dp[i].getOrDefault(diff, 0);
+            dp[i].put(diff, countAtI + countAtJ + 1);
+            result += countAtJ;
+    return (int) result;
+
+int NUMBER-OF-GOOD-UNIQUE-SUBSEQUENCES(String binary)
+    int mod = (int)1e9 + 7, ends0 = 0, ends1 = 0, has0 = 0;
+    for (int i = 0; i < binary.length(); ++i)
+        if (binary.charAt(i) == '1')
+            ends1 = (ends0 + ends1 + 1) % mod;
+        else
+            ends0 = (ends0 + ends1) % mod;
+            has0 = 1;
+    return (ends0 + ends1 + has0) % mod;
+
+int CONSTRAINED-SUBSEQUENCE-SUM(int[] nums, int k)
+    int n = nums.length;
+    int[] dp = new int[n];
+    Deque<Integer> deque = new ArrayDeque<>();
+    int maxSum = nums[0];
+    dp[0] = nums[0];
+    deque.offer(0);
+    for (int i = 1; i < n; i++)
+        while (!deque.isEmpty() && deque.peekFirst() < i - k)
+            deque.pollFirst();
+        dp[i] = Math.max(0, dp[deque.peekFirst()]) + nums[i];
+        maxSum = Math.max(maxSum, dp[i]);
+        while (!deque.isEmpty() && dp[deque.peekLast()] <= dp[i])
+            deque.pollLast();
+        deque.offerLast(i);
+    return maxSum;
+
+=================================================================================
+int ACTIVITY-SELECTION(Activity[] activities, int i, Integer[] memo)
+    if (i >= activities.length) return 0;
+    if (memo[i] != null)  return memo[i];
+    int maxActivities = recursiveSelect(activities, i + 1, memo);
+    for (int j = i + 1; j < activities.length; j++)
+        if (activities[i].finish <= activities[j].start)
+            maxActivities = Math.max(maxActivities, 1 + recursiveSelect(activities, j, memo));
+    memo[i] = maxActivities;
+    return maxActivities;
+
+int JOB-SCHEDULING(int[] start, int[] end, int[] profit)
+    int n = start.length;
+    Job[] jobs = new Job[n];
+    for (int i = 0; i < n; i++)
+        jobs[i] = new Job(start[i], end[i], profit[i]);
+    Arrays.sort(jobs, Comparator.comparingInt(j -> j.end));
+    Map<Integer, Job> selectedJobMap = new HashMap<>();
+    TreeMap<Integer, Integer> dp = new TreeMap<>();
+    dp.put(0, 0);
+    for (Job job : jobs)
+        int prevProfit = dp.floorEntry(job.start).getValue();
+        int currentProfit = prevProfit + job.profit;
+        if (currentProfit > dp.lastEntry().getValue())
+            dp.put(job.end, currentProfit);
+            selectedJobMap.put(job.end, job);
+    List<Job> selectedJobs = new ArrayList<>();
+    Integer currentTime = dp.lastKey();
+    while (currentTime != null && currentTime > 0)
+        Job job = selectedJobMap.get(currentTime);
+        if (job != null)
+            selectedJobs.add(job);
+            currentTime = dp.floorKey(job.start);
+         else break;
+    Collections.reverse(selectedJobs);
+    return dp.lastEntry().getValue();
+=================================================================================
+int[][] moves = new int[][] {2,1},{1,2},{-1,2},{-2,1},{-2,-1},{-1,-2},{1,-2},{2,-1}};
+double KNIGHT-PROBABILITY(int n, int k, int row, int column)
+    if(row < 0 || column < 0 || row >= n || column >= n) return 0.0;
+    if(k == 0) return 1.0;
+    String key = k + "|" + row + "|" + column;
+    if(map.containsKey(key)) return map.get(key);
+    double prob = 0;
+    for(int[] move : moves)
+    	prob += knightProbability(n, k-1, row+move[0], column+move[1]) / 8d;
+    map.put(key, prob);
+    return prob;
+
+double SOUP-SERVINGS(int N)
+    if (N > 4800) return 1.0; // observation: for large N, prob approaches 1
+    n = (N + 24) / 25;
+    memo = new double[n + 1][n + 1];
+    for (double[] row : memo) Arrays.fill(row, -1.0);
+    return dfs(n, n);
+double dfs(int a, int b)
+    if (a <= 0 && b <= 0) return 0.5;
+    if (a <= 0) return 1.0;
+    if (b <= 0) return 0.0;
+    if (memo[a][b] != -1.0) return memo[a][b];
+    memo[a][b] = 0.25 * (dfs(a - 4, b) + dfs(a - 3, b - 1) + dfs(a - 2, b - 2)  + dfs(a - 1, b - 3));
+    return memo[a][b];
+
+double NEW-21-GAME(int n, int k, int maxPts)
+    if (k == 0) return 1.0;
+    memo = new Double[n + maxPts + 1];
+    return dfs(0);
+double dfs(int score)
+    if (score >= k) return score <= n ? 1.0 : 0.0;
+    if (memo[score] != null) return memo[score];
+    double prob = 0.0;
+    for (int i = 1; i <= maxPts; i++)
+        prob += dfs(score + i);
+    prob /= maxPts;
+    memo[score] = prob;
+    return prob;
+
+double PROBABILITY-OF-TWO-BOXES-HAVING-SAME-DISTINCT-BALLS(int[] balls)
+    double totalWays = 0;
+    double goodWays = 0;
+    n = Arrays.stream(balls).sum();
+    dfs(0, 0, 0, 0, 0, 1.0);
+    return goodWays / totalWays;
+void dfs(int i, int countA, int countB, int colorsA, int colorsB, double ways)
+    if (i == balls.length)
+        if (countA == countB)
+            totalWays += ways;
+            if (colorsA == colorsB)
+                goodWays += ways;
+        return;
+    for (int x = 0; x <= balls[i]; x++)
+        int y = balls[i] - x;
+        int newColorsA = colorsA + (x > 0 ? 1 : 0);
+        int newColorsB = colorsB + (y > 0 ? 1 : 0);
+        double comb = comb(balls[i], x);
+        dfs(i + 1, countA + x, countB + y, newColorsA, newColorsB, ways * comb);
+double comb(int n, int k)
+    double res = 1;
+    for (int i = 1; i <= k; i++)
+        res = res * (n - i + 1) / i;
+    return res;
+=================================================================================
