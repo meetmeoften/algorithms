@@ -166,7 +166,6 @@ void LEFT-VIEW(Node root)
             if (node.left != null) q.add(node.left);
             if (node.right != null) q.add(node.right);
 
-
 void TOP-VIEW(Node root)
     Queue<Pair<Node, Integer>> q;
     Map<Integer, Integer> map;
@@ -184,6 +183,16 @@ void TOP-VIEW(Node root)
                 q.add(new Pair<>(node.right, dist+1));
         for(Map.Entry<Integer, Integer> entry : map.entrySet())
             println(entry.getValue());
+
+void TOP-VIEW-RECURSIVE(Node root)
+    Map<Integer, EvaluateDivision.Pair<Integer, Integer>> map = new TreeMap<>();
+    printTop(root, 0, 0, map);
+void printTop(Node root, int dist, int level, Map<Integer, EvaluateDivision.Pair<Integer, Integer>> map)
+    if (root == null) return;
+    if (!map.containsKey(dist) || map.get(dist).getValue() > level)
+        map.put(dist, new EvaluateDivision.Pair(root.data, level));
+    printTop(root.left, dist - 1, level + 1, map);
+    printTop(root.right, dist + 1, level + 1, map);
 
 void VERTICAL-VIEW(Node root)
     Map<Integer, List<Integer>> map;
@@ -262,7 +271,7 @@ int MAX-WIDTH-OF-BINARY-TREE(TreeNode root)
     	maxWidth = Math.max(maxWidth, end - start + 1);
     return maxWidth;
 
-void ROOT-PATH(Node root) 
+void ROOT-TO-NODE-PATH(Node root)
     Queue<Pair> queue;
     queue.add(new Pair(root, String.valueOf(root.data)));
     while (!queue.isEmpty())

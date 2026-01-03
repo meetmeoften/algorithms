@@ -17,7 +17,6 @@ boolean KEYS-AND-ROOMS(List<List<Integer>> rooms)
             return false;
     return true;
 
-
 int NUMBER-OF-PROVINCES(int[][] isConnected)
     int n = isConnected.length;
     int[] visited = new int[n];
@@ -33,6 +32,30 @@ void dfs(int[][] grid, int u, int[] visited, int n)
         if (grid[u][i] == 1 && visited[i] == 0)
             dfs(grid, i, visited, n);
 
+int REORDER-ROUTES-TO-MAKE-ALL-PATHS-LEAD-TO-CITY-ZERO(int n, int[][] connections) //1466
+    HashSet<String> set = new HashSet<>();
+    ArrayList<Integer>[] graph = new ArrayList[n];
+    for(int i = 0 ; i < n ; i++) graph[i] = new ArrayList<>();
+    for(int[] e : connections)
+        int u = e[0], v = e[1];
+        graph[u].add(v);
+        graph[v].add(u);
+        set.add(u + "->" + v);
+    Queue<Integer> q = new LinkedList<>();
+    q.add(0);
+    int res = 0;
+    boolean[] vis = new boolean[n];
+    while(!q.isEmpty())
+        int size = q.size();
+        while(size-- > 0)
+            int rem = q.remove();
+            vis[rem] = true;
+            for(int e: graph[rem])
+                if(!vis[e])
+                    if(set.contains(rem + "->" + e))
+                         res++;
+                    q.add(e);
+    return res;
 
 int WORD-LADDER(String beginWord, String endWord, List<String> wordList)
     if (beginWord.equals(endWord)) return 1;
@@ -58,7 +81,6 @@ int WORD-LADDER(String beginWord, String endWord, List<String> wordList)
     	++steps;
     return 0;
 
-
 int MIN-OPERATIONS-TO-MAKE-X-Y-EQUAL(int x, int y)
     if (x <= y) return y - x;
     int res = x - y;
@@ -67,7 +89,6 @@ int MIN-OPERATIONS-TO-MAKE-X-Y-EQUAL(int x, int y)
     res = Math.min(res, minimumOperationsToMakeEqual(x / 11, y) + 1 + x % 11);
     res = Math.min(res, minimumOperationsToMakeEqual(x / 11 + 1, y) + 1 + 11 - x % 11);
     return res;
-
 
 Node CLONE-GRAPH(Node node)
     Map<Node, Node> m = new HashMap<>();
@@ -81,8 +102,100 @@ Node helper(Node node, Map<Node, Node> m)
         Node neighbourCopy = helper(neighbor, m);
         m.get(node).neighbors.add(neighbourCopy);
     return m.get(node);
-===================================================================================
 
+int MIN-TIME-TO-REACH-DESTINATION-IN-DIRECTED-GRAPH(int n, int[][] edges) //3604
+    List<int[]>[] adj = new ArrayList[n];
+    for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
+    for (int[] e : edges) adj[e[0]].add(new int[]{e[1], e[2], e[3]});
+    long[] dist = new long[n];
+    Arrays.fill(dist, Long.MAX_VALUE);
+    PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
+    dist[0] = 0;
+    pq.offer(new long[]{0, 0}); // {time, node}
+    while (!pq.isEmpty())
+        long[] cur = pq.poll();
+        long time = cur[0];
+        int u = (int) cur[1];
+        if (time > dist[u]) continue;   // outdated
+        if (u == n - 1) return (int) time; // reached destination
+        for (int[] edge : adj[u])
+            int v = edge[0];
+            long start = edge[1], end = edge[2];
+            if (time > end) continue;
+            long arriveTime;
+            if (time < start)
+                arriveTime = start + 1;
+            else
+                arriveTime = time + 1;
+            if (arriveTime < dist[v])
+                dist[v] = arriveTime;
+                pq.offer(new long[]{arriveTime, v});
+    return dist[n - 1] == Long.MAX_VALUE ? -1 : (int) dist[n - 1];
+
+List<Integer> FINAL-ALL-PEOPLE-WITH-SECRET(int n, int[][] meetings, int firstPerson) //2092
+    Set<Integer> secret = new HashSet<>();
+    secret.add(0);
+    secret.add(firstPerson);
+    Arrays.sort(meetings, (a, b) -> a[2] - b[2]);
+    int i = 0;
+    while (i < meetings.length)
+        int time = meetings[i][2];
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        Set<Integer> peopleInTime = new HashSet<>();
+        while (i < meetings.length && meetings[i][2] == time)
+            int u = meetings[i][0];
+            int v = meetings[i][1];
+            graph.computeIfAbsent(u, k -> new ArrayList<>()).add(v);
+            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(u);
+            peopleInTime.add(u);
+            peopleInTime.add(v);
+            i++;
+        Set<Integer> visited = new HashSet<>();
+        for (int p : peopleInTime)
+            if (secret.contains(p) && !visited.contains(p))
+                dfs(p, graph, visited);
+        secret.addAll(visited);
+    return new ArrayList<>(secret);
+void dfs(int node, Map<Integer, List<Integer>> graph, Set<Integer> visited)
+    visited.add(node);
+    if (!graph.containsKey(node)) return;
+    for (int nei : graph.get(node))
+        if (!visited.contains(nei))
+            dfs(nei, graph, visited);
+
+int MINIMIZE-TOTAL-PRICE-OF-TRIPS(int n, int[][] edges, int[] price, int[][] trips) // 2646
+    this.price = price;
+    count = new int[n];
+    visited = new boolean[n];
+    tree = new ArrayList[n];
+    for (int i = 0; i < n; i++) tree[i] = new ArrayList<>();
+    for (int[] e : edges)
+        tree[e[0]].add(e[1]); tree[e[1]].add(e[0]);
+    for (int[] t : trips)
+        Arrays.fill(visited, false);
+        dfsCount(t[0], -1, t[1]);
+    int[] res = dfsDP(0, -1);
+    return Math.min(res[0], res[1]);
+boolean dfsCount(int curr, int parent, int target)
+    if (curr == target)
+        count[curr]++;
+        return true;
+    for (int next : tree[curr])
+        if (next == parent) continue;
+        if (dfsCount(next, curr, target))
+            count[curr]++;
+            return true;
+    return false;
+int[] dfsDP(int node, int parent)
+    int notHalved = count[node] * price[node];
+    int halved = count[node] * (price[node] / 2);
+    for (int child : tree[node])
+        if (child == parent) continue;
+        int[] childDP = dfsDP(child, node);
+        notHalved += Math.min(childDP[0], childDP[1]);
+        halved += childDP[0]; // child cannot be halved
+    return new int[]{notHalved, halved};
+===================================================================================
 boolean HAS-CYCLE-DIRECTED()
     Map<Integer, List<Integer>> graph;
     boolean[] visited = new boolean[n];
@@ -126,7 +239,6 @@ boolean bfsDetectCycle(int start, boolean[] visited)
          else if (neighbor != parent)
           return true; // cycle detected
     return false;
-
 
 boolean BIPARTITE(Map<Integer, List<Integer>> graph, int n)
     int[] colors = new int[n];
@@ -180,6 +292,49 @@ boolean dfs(char[][] grid, boolean[][] visited, int parentX, int parentY, int x,
             if(dfs(grid, visited, x , y, newX, newY, grid[newX][newY]))
                 return true;
     return false;
+
+int SHORTEST-CYCLE-IN-GRAPH(int n, int[][] edges) //2608
+    List<Integer>[] graph = new ArrayList[n];
+    for (int i = 0; i < n; i++) graph[i] = new ArrayList<>();
+    for (int[] e : edges)
+        graph[e[0]].add(e[1]); graph[e[1]].add(e[0]);
+    int ans = Integer.MAX_VALUE;
+    for (int start = 0; start < n; start++)
+        int[] dist = new int[n];
+        Arrays.fill(dist, -1);
+        int[] parent = new int[n];
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        dist[start] = 0;
+        parent[start] = -1;
+        while (!q.isEmpty())
+            int u = q.poll();
+            for (int v : graph[u])
+                if (dist[v] == -1)
+                    dist[v] = dist[u] + 1;
+                    parent[v] = u;
+                    q.offer(v);
+                else if (parent[u] != v)
+                    ans = Math.min(ans, dist[u] + dist[v] + 1);
+    return ans == Integer.MAX_VALUE ? -1 : ans;
+
+int LONGEST-CYCLE-IN-GRAPH(int[] edges) // 2360
+    int n = edges.length;
+    boolean[] visited = new boolean[n];
+    int[] time = new int[n];
+    int result = -1;
+    int clock = 1;
+    for (int i = 0; i < n; i++)
+        if (visited[i]) continue;
+        int curr = i;
+        int startTime = clock;
+        while (curr != -1 && !visited[curr])
+            visited[curr] = true;
+            time[curr] = clock++;
+            curr = edges[curr];
+        if (curr != -1 && time[curr] >= startTime)
+            result = Math.max(result, clock - time[curr]);
+    return result;
 ===================================================================================
 boolean TOPOLOGICAL(int numCourses, int[][] edges)
     Map<Integer, Set<Integer>> graph = new HashMap<>();
@@ -200,7 +355,6 @@ boolean TOPOLOGICAL(int numCourses, int[][] edges)
     		if (indeg[neighbour] == 0)
     			q.offer(neighbour);
     return count == numCourses;
-
 
 List<Integer> EVENTUAL-SAFE-STATES(int[][] graph)
     int v = graph.length;
@@ -253,7 +407,6 @@ List<List<Integer>> ALL-ANCESTORS-DIRECTED-ACYCLIC-GRAPH(int n, int[][] edges)
         res.add(list);
     return res;
 
-
 String ALIEN-DICTIONARY(String[] words)
     if (words == null || words.length == 0) return "";
     Map<Character, List<Character>> graph = new HashMap<>();
@@ -286,7 +439,6 @@ String ALIEN-DICTIONARY(String[] words)
     if (sb.length() < inorder.size())  return "";
     return sb.toString();
 
-
 int LARGEST-COLOR-VALUE-IN-DIRECTED-GRAPH(String colors, int[][] edges)
     int n = colors.length();
     List<List<Integer>> graph = new ArrayList<>();
@@ -316,6 +468,54 @@ int LARGEST-COLOR-VALUE-IN-DIRECTED-GRAPH(String colors, int[][] edges)
             if (indegree[neighbor] == 0)
                 queue.offer(neighbor);
     return visited == n ? maxColorValue : -1;
+
+int PARALLEL-COURSES-II(int n, int[][] relations, int k)
+    int[] pre = new int[n];
+    for (int[] r : relations)
+        int u = r[0] - 1;
+        int v = r[1] - 1;
+        pre[v] |= (1 << u); // v depends on u
+    int N = 1 << n;
+    int[] dp = new int[N];
+    Arrays.fill(dp, n + 1); // max semesters can't exceed n
+    dp[0] = 0; // no courses taken yet
+    for (int mask = 0; mask < N; mask++)
+        if (dp[mask] >= n) continue; // invalid state
+        int avail = 0;
+        for (int i = 0; i < n; i++)
+            if ((mask & (1 << i)) == 0 && (mask & pre[i]) == pre[i])
+                avail |= (1 << i);
+        for (int sub = avail; sub > 0; sub = (sub - 1) & avail)
+            if (Integer.bitCount(sub) > k) continue;
+            dp[mask | sub] = Math.min(dp[mask | sub], dp[mask] + 1);
+    return dp[N - 1];
+
+int PARALLEL-COURSES-II(int n, int[][] relations, int[] time)
+    List<List<Integer>> graph = new ArrayList<>();
+    for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+    int[] indegree = new int[n];
+    for (int[] r : relations)
+        int u = r[0] - 1;
+        int v = r[1] - 1;
+        graph.get(u).add(v);
+        indegree[v]++;
+    int[] finishTime = new int[n];
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < n; i++)
+        if (indegree[i] == 0)
+            finishTime[i] = time[i]; // can start at month 0
+            q.add(i);
+    while (!q.isEmpty())
+        int u = q.poll();
+        for (int v : graph.get(u))
+            // update finish time of v
+            finishTime[v] = Math.max(finishTime[v], finishTime[u] + time[v]);
+            indegree[v]--;
+            if (indegree[v] == 0) q.add(v);
+    int ans = 0;
+    for (int t : finishTime)
+        ans = Math.max(ans, t);
+    return ans;
 ===================================================================================
 int[][] FLOOD-FILL(int[][] image, int sr, int sc, int color)
         if (image[sr][sc] == color)  return image;
@@ -352,7 +552,6 @@ void dfs(int[][] grid, int row, int col)
     dfs(grid, row-1, col);
     dfs(grid, row, col+1);
     dfs(grid, row, col-1);
-
 
 int[][] FIND-ALL-GROUPS-OF-FARMLAND(int[][] land)
     List<int[]> result = new ArrayList<>();
@@ -445,7 +644,7 @@ void boundaryDFS(char[][] board, int i, int j)
 		boundaryDFS(board, i, j + 1);
 		boundaryDFS(board, i, j - 1);
 
-int CLOSED-ISLANDS(int[][] grid)
+int NUMBER-OF-CLOSED-ISLANDS(int[][] grid)
         int rows = grid.length;
         int cols = grid[0].length;
         for(int i=0; i < grid.length; i++)
@@ -469,7 +668,6 @@ void dfs(int[][] grid, int x, int y)
         dfs(grid, x - 1, y);
         dfs(grid, x, y + 1);
         dfs(grid, x, y - 1);
-
 
 int[][] 01-MATRIX(int[][] mat) // 542 Leetcode
     int m = mat.length, n = mat[0].length;
@@ -520,7 +718,6 @@ int NETWORK-DELAY-TIME-DIJKSTRA(int[][] times, int n, int k)
         max = Math.max(max, dist[i]);
     return max;
 
-
 int NETWORK-DELAY-TIME-BELLMAN-FORD(int[][] times, int N, int K)
     int INF = Integer.MAX_VALUE / 2;
     int[] dist = new int[N];
@@ -540,37 +737,11 @@ int NETWORK-DELAY-TIME-BELLMAN-FORD(int[][] times, int N, int K)
         max = Math.max(max, d);
     return max;
 
-
-int SHORTEST-PATH-IN-BINARY-MATRIX(int[][] grid)
-    int n = grid.length;
-    if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
-    int[][] directions = {-1, -1}, {-1, 0},  {0, -1},{0, 1},{-1, 1},{1, -1},{1, 0},{1, 1}
-    Queue<int[]> queue = new LinkedList<>();
-    queue.offer(new int[]{0, 0});
-    grid[0][0] = 1; // mark visited
-    int pathLength = 1;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            int[] cell = queue.poll();
-            int x = cell[0];  int y = cell[1];
-            if (x == n - 1 && y == n - 1) {
-                return pathLength;
-            for (int[] dir : directions) {
-                int nx = x + dir[0];
-                int ny = y + dir[1];
-                if (nx >= 0 && nx < n && ny >= 0 && ny < n && grid[nx][ny] == 0) {
-                    grid[nx][ny] = 1; // mark visited
-                    queue.offer(new int[]{nx, ny});
-        pathLength++;
-    return -1;
-
-
 int NUMBER-OF-WAYS-TO-ARRIVE-DESTINATION(int n, int[][] roads)
     List<List<int[]>> graph = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
         graph.add(new ArrayList<>());
-    for (int[] r : roads) {
+    for (int[] r : roads)
         graph.get(r[0]).add(new int[]{r[1], r[2]});
         graph.get(r[1]).add(new int[]{r[0], r[2]});
     long[] dist = new long[n];
@@ -580,7 +751,7 @@ int NUMBER-OF-WAYS-TO-ARRIVE-DESTINATION(int n, int[][] roads)
     ways[0] = 1;
     PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(a[0], b[0]));
     pq.offer(new long[]{0, 0});
-    while (!pq.isEmpty()) {
+    while (!pq.isEmpty())
         long[] cur = pq.poll();
         long d = cur[0];
         int u = (int) cur[1];
@@ -592,10 +763,9 @@ int NUMBER-OF-WAYS-TO-ARRIVE-DESTINATION(int n, int[][] roads)
                 dist[v] = newDist;
                 ways[v] = ways[u];
                 pq.offer(new long[]{newDist, v});
-            else if (newDist == dist[v]) {
+            else if (newDist == dist[v])
                 ways[v] = (ways[v] + ways[u]) % MOD;
     return ways[n - 1];
-
 
  public int MIN-COST-MAKE-ONE-VALID-PATH(int[][] grid) // 1368 - Leet code
     int m = grid.length, n = grid[0].length;
@@ -620,6 +790,29 @@ int NUMBER-OF-WAYS-TO-ARRIVE-DESTINATION(int n, int[][] roads)
                 else deque.offerLast(new int[]{nx, ny});
     return dist[m - 1][n - 1];
 
+int SHORTEST-PATH-IN-BINARY-MATRIX(int[][] grid)
+    int n = grid.length;
+    if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
+    int[][] directions = {-1, -1}, {-1, 0},  {0, -1},{0, 1},{-1, 1},{1, -1},{1, 0},{1, 1}
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[]{0, 0});
+    grid[0][0] = 1; // mark visited
+    int pathLength = 1;
+    while (!queue.isEmpty())
+        int size = queue.size();
+        for (int i = 0; i < size; i++)
+            int[] cell = queue.poll();
+            int x = cell[0];  int y = cell[1];
+            if (x == n - 1 && y == n - 1)
+                return pathLength;
+            for (int[] dir : directions)
+                int nx = x + dir[0];
+                int ny = y + dir[1];
+                if (nx >= 0 && nx < n && ny >= 0 && ny < n && grid[nx][ny] == 0)
+                    grid[nx][ny] = 1; // mark visited
+                    queue.offer(new int[]{nx, ny});
+        pathLength++;
+    return -1;
 
 int SECOND-MINIMUM-TIME-TO-REACH-DESTINATION(int n, int[][] edges, int time, int change)
     List<List<Integer>> graph = new ArrayList<>();
@@ -641,7 +834,7 @@ int SECOND-MINIMUM-TIME-TO-REACH-DESTINATION(int n, int[][] edges, int time, int
             if ((t / change) % 2 == 1)
                 t += change - (t % change);
             t += time;
-            if (t < dist[next][0]) {
+            if (t < dist[next][0])
                 dist[next][1] = dist[next][0];
                 dist[next][0] = t;
                 pq.offer(new int[]{t, next});
@@ -649,6 +842,22 @@ int SECOND-MINIMUM-TIME-TO-REACH-DESTINATION(int n, int[][] edges, int time, int
                 dist[next][1] = t;
                 pq.offer(new int[]{t, next});
     return dist[n][1];
+
+int CHEAPEST-FLIGHTS-BELLMAN-FORD(int n, int[][] flights, int src, int dst, int K)
+		int[] cost = new int[n];
+		Arrays.fill(cost, Integer.MAX_VALUE);
+		cost[src] = 0;
+		for (int i = 0; i <= K; i++)
+			int[] temp = Arrays.copyOf(cost, n);
+			for (int[] f : flights)
+				int curr = f[0];
+				int next = f[1];
+				int price = f[2];
+				if (cost[curr] == Integer.MAX_VALUE)
+					continue;
+				temp[next] = Math.min(temp[next], cost[curr] + price);
+			cost = temp;
+		return cost[dst] == Integer.MAX_VALUE ? -1 : cost[dst];
 ===================================================================================
 void SHORTEST-DISTANCE(int[][] matrix) // FLOYD WARSHALL
     int n = matrix.length;
@@ -672,7 +881,7 @@ int CITY-WITH-SMALLEST-NUMBER-OF-NEIGHBOURS-THRESHOLD(int n, int[][] edges, int 
             int u = e[0], v = e[1], w = e[2];
             dist[u][v] = w;
             dist[v][u] = w;
-        for (int k = 0; k < n; k++) {
+        for (int k = 0; k < n; k++)
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                     if (dist[i][k] + dist[k][j] < dist[i][j])
@@ -712,7 +921,93 @@ long MINIMUM-COST-TO-CONVERT-STRING-1(String source,String target,char[] origina
         totalCost += dist[s][t];
     return totalCost;
 
+int NUMBER-OF-SETS-OF-CLOSING-BRANCHES(int n, int maxDistance, int[][] roads) //2959
+    final int INF = 1_000_000_000;
+    int[][] base = new int[n][n];
+    for (int i = 0; i < n; i++)
+        Arrays.fill(base[i], INF);
+        base[i][i] = 0;
+    for (int[] r : roads)
+        int u = r[0], v = r[1], w = r[2];
+        base[u][v] = Math.min(base[u][v], w);
+        base[v][u] = Math.min(base[v][u], w);
+    int ans = 0;
+    for (int mask = 0; mask < (1 << n); mask++)
+        int[][] dist = new int[n][n];
+        for (int i = 0; i < n; i++)
+            dist[i] = base[i].clone();
+        for (int k = 0; k < n; k++)
+            if ((mask & (1 << k)) == 0) continue;
+            for (int i = 0; i < n; i++)
+                if ((mask & (1 << i)) == 0) continue;
+                for (int j = 0; j < n; j++)
+                    if ((mask & (1 << j)) == 0) continue;
+                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+        boolean valid = true;
+        for (int i = 0; i < n && valid; i++)
+            if ((mask & (1 << i)) == 0) continue;
+            for (int j = 0; j < n; j++)
+                if ((mask & (1 << j)) == 0) continue;
+                if (dist[i][j] > maxDistance)
+                    valid = false;
+                    break;
+        if (valid) ans++;
+    return ans;
 ===================================================================================
+class UNION-FIND
+    private int[] parents, size, rank;
+    private int count;
+    public UnionFind(int n)
+    	parent = new int[n];
+        size = new int[n];
+        rank = new int[n];
+        count = n;
+    	for (int i = 0; i < parents.length; i++)
+    		parents[i] = i;
+    		size[i] = 1;
+            rank[i] = 0;
+    public int find(int node)
+        if (parent[x] != x)
+            parent[x] = find(parent[x]);
+        return parent[x];
+    public void union(int i, int j)
+    	int p1 = find(i), p2 = find(j);
+    	if (p1 == p2) return;
+    	parents[p2] = p1;
+    public int union(int a, int b)
+        int rootA = find(a);
+        int rootB = find(b);
+        if (rootA == rootB) return size[rootA];
+        if (rank[rootA] < rank[rootB])
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
+            return size[rootB];
+        else if (rank[rootA] > rank[rootB])
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
+            return size[rootA];
+        else
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
+            rank[rootA]++;
+            return size[rootA];
+    public boolean unionBySize(int a, int b)
+        int rootA = find(a);
+        int rootB = find(b);
+        if (rootA == rootB) return false;
+        if (size[rootA] < size[rootB])
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
+        else
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
+        count--;
+        return true;
+    public boolean connected(int a, int b)
+        return find(a) == find(b);
+    public int componentSize(int x)
+        return size[find(x)];
+
 List<List<String>> ACCOUNTS-MERGE(List<List<String>> accounts)
     UnionFind uf = new UnionFind(accounts.size());
     Map<String, Integer> emailToAcc = new HashMap<>();
@@ -739,12 +1034,11 @@ List<List<String>> ACCOUNTS-MERGE(List<List<String>> accounts)
     	result.add(temp);
     return result;
 
-
-boolean[] EXISTENCE-EDGE-LENGTH-LIMITED-PATHS(int n, int[][] edgeList, int[][] queries) {
+boolean[] EXISTENCE-EDGE-LENGTH-LIMITED-PATHS(int n, int[][] edgeList, int[][] queries)
     Arrays.sort(edgeList, (a, b) -> a[2] - b[2]);
     int q = queries.length;
     int[][] newQueries = new int[q][4];
-    for (int i = 0; i < q; i++) {
+    for (int i = 0; i < q; i++)
         newQueries[i] = new int[]{queries[i][0], queries[i][1], queries[i][2], i};
     Arrays.sort(newQueries, (a, b) -> a[2] - b[2]);
     boolean[] answer = new boolean[q];
@@ -761,25 +1055,73 @@ boolean[] EXISTENCE-EDGE-LENGTH-LIMITED-PATHS(int n, int[][] edgeList, int[][] q
         answer[idx] = dsu.find(p) == dsu.find(qNode);
     return answer;
 
+public int LATEST-GROUP-OF-SIZE-M(int[] A, int m) //1562
+        int n = arr.length;
+        if (m == n) return n;
+        int[] len = new int[n + 2]; // stores group lengths at boundaries
+        int countM = 0;
+        int result = -1;
+        for (int step = 0; step < n; step++)
+            int pos = arr[step];
+            int left = len[pos - 1];
+            int right = len[pos + 1];
+            int newLen = left + right + 1;
+            if (left == m) countM--;
+            if (right == m) countM--;
+            if (newLen == m) countM++;
+            len[pos - left] = newLen;
+            len[pos + right] = newLen;
+            if (countM > 0)
+                result = step + 1;
+        return result;
+public int LATEST-GROUP-OF-SIZE-M-UNION-FIND(int[] arr, int m)
+    int n = arr.length;
+    if (m == n) return n;
+    UnionFind uf = new UnionFind(n);
+    boolean[] active = new boolean[n];
+    int countM = 0;
+    int result = -1;
+    for (int step = 0; step < n; step++)
+        int pos = arr[step] - 1; // convert to 0-based
+        active[pos] = true;
+        if (m == 1) countM++;
+        if (pos > 0 && active[pos - 1])
+            int sizeA = uf.getSize(pos);
+            int sizeB = uf.getSize(pos - 1);
+            if (sizeA == m) countM--;
+            if (sizeB == m) countM--;
+            int merged = uf.union(pos, pos - 1);
+            if (merged == m) countM++;
+        if (pos < n - 1 && active[pos + 1])
+            int sizeA = uf.getSize(pos);
+            int sizeB = uf.getSize(pos + 1);
+            if (sizeA == m) countM--;
+            if (sizeB == m) countM--;
+            int merged = uf.union(pos, pos + 1);
+            if (merged == m) countM++;
+        if (countM > 0)
+            result = step + 1; // steps are 1-based
+    return result;
+
+boolean GCD-SORT(int[] nums)
+    int max = 0;
+    for (int num : nums) max = Math.max(max, num);
+    UnionFind uf = new UnionFind(max);
+    for (int num : nums)
+        int x = num;
+        for (int factor = 2; factor * factor <= x; factor++)
+            if (x % factor == 0)
+                uf.union(num, factor);
+                while (x % factor == 0) x /= factor;
+        if (x > 1)
+            uf.union(num, x);
+    int[] sorted = nums.clone();
+    Arrays.sort(sorted);
+    for (int i = 0; i < nums.length; i++)
+        if (uf.find(nums[i]) != uf.find(sorted[i]))
+            return false;
+    return true;
 ===================================================================================
-
-int CHEAPEST-FLIGHTS-BELLMAN-FORD(int n, int[][] flights, int src, int dst, int K)
-		int[] cost = new int[n];
-		Arrays.fill(cost, Integer.MAX_VALUE);
-		cost[src] = 0;
-		for (int i = 0; i <= K; i++)
-			int[] temp = Arrays.copyOf(cost, n);
-			for (int[] f : flights)
-				int curr = f[0];
-				int next = f[1];
-				int price = f[2];
-				if (cost[curr] == Integer.MAX_VALUE)
-					continue;
-				temp[next] = Math.min(temp[next], cost[curr] + price);
-			cost = temp;
-		return cost[dst] == Integer.MAX_VALUE ? -1 : cost[dst];
-
-
 int MINIMUM-SPANNING-TREE(int V, List<List<List<Integer>>> adj) // PRIMS-ALGORITHM
     PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x, y) -> x.distance - y.distance);
     int[] vis = new int[V];
@@ -842,13 +1184,13 @@ List<List<Integer>> CRITICAL-AND-PSEUDO-CRITICAL-EDGES-MST(int n, int[][] edges)
     int baseWeight = kruskal(n, newEdges, -1, -1);
     List<Integer> critical = new ArrayList<>();
     List<Integer> pseudo = new ArrayList<>();
-    for (int i = 0; i < m; i++) {
+    for (int i = 0; i < m; i++)
         if (kruskal(n, newEdges, i, -1) > baseWeight) // Exclude edge i
             critical.add(newEdges[i][3]);
         else if (kruskal(n, newEdges, -1, i) == baseWeight) // Force include edge i
             pseudo.add(newEdges[i][3]);
     return Arrays.asList(critical, pseudo);
-int KRUSKAL(int n, int[][] edges, int skip, int pick) {
+int KRUSKAL(int n, int[][] edges, int skip, int pick)
     DSU dsu = new DSU(n);
     int weight = 0;
     int count = 0;
@@ -865,7 +1207,7 @@ int KRUSKAL(int n, int[][] edges, int skip, int pick) {
             count++;
     return count == n - 1 ? weight : Integer.MAX_VALUE;
 ===================================================================================
-boolean TWO-EDGE-CONNECTED(List<List<Integer>> graph) // TARJAN
+boolean TWO-EDGE-CONNECTED(List<List<Integer>> graph) // TARJAN - STRONGLY CONNECTED
     int n = graph.size();
     if (n <= 1) return true;
     int[] disc = new int[n];
@@ -890,15 +1232,14 @@ void dfs(int node, int parent, List<List<Integer>> graph, int[] disc, int[] low,
         else
             low[node] = Math.min(low[node], disc[neighbor]);
 
-
 int time = 0;
 List<List<Integer>> graph;
 int[] disc, low;
 List<List<Integer>> result;
-List<List<Integer>> CRITICAL-CONNECTIONS-IN-NETWORK(int n, List<List<Integer>> connections) {
+List<List<Integer>> CRITICAL-CONNECTIONS-IN-NETWORK(int n, List<List<Integer>> connections)
         graph = new ArrayList<>();
         for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-        for (List<Integer> edge : connections) {
+        for (List<Integer> edge : connections)
             int u = edge.get(0);
             int v = edge.get(1);
             graph.get(u).add(v);
@@ -916,13 +1257,12 @@ void dfs(int u, int parent)
         if (disc[v] == -1)
             dfs(v, u);
             low[u] = Math.min(low[u], low[v]);
-            if (low[v] > disc[u]) {
+            if (low[v] > disc[u])
                 result.add(Arrays.asList(u, v));
         else
             low[u] = Math.min(low[u], disc[v]);
 
 ===================================================================================
-
 RECONSTRUCT-ITINERARY
 Map<String, PriorityQueue<String>> graph = new HashMap<>();
 LinkedList<String> list = new LinkedList<>();
@@ -976,5 +1316,65 @@ void dfs(String airport, Map<String, List<String>> graph, Set<String> visited)
     visited.add(airport);
     for (String next : graph.get(airport))
         dfs(next, graph, visited);
+===================================================================================
+public int[] MAXIMUM-SUBGRAPH-SCORE(int n, int[][] edges, int[] good) // TREE-REROOTING
+    g = new ArrayList[n];
+    for(int i=0; i < n; i++) g[i] = new ArrayList<>();
+    for(int[] e : edges)
+        g[e[0]].add(e[1]); g[e[1]].add(e[0]);
+    val = new int[n];
+    for(int i=0; i < n; i++) val[i] = good[i] == 1 ? 1 : -1;
+    dp = new int[n];
+    res = new int[n];
+    dfs1(0, -1);
+    dfs2(0, -1, 0);
+    return res;
+void dfs1(int u, int p)
+    dp[u] = val[u];
+    for(int v : g[u])
+        if(v == p) continue;
+        dfs1(v, u);
+        dp[u] += Math.max(0, dp[v]);
+void dfs2(int u, int p, int parContribution
+    res[u] = dp[u] + parContribution;
+    for(int v : g[u]) if(v != p)
+        int removeChild = Math.max(0, dp[v]);
+        int childParContribution = Math.max(0, res[u] - removeChild);
+        dfs2(v, u, childParContribution);
 
+long MINIMUM-WEIGHTED-SUBGRAPH-WITH-REQUIRED-PATHS(int n, int[][] edges, int src1, int src2, int dest)
+    List<int[]>[] graph = new ArrayList[n];
+    List<int[]>[] reverseGraph = new ArrayList[n];
+    for (int i = 0; i < n; i++)
+        graph[i] = new ArrayList<>();
+        reverseGraph[i] = new ArrayList<>();
+    for (int[] e : edges)
+        graph[e[0]].add(new int[]{e[1], e[2]});
+        reverseGraph[e[1]].add(new int[]{e[0], e[2]});
+    long[] dist1 = dijkstra(src1, graph, n);
+    long[] dist2 = dijkstra(src2, graph, n);
+    long[] distToDest = dijkstra(dest, reverseGraph, n);
+    long ans = INF;
+    for (int i = 0; i < n; i++)
+        if (dist1[i] == INF || dist2[i] == INF || distToDest[i] == INF) continue;
+        ans = Math.min(ans, dist1[i] + dist2[i] + distToDest[i]);
+    return ans == INF ? -1 : ans;
+long[] dijkstra(int start, List<int[]>[] graph, int n)
+    long[] dist = new long[n];
+    Arrays.fill(dist, INF);
+    dist[start] = 0;
+    PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
+    pq.offer(new long[]{0, start});
+    while (!pq.isEmpty())
+        long[] cur = pq.poll();
+        long d = cur[0];
+        int u = (int) cur[1];
+        if (d > dist[u]) continue;
+        for (int[] e : graph[u])
+            int v = e[0];
+            long w = e[1];
+            if (dist[v] > d + w)
+                dist[v] = d + w;
+                pq.offer(new long[]{dist[v], v});
+    return dist;
 ===================================================================================
