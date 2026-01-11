@@ -1,0 +1,537 @@
+1089 Duplicate Zeros
+void duplicateZeros(int[] arr)
+    int zeroCount = 0;
+    for (int i = 0; i < arr.length; i++)
+        if (arr[i] == 0)  ++zeroCount;
+    for (int i = arr.length - 1, j = arr.length + zeroCount - 1; i < j; i--, j--)
+        if (arr[i] == 0)
+            if (j < arr.length)  arr[j] = 0;
+            --j;
+            if (j < arr.length)  arr[j] = 0;
+        else
+            if (j < arr.length)  arr[j] = arr[i];
+
+118-Pascal Triangle
+List<List<Integer>> generate(int numRows)
+    List<List<Integer>> triangle = new ArrayList<>();
+    List<Integer> firstRow = new ArrayList<>();
+    firstRow.add(1);
+    triangle.add(firstRow);
+    for (int i = 1; i < numRows; i++)
+        List<Integer> prevRow = triangle.get(i - 1);
+        List<Integer> newRow = new ArrayList<>();
+        newRow.add(1);
+        for (int j = 1; j < i; j++)
+            newRow.add(prevRow.get(j - 1) + prevRow.get(j));
+        newRow.add(1);
+        triangle.add(newRow);
+    return triangle;
+
+119-Pascal Triangle-II
+List<Integer> getRow(int rowIndex)
+    List<Integer> row = new ArrayList<>();
+    for (int i = 0; i <= rowIndex; i++)
+        row.add(0, 1);
+        for (int j = 1; j < row.size() - 1; j++)
+            row.set(j, row.get(j) + row.get(j + 1));
+    return row;
+
+128-Longest Consecutive Sequence
+int longestConsecutive(int[] nums)
+    Set<Integer> s = new HashSet<>();
+    int result = 0;
+    for (int i = 0; i < nums.length; i++)  s.add(nums[i]);
+    for (int num : nums)
+        if (!s.contains(num - 1))
+            int start = num;
+            while (s.contains(start + 1)) ++start;
+            result = Math.max(result, start - num + 1);
+    return result;
+
+134 Gas Station
+int canCompleteCircuit(int[] gas, int[] cost)
+    int totalTank = 0, currTank = 0, startingStation = 0;
+    for (int i = 0; i < gas.length; i++)
+        totalTank += gas[i] - cost[i];
+        currTank += gas[i] - cost[i];
+        if (currTank < 0)
+            startingStation = i + 1;
+            currTank = 0;
+    return totalTank >= 0 ? startingStation : -1;
+
+149 Max Points on a Line
+int maxPoints(int[][] points)
+    int result = 0;
+    Map<String, Integer> map = new HashMap<>();
+    for (int i = 0; i < points.length; i++)
+        map.clear();
+        int overlap = 0, count = 0;
+        for (int j = i + 1; j < points.length; j++)
+            int x = points[i][0] - points[j][0];
+            int y = points[i][1] - points[j][1];
+            if (x == 0 && y == 0)
+                ++overlap;
+                continue;
+            int gcd = gcd(x, y);
+            x /= gcd;
+            y /= gcd;
+            String key = x + ":" + y;
+            map.put(key, map.getOrDefault(key, 0) + 1);
+            count = Math.max(count, map.get(key));
+        result = Math.max(result, overlap + count + 1);
+    return result;
+int gcd(int a, int b) 
+    if (b == 0) return a;
+    return gcd(b, a % b);
+
+152-Maximum Product Subarray
+int maxProduct(int[] nums)
+    int result = Integer.MIN_VALUE, product = 1;
+    for (int i = 0; i < nums.length; i++)
+        product *= nums[i];
+        result = Math.max(result, product);
+        if (product == 0) product = 1;
+    product = 1;
+    for (int i = nums.length - 1; i >= 0; i--)
+        product *= nums[i];
+        result = Math.max(result, product);
+        if (product == 0) product = 1;
+    return result;
+
+169 MajorityElement
+int majorityElement(int[] nums)
+   int candidate = 0, count = 0;
+   for (int num : nums)
+       if (count == 0)
+           candidate = num;
+           ++count;
+       else
+           if (candidate == num)  ++count;
+           else  --count;
+   return candidate;
+
+218 SkyLine Problem
+List<List<Integer>> getSkyline(int[][] buildings)
+    List<List<Integer>> result = new ArrayList<>();
+    List<int[]> points = new ArrayList<>();
+    for (int[] b : buildings)
+        points.add(new int[]  b[0], -b[2]);
+        points.add(new int[]  b[1], b[2]);
+    Collections.sort(points, (p1, p2) -> p1[0] == p2[0] ? p1[1] - p2[1] : p1[0] - p2[0]);
+    int maxHeight = 0;
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    pq.offer(maxHeight);
+    for (int[] p : points)
+        int xCoord = p[0], height = p[1];
+        if (height < 0)  pq.offer(Math.abs(height));
+        else  pq.remove(height);
+        if (maxHeight != pq.peek())
+            maxHeight = pq.peek();
+            result.add(Arrays.asList(xCoord, maxHeight));
+    return result;
+
+219 - Contains Duplicate-II
+boolean containsNearbyDuplicate(int[] nums, int k)
+    Map<Integer, Integer> hm = new HashMap<>();
+    for (int i = 0; i < nums.length; i++)
+        if (hm.containsKey(nums[i]))
+            if (Math.abs(hm.get(nums[i]) - i) <= k) return true;
+        hm.put(nums[i], i);
+    return false;
+
+238 Product Of Array Except Itself
+int[] productExceptSelf(int[] nums)
+    int[] result = new int[nums.length];
+    int product = 1;
+    int zeroIdx = -1;
+    boolean hasZero = false;
+    for (int i = 0; i < nums.length; i++)
+        if (nums[i] == 0)
+            if (hasZero)
+                return new int[nums.length];
+            zeroIdx = i;
+            hasZero = true;
+        else
+            result[i] = product;
+            product *= nums[i];
+    if (hasZero)
+        Arrays.fill(result, 0);
+        result[zeroIdx] = product;
+        return result;
+    product = 1;
+    for (int i = nums.length - 1; i >= 0; i--)
+        result[i] *= product;
+        product *= nums[i];
+    return result;
+
+26 Remove Duplicates From Sorted Array
+int removeDuplicates(int[] nums)
+    int i = 0;
+    for (int j = 0; j < nums.length; j++)
+        if (nums[i] != nums[j])
+            ++i;
+            nums[i] = nums[j];
+    return i + 1;
+
+268 Missing Number
+int missingNumber(int[] nums)
+    int res = nums.length;
+    for (int i = 0; i < nums.length; i++)
+        res = res ^ i ^ nums[i];
+    return res;
+
+277 Find The Celebrity
+int findCelebrity(int n)
+    int candidate = 0;
+    for (int i = 1; i < n; i++)
+        if (knows(candidate, i))  candidate = i;
+    for (int i = 0; i < n; i++)
+        if (i == candidate)  continue;
+        if (knows(candidate, i) || !knows(i, candidate))  return -1;
+    return candidate;
+    
+283 Move Zeros
+void moveZeroes(int[] nums)
+    int curr = 0;
+    for (int i = 0; i < nums.length; i++)
+        if (nums[i] != 0)
+            nums[curr++] = nums[i];
+    for (int j = curr; j < nums.length; j++)
+        nums[j]  = 0;
+
+287 Find the Duplicate Number
+int findDuplicate(int[] nums)
+    int tortoise = nums[0], hare = nums[0];
+    do {
+        tortoise = nums[tortoise];
+        hare = nums[nums[hare]];
+    } while (tortoise != hare);
+    tortoise = nums[0];
+    while (tortoise != hare)
+        tortoise = nums[tortoise];
+        hare = nums[hare];
+    return tortoise;
+
+308 Range Sum Query 2D Mutable
+class NumMatrix 
+    private int[][] tree;
+    private int[][] nums;
+    private int m, n;
+    NumMatrix(int[][] matrix)
+        if (matrix == null || matrix.length == 0)  return;
+        m = matrix.length;
+        n = matrix[0].length;
+        tree = new int[m + 1][n + 1];
+        nums = new int[m][n];
+        for (int i = 0; i < m; i++) 
+            for (int j = 0; j < n; j++) 
+                update(i, j, matrix[i][j]);
+    void update(int row, int col, int val) 
+        if (m == 0 || n == 0)  return;
+        int delta = val - nums[row][col];
+        nums[row][col] = val;
+        for (int i = row + 1; i <= m; i += i & (-i)) 
+            for (int j = col + 1; j <= n; j += j & (-j)) 
+                tree[i][j] += delta;
+    int sumRegion(int row1, int col1, int row2, int col2) 
+        if (m == 0 || n == 0)   return 0;
+        return calcSum(row2 + 1, col2 + 1) + calcSum(row1, col1) - calcSum(row1, col2 + 1) - calcSum(row2 + 1, col1);
+    int calcSum(int row, int col) 
+        int sum = 0;
+        for (int i = row; i > 0; i -= i & (-i)) 
+            for (int j = col; j > 0; j -= j & (-j)) 
+                sum += tree[i][j];
+        return sum;
+
+31 next permutation
+void nextPermutation(int[] nums)
+    int n = nums.length - 1, idx = -1;
+    for (int i = n - 1; i >= 0; i--)
+        if (nums[i] < nums[i + 1])
+            idx = i;
+            break;
+    if (idx == -1)
+        reverseArray(nums, 0, n);
+        return;
+    for (int i = n; i >= 0; i--)
+        if (nums[i] > nums[idx])
+            swap(nums, i, idx);
+            break;
+    reverseArray(nums, idx + 1, n);
+void reverseArray(int[] nums, int start, int end)
+    while (start < end)
+        swap(nums, start, end);
+        ++start;
+        --end;
+void swap(int[] nums, int i, int j)
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+
+324 wiggle sort II
+void wiggleSort(int[] nums)
+    int[] copy = Arrays.copyOf(nums, nums.length);
+    Arrays.sort(copy);
+    int left = (nums.length + 1) / 2 - 1, right = nums.length - 1;
+    for (int i = 0; i < nums.length; i++)
+        if (i % 2 == 1)
+            nums[i] = copy[right];
+            --right;
+        else
+            nums[i] = copy[left];
+            --left;
+
+334 increasing triplet subsequence
+boolean increasingTriplet(int[] nums)
+    int smallest = Integer.MAX_VALUE, secondSmallest = Integer.MAX_VALUE;
+    for (int num : nums)
+        if (num <= smallest)  smallest = num;
+        else if (num < secondSmallest) secondSmallest = num;
+        else if (num > secondSmallest) return true;
+    return false;
+
+349 intersection of two arrays
+int[] intersection(int[] nums1, int[] nums2)
+    Set<Integer> set = new HashSet<>();
+    Set<Integer> intersection = new HashSet<>();
+    for (int i = 0; i < nums1.length; i++)  set.add(nums1[i]);
+    for (int i = 0; i < nums2.length; i++)
+        if (set.contains(nums2[i]))   intersection.add(nums2[i]);
+    int[] result = new int[intersection.size()];
+    int idx = 0;
+    for (int i : intersection) result[idx++] = i;
+    return result;
+
+350 intersection of two arrays II
+int[] intersect(int[] nums1, int[] nums2)
+    if (nums2.length > nums1.length)  return intersect(nums2, nums1);
+    Map<Integer, Integer> map = new HashMap<>();
+    List<Integer> result = new ArrayList<>();
+    for (int num : nums2)  map.put(num, map.getOrDefault(num, 0) + 1);
+    for (int num : nums1)
+        int frequency = map.getOrDefault(num, 0);
+        if (frequency > 0)
+            result.add(num);
+            map.put(num, frequency - 1);
+    int[] arr = new int[result.size()];
+    for (int i = 0; i < arr.length; i++) arr[i] = result.get(i);
+    return arr;
+
+383 ransom note
+boolean canConstruct(String ransomNote, String magazine)
+    int[] letters = new int[26];
+    for (char c : magazine.toCharArray())  letters[c - 'a']++;
+    for (char c : ransomNote.toCharArray())
+        letters[c - 'a']--;
+        if (letters[c - 'a'] < 0)  return false;
+    return true;
+
+406 queue reconstruction by height
+int[][] reconstructQueue(int[][] people)
+     List<int[]> result = new ArrayList<>();
+     Arrays.sort(people, (p1, p2) -> p2[0] == p1[0] ? p1[1] - p2[1] : p2[0] - p1[0]);
+     for (int[] person : people) result.add(person[1], person);
+     return result.toArray(new int[result.size()][]);
+
+41 first missing positive
+int firstMissingPositive(int[] nums)
+    int len = nums.length;
+    for (int i = 0; i < len; i++)
+        if (nums[i] <= 0 || nums[i] > len) nums[i] = len + 1;
+    for (int i = 0; i < len; i++)
+        int idx = Math.abs(nums[i]);
+        if (idx > len) continue;
+        --idx;
+        if (nums[idx] > 0) nums[idx] = -nums[idx];
+    for (int i = 0; i < len; i++)
+        if (nums[i] >= 0) return i + 1;
+    return len + 1;
+
+442 find all duplicates in an array
+List<Integer> findDuplicates(int[] nums)
+   List<Integer> result = new ArrayList<>();
+   for (int i = 0; i < nums.length; i++)
+        int idx = Math.abs(nums[i]) - 1;
+        if (nums[idx] < 0) result.add(idx + 1);
+        nums[idx] = -nums[idx];
+   return result;
+
+448 find all numbers disappeared in an array
+List<Integer> findDisappearedNumbers(int[] nums)
+    List<Integer> result = new ArrayList<>();
+    for (int i = 0; i < nums.length; i++)
+        int idx = Math.abs(nums[i]) - 1;
+        if (nums[idx] > 0) nums[idx] = -nums[idx];
+    for (int i = 0; i < nums.length; i++)
+        if (nums[i] > 0) result.add(i + 1);
+    return result;
+
+454 4sum II
+int fourSumCount(int[] A, int[] B, int[] C, int[] D)
+    int result = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < A.length; i++)
+        for (int j = 0; j < B.length; j++)
+            int sum = A[i] + B[j];
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+    for (int i = 0; i < C.length; i++)
+        for (int j = 0; j < D.length; j++)
+            int sum = C[i] + D[j];
+            result += map.getOrDefault(-sum, 0);
+    return result;
+
+53 maximum subarray
+int maxSubArray(int[] nums)
+    int max = nums[0], rollingMax = nums[0];
+    for (int i = 1; i < nums.length; i++)
+        if (rollingMax < 0)  rollingMax = 0;
+        rollingMax += nums[i];
+        max = Math.max(max, rollingMax);
+    return max;
+
+532 k diff pairs in an array
+int findPairs(int[] nums, int k)
+    Map<Integer, Integer> hm = new HashMap<>();
+    int result = 0;
+    for (int num : nums)  hm.put(num, hm.getOrDefault(num, 0) + 1);
+    for (int key : hm.keySet())
+       if (k == 0)
+           if (hm.get(key) >= 2)  ++result;
+       else if (hm.containsKey(k + key)) ++result;
+    return result;
+
+560 Subarray sum equals k
+int subarraySum(int[] nums, int k)
+    int result = 0, currSum = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);
+    for (int num : nums)
+        currSum += num;
+        if (map.containsKey(currSum - k))
+            result += map.get(currSum - k);
+        map.put(currSum, map.getOrDefault(currSum, 0) + 1);
+    return result;
+
+581 Shortest unsorted continuous subarray
+int findUnsortedSubarray(int[] nums)
+    int[] temp = nums.clone();
+    int left = 0, right = temp.length - 1;
+    Arrays.sort(temp);
+    while (left <= right && nums[left] == temp[left])  ++left;
+    while (left <= right && nums[right] == temp[right])  --right;
+    return right - left + 1;
+
+599 mimimum index sum of two lists
+String[] findRestaurant(String[] list1, String[] list2)
+    Map<String, Integer> m = new HashMap<>();
+    List<String> result = new ArrayList<>();
+    int maxFreq = Integer.MAX_VALUE;
+    for (int i = 0; i < list1.length; i++)  m.put(list1[i], i);
+    for (int i = 0; i < list2.length; i++)
+        if (m.containsKey(list2[i]))
+            int rating = m.get(list2[i]) + i;
+            if (rating <= maxFreq)
+                if (rating != maxFreq)
+                    result.clear();
+                result.add(list2[i]);
+                maxFreq = rating;
+    return result.toArray(new String[result.size()]);
+
+609 find duplicate file in system
+List<List<String>> findDuplicate(String[] paths)
+    List<List<String>> result = new ArrayList<>();
+    Map<String, Set<String>> hm = new HashMap<>();
+    for (String path : paths)
+        String[] content = path.split("\\s");
+        for (int i = 1; i < content.length; i++)
+            int fileContentIdx = content[i].indexOf("(");
+            String fileContent = content[i].substring(fileContentIdx);
+            String fullPath = content[0] + "/" + content[i].substring(0, fileContentIdx);
+            hm.putIfAbsent(fileContent, new HashSet<>());
+            hm.get(fileContent).add(fullPath);
+    for (String key : hm.keySet())
+        if (hm.get(key).size() > 1)
+            List<String> temp = new ArrayList<>();
+            Set<String> duplicateFiles = hm.get(key);
+            for (String file : duplicateFiles) temp.add(file);
+            result.add(temp);
+    return result;
+
+66 plus one
+int[] plusOne(int[] digits)
+    for (int i = digits.length - 1; i >= 0; i--)
+        if (digits[i] < 9)
+            ++digits[i];
+            return digits;
+        digits[i] = 0;
+    int[] newDigits = new int[digits.length + 1];
+    newDigits[0] = 1;
+    return newDigits;
+
+665 non decreasing array
+boolean checkPossibility(int[] nums)
+    int cnt = 0;
+    for (int i = 1; i < nums.length && cnt <= 1; i++)
+        if (nums[i] < nums[i - 1])
+            ++cnt;
+            if (i - 2 < 0 || nums[i - 2] <= nums[i]) nums[i - 1] = nums[i];
+            else nums[i] = nums[i - 1];
+    return cnt <= 1;
+
+697 degree of an array
+int findShortestSubArray(int[] nums)
+    Map<Integer, Integer> indexes = new HashMap<>();
+    Map<Integer, Integer> frequency = new HashMap<>();
+    int result = 0, maxFrequency = 0;
+    for (int i = 0; i < nums.length; i++)
+        indexes.putIfAbsent(nums[i], i);
+        frequency.put(nums[i], frequency.getOrDefault(nums[i], 0) + 1);
+        if (frequency.get(nums[i]) > maxFrequency)
+            maxFrequency = frequency.get(nums[i]);
+            result = i - indexes.get(nums[i]) + 1;
+        else if (frequency.get(nums[i]) == maxFrequency)
+            result = Math.min(result, i - indexes.get(nums[i]) + 1);
+    return result;
+
+724 find pivot index
+int pivotIndex(int[] nums)
+    int currSum = 0, totalSum = 0;
+    for (int n : nums)  totalSum += n;
+    for (int i = 0; i < nums.length; i++)
+        currSum += nums[i];
+        if (currSum == totalSum)   return i;
+        totalSum -= nums[i];
+    return -1;
+
+912 sort an array
+List<Integer> sortArray(int[] nums)
+    List<Integer> result = new ArrayList<>();
+    mergeSort(nums, 0, nums.length - 1);
+    for (int n : nums) result.add(n);
+    return result;
+void mergeSort(int[] nums, int low, int high)
+    if (low < high)
+        int mid = low + ((high - low) / 2);
+        mergeSort(nums, low, mid);
+        mergeSort(nums, mid + 1, high);
+        merge(nums, low, mid, high);
+void merge(int[] nums, int low, int mid, int high)
+    int[] temp = new int[high - low + 1];
+    int i = low, j = mid + 1, idx = 0;
+    while (i <= mid && j <= high)
+        if (nums[i] < nums[j])  temp[idx] = nums[i++];
+        else  temp[idx] = nums[j++];
+        ++idx;
+    while (i <= mid)  temp[idx++] = nums[i++];
+    while (j <= high) temp[idx++] = nums[j++];
+    for (int k = 0; k < temp.length; k++) nums[k + low] = temp[k];
+
+945 minimum increment to make array unique
+int minIncrementForUnique(int[] A)
+    Arrays.sort(A);
+    int result = 0;
+    for (int i = 1; i < A.length; i++)
+        if (A[i] <= A[i - 1])
+            result += A[i - 1] - A[i] + 1;
+            A[i] = A[i - 1] + 1;
+    return result;

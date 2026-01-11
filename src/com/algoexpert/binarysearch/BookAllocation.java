@@ -14,41 +14,41 @@ public class BookAllocation {
 
     private static int allocateBooks(int[] books, int students) {
 
-        int low = Arrays.stream(books).max().getAsInt();
-        int high = Arrays.stream(books).sum();
-        int result = -1;
+            int low = Arrays.stream(books).max().getAsInt();
+            int high = Arrays.stream(books).sum();
+            int result = -1;
 
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
+            while(low <= high) {
+                int mid = low + (high - low) / 2;
 
-            if (isPossible(books, students, mid)) {
-                high = mid  - 1;
-            } else {
-                low = mid + 1;
+                if (isPossible(books, students, mid)) {
+                    high = mid  - 1;
+                } else {
+                    low = mid + 1;
+                }
             }
+            return low;
         }
-        return low;
-    }
 
-    private static boolean isPossible(int[] books, int students, int maxPages) {
-        int sum = 0;
-        int count = 1;
-        for(int book: books) {
-            if(book > maxPages) {
+        private static boolean isPossible(int[] books, int students, int maxPages) {
+            int sum = 0;
+            int count = 1;
+            for(int book: books) {
+                if(book > maxPages) {
+                    return false;
+                }
+
+                if(sum + book > maxPages) {
+                    count++;
+                    sum =0;
+                }
+                sum+= book;
+            }
+
+            if(count > students) {
                 return false;
             }
 
-            if(sum + book > maxPages) {
-                count++;
-                sum =0;
-            }
-            sum+= book;
-        }
-
-        if(count > students) {
-            return false;
-        }
-
-        return true;
+            return true;
     }
 }

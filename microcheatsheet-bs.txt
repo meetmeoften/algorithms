@@ -50,6 +50,47 @@ boolean canSplit(int[] nums, int k, int maxSumAllowed)
     	 else currentSum += num;
     return true;
 
+int AGGRESSIVE-COWS(int[] stalls, int k)
+    Arrays.sort(stalls);
+    int low = 1;
+    int high = stalls[stalls.length - 1] - stalls[0];
+    int result = 0;
+    while (low <= high)
+        int mid = (low + high) / 2;
+        if (canPlaceCows(stalls, k, mid)) result = mid; low = mid + 1;
+        else high = mid - 1;
+    return result;
+boolean canPlaceCows(int[] stalls, int k, int distance)
+        int count = 1; // Place first cow at the first stall
+        int lastPosition = stalls[0];
+        for (int i = 1; i < stalls.length; i++)
+            if (stalls[i] - lastPosition >= distance)
+                count++;
+                lastPosition = stalls[i];
+            if (count == k) return true;
+        return false;
+
+int BOOK-ALLOCATION(int[] books, int students)
+    int low = Arrays.stream(books).max().getAsInt();
+    int high = Arrays.stream(books).sum();
+    int result = -1;
+    while(low <= high)
+        int mid = low + (high - low) / 2;
+        if (isPossible(books, students, mid)) high = mid  - 1;
+        else low = mid + 1;
+    return low;
+boolean isPossible(int[] books, int students, int maxPages) {
+    int sum = 0;
+    int count = 1;
+    for(int book: books)
+        if(book > maxPages) return false;
+        if(sum + book > maxPages)
+            count++;
+            sum =0;
+        sum+= book;
+    if(count > students) return false;
+    return true;
+
 long MINIMUM-TIME-COMPLETE-TRIPS-BRUTE-FORCE(int[] time, int totalTrips) // 2187
     long currentTime = 1;
     while (true)
@@ -81,6 +122,46 @@ int getMin(int[] time)
     return min;
 
 
+
+int MINIMUM-DAYS-TO-MAKE-BOUQUETS(int[] bloomDay, int m, int k)
+    int start = 0;
+    int end = 0;
+    for (int day : bloomDay) end = Math.max(end, day);
+    int minDays = -1;
+    while (start <= end)
+        int mid = (start + end) / 2;
+        if (getNumOfBouquets(bloomDay, mid, k) >= m)
+            minDays = mid;
+            end = mid - 1;
+        else start = mid + 1;
+    return minDays;
+int getNumOfBouquets(int[] bloomDay, int mid, int k)
+    int numOfBouquets = 0;
+    int count = 0;
+    for (int i = 0; i < bloomDay.length; i++)
+        if (bloomDay[i] <= mid) count++;
+        else count = 0;
+        if (count == k) {
+            numOfBouquets++;
+            count = 0;
+    return numOfBouquets;
+
+double MIN-MAX-DISTANCE-BETWEEN-GAS-STATIONS(int[] stations, int k)
+    double low = 0;
+    double high = stations[stations.length - 1] - stations[0];
+    double eps = 1e-6; // acceptable error
+    while (high - low > eps)
+        double mid = (low + high) / 2;
+        if (canPlace(stations, k, mid)) high = mid;
+        else low = mid;
+    return low;
+boolean canPlace(int[] stations, int k, double dist) {
+    int count = 0;
+    for (int i = 1; i < stations.length; i++)
+        double gap = stations[i] - stations[i - 1];
+        count += (int)(gap / dist);
+    return count <= k;
+
 int FIND-MIN(int[] nums)
     int left = 0; right = nums.length-1;
     while(left < right)
@@ -89,6 +170,25 @@ int FIND-MIN(int[] nums)
         else  right = mid;
     return nums[left];
     
+List<Integer> FIND-K-CLOSEST(int[] arr, int k, int x) {
+		int low = 0, high = arr.length - k;
+		List<Integer> result = new ArrayList<>();
+		while (low < high) {
+			int mid = low + (high - low) / 2;
+			if (x - arr[mid] > arr[mid + k] - x) low = mid + 1;
+			else high = mid;
+		for (int i = low; i < low + k; i++) {
+			result.add(arr[i]);
+		return result;
+
+
+int FIND-PEAK-ELEMENT(int[] nums)
+    int left = 0, right = nums.length - 1;
+    while (left < right)
+        int mid = (left + right) / 2;
+        if (nums[mid] > nums[mid + 1]) right = mid;
+        else left = mid + 1;
+    return left;
 
 int SEARCH-ROTATED(int[] nums, int left, int right, int target)
     while(left <= right)

@@ -45,7 +45,7 @@ boolean VALID-PARANTHESIS(String s)
             else stack.pop();
     return stack.isEmpty();
 
-boolean 132Pattern(int[] nums) 
+boolean 132-PATTERN(int[] nums)
     int secondMax = Integer.MIN_VALUE;
     for (int i = nums.length - 1; i >= 0; i--) 
     	if (nums[i] < secondMax) 
@@ -54,6 +54,26 @@ boolean 132Pattern(int[] nums)
     		secondMax = Math.max(secondMax, st.pop());
     	st.push(nums[i]);
     return false;
+
+String REMOVE-K-DIGITS(String nums, int k)
+        Stack<Character> st = new Stack<>();
+        for (int i = 0; i < nums.length(); i++)
+            char digit = nums.charAt(i); // Current digit
+            while (!st.isEmpty() && k > 0 && st.peek() > digit)
+                st.pop(); // Remove the last digit
+                k--; // Decrement k by 1
+            st.push(digit);
+        while (k > 0)
+            st.pop(); // Pop the last added digits
+            k--; // Decrement k by 1
+        if (st.isEmpty()) return "0";
+        StringBuilder res = new StringBuilder();
+        while (!st.isEmpty()) res.append(st.pop());
+        while (res.length() > 0 && res.charAt(res.length() - 1) == '0')
+            res.deleteCharAt(res.length() - 1);
+        res.reverse();
+        if (res.length() == 0) return "0";
+        return res.toString();
 
 int BASIC-CALCULATOR(String s)
     int len = s.length(), sign = 1, result = 0;
@@ -73,3 +93,179 @@ int BASIC-CALCULATOR(String s)
     	 else if (s.charAt(i) == ')')
     		result = result * stack.pop() + stack.pop();
     return result;
+
+int BASIC-CALCULATOR-2(String s)
+    int len; int num = 0;
+    if(s==null || (len = s.length())==0) return 0;
+    Stack<Integer> stack = new Stack<Integer>();
+    char sign = '+';
+    for(int i=0;i<len;i++){
+        if(Character.isDigit(s.charAt(i)))
+            num = num*10+s.charAt(i)-'0';
+        if((!Character.isDigit(s.charAt(i)) &&' '!=s.charAt(i)) || i==len-1)
+            if(sign=='-') stack.push(-num);
+            if(sign=='+') stack.push(num);
+            if(sign=='*') stack.push(stack.pop()*num);
+            if(sign=='/') stack.push(stack.pop()/num);
+            sign = s.charAt(i);
+            num = 0;
+    int re = 0;
+    for(int i:stack)  re += i;
+    return re;
+
+BASIC-CALCULATOR-3
+    private int i = 0;
+int calculate(String s)
+    return helper(s);
+int helper(String s)
+    Stack<Integer> stack = new Stack<>();
+    int num = 0;
+    char sign = '+';
+    while (i < s.length())
+        char c = s.charAt(i);
+        if (Character.isDigit(c))
+            num = num * 10 + (c - '0');
+        if (c == '(')
+            i++;
+            num = helper(s);
+        if ((!Character.isDigit(c) && c != ' ') || i == s.length() - 1)
+            if (sign == '+') stack.push(num);
+            else if (sign == '-') stack.push(-num);
+            else if (sign == '*') stack.push(stack.pop() * num);
+            else if (sign == '/') stack.push(stack.pop() / num);
+            sign = c;
+            num = 0;
+        if (c == ')') break;
+        i++;
+    int result = 0;
+    while (!stack.isEmpty())
+        result += stack.pop();
+    return result;
+
+LRU-CACHE
+	int size = 0;
+	Map<Integer, Integer> m = new HashMap<>();
+	Deque<Integer> q = new LinkedList<>();
+LRUCache(int capacity) {
+		size = capacity;
+int get(int key)
+    if (!m.containsKey(key)) return -1;
+    q.remove(key);
+    q.push(key);
+    return m.get(key);
+void put(int key, int value)
+    if (q.size() == size)
+    	int oldKey = q.removeLast();
+    	m.remove(oldKey);
+    else
+        q.remove(key);
+    q.push(key);
+    m.put(key, value);
+
+int CELEBRITY-PROBLEM(int[][] M)
+    int n = M.length;
+    int top = 0, down = n - 1;
+    while (top < down) {
+        if (M[top][down] == 1) top = top + 1;
+        else if (M[down][top] == 1) down = down - 1;
+        else top++; down--;
+    if (top > down) return -1;
+    for (int i = 0; i < n; i++)
+        if (i == top) continue;
+        if (M[top][i] == 1 || M[i][top] == 0)
+            return -1;
+    return top;
+
+
+SUM-OF-SUB-ARRAY-SUM-MINIMUMS / SUB-ARRAY-SUM-RANGES
+// Function to find indices of Next Smaller Element (NSE)
+int[] findNSE(int[] arr) {
+    int n = arr.length;
+    int[] ans = new int[n];
+    Stack<Integer> st = new Stack<>();
+    for (int i = n - 1; i >= 0; i--)
+        while (!st.isEmpty() && arr[st.peek()] >= arr[i])
+            st.pop();
+        ans[i] = !st.isEmpty() ? st.peek() : n;
+        st.push(i);
+    return ans;
+// Function to find indices of Previous Smaller or Equal Element (PSEE)
+int[] findPSEE(int[] arr)
+    int n = arr.length;
+    int[] ans = new int[n];
+    Stack<Integer> st = new Stack<>();
+    for (int i = 0; i < n; i++)
+        while (!st.isEmpty() && arr[st.peek()] > arr[i]) {
+            st.pop();
+        ans[i] = !st.isEmpty() ? st.peek() : -1;
+        st.push(i);
+    return ans;
+// Function to find indices of Next Greater Elements
+int[] findNGE(int[] arr)
+    int n = arr.length;
+    int[] ans = new int[n];
+    Stack<Integer> st = new Stack<>();
+    for (int i = n - 1; i >= 0; i--)
+        while (!st.isEmpty() && arr[st.peek()] <= arr[i])
+            st.pop();
+        ans[i] = !st.isEmpty() ? st.peek() : n;
+        st.push(i);
+    return ans;
+// Function to find indices of Previous Greater or Equal Elements
+int[] findPGEE(int[] arr)
+    int n = arr.length;
+    int[] ans = new int[n];
+    Stack<Integer> st = new Stack<>();
+    for (int i = 0; i < n; i++) {
+        while (!st.isEmpty() && arr[st.peek()] < arr[i])
+            st.pop();
+        ans[i] = !st.isEmpty() ? st.peek() : -1;
+        st.push(i);
+    return ans;
+    // Function to compute sum of subarray minimums
+long sumSubarrayMins(int[] arr)
+        int n = arr.length;
+        int[] nse = findNSE(arr);
+        int[] psee = findPSEE(arr);
+        long sum = 0;
+        for (int i = 0; i < n; i++)
+            int left = i - psee[i];
+            int right = nse[i] - i;
+            long freq = 1L * left * right;
+            sum += freq * arr[i];
+        return sum;
+// Function to compute sum of subarray maximums
+long sumSubarrayMaxs(int[] arr)
+    int n = arr.length;
+    int[] nge = findNGE(arr);
+    int[] pgee = findPGEE(arr);
+    long sum = 0;
+    for (int i = 0; i < n; i++)
+        int left = i - pgee[i];
+        int right = nge[i] - i;
+        long freq = 1L * left * right;
+        sum += freq * arr[i];
+    return sum;
+// Function to compute total sum of subarray ranges (max - min)
+long subArrayRanges(int[] arr) {
+        return sumSubarrayMaxs(arr) - sumSubarrayMins(arr);
+
+STOCK-SPAN
+int[] findPGE(int[] arr) {
+    int n = arr.length; // Size of the array
+    int[] ans = new int[n];
+    Stack<Integer> st = new Stack<>();
+    for (int i = 0; i < n; i++) {
+        int currEle = arr[i];
+        while (!st.isEmpty() && arr[st.peek()] <= currEle) {
+            st.pop();
+        if (st.isEmpty())  ans[i] = -1;
+        else  ans[i] = st.peek(); // Otherwise, the top element is the previous greater
+        st.push(i);
+    return ans;
+int[] stockSpan(int[] arr, int n) {
+    int[] PGE = findPGE(arr);
+    int[] ans = new int[n];
+    for (int i = 0; i < n; i++) {
+        ans[i] = i - PGE[i]; // Calculate span based on previous greater element
+    return ans;

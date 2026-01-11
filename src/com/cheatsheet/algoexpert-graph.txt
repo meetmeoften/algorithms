@@ -369,3 +369,39 @@ void dfs(String airport, Map<String, List<String>> graph, Set<String> visited)
     for (String next : graph.get(airport))
         dfs(next, graph, visited);
 
+BOGGLE-BOARD-WORD-SEARCH-II
+Trie trie; Set<String> res;
+class Trie {
+	Trie[] children;
+	String word;
+	public Trie() {
+		this.children = new Trie[26];
+		this.word = null;
+void insertWord(Trie trie, String word) {
+	char[] chars = word.toCharArray();
+	for (char ch : chars) {
+		if (trie.children[ch - 'a'] == null) {
+			trie.children[ch - 'a'] = new Trie();
+		trie = trie.children[ch - 'a'];
+	trie.word = word;
+void dfs(char[][] board, int i, int j, Trie trie, boolean[][] traversed) {
+	if (trie.word != null) res.add(trie.word);
+	if (i < 0 || j < 0 || i == board.length || j == board[0].length || traversed[i][j]) return;
+	if (trie.children[board[i][j] - 'a'] == null) return;
+	trie = trie.children[board[i][j] - 'a'];
+	traversed[i][j] = true;
+	dfs(board, i + 1, j, trie, traversed);
+	dfs(board, i - 1, j, trie, traversed);
+	dfs(board, i, j - 1, trie, traversed);
+	dfs(board, i, j + 1, trie, traversed);
+	traversed[i][j] = false;
+List<String> findWords(char[][] board, String[] words) {
+	trie = new Trie();
+	for (String word : words) insertWord(trie, word);
+	res = new HashSet<>();
+	int n = board.length, m = board[0].length;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (trie.children[board[i][j] - 'a'] != null) {
+				dfs(board, i, j, trie, new boolean[m][n]);
+	return res.stream().collect(Collectors.toList());

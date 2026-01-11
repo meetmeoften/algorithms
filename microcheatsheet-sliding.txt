@@ -10,6 +10,39 @@ int CHARACTER_REPLACE(String s, int k)
     	result = Math.max(result, right - left + 1);
     return result;
 
+// Function to count substrings containing at least one 'a', 'b', and 'c' using sliding window
+int SUBSTRING-ALL-THREE-CHARACTERS(String s) // Striver
+    int[] freq = new int[3];
+    int left = 0, res = 0;
+    for (int right = 0; right < s.length(); right++)
+        freq[s.charAt(right) - 'a']++;
+        while (freq[0] > 0 && freq[1] > 0 && freq[2] > 0)
+            res += (s.length() - right);
+            freq[s.charAt(left) - 'a']--;
+            left++;
+    return res;
+
+int MAX-CARD-POINTS(int[] cardPoints, int k) // Striver
+    int n = cardPoints.length, total = 0
+    for (int i = 0; i < k; i++)  total += cardPoints[i];
+    int maxPoints = total;
+    for (int i = 0; i < k; i++) {
+        total -= cardPoints[k - 1 - i];
+        total += cardPoints[n - 1 - i];
+        maxPoints = Math.max(maxPoints, total);
+    return maxPoints;
+
+int NUMBER-OF-SUBARRAYS(int[] nums, int k)
+    int oddCount = 0, result = 0;
+    Map<Integer, Integer> freq = new HashMap<>();
+    freq.put(0, 1);
+    for (int num : nums)
+        if (num % 2 == 1) oddCount++;
+        if (freq.containsKey(oddCount - k))
+            result += freq.get(oddCount - k);
+        freq.put(oddCount, freq.getOrDefault(oddCount, 0) + 1);
+    return result;
+
 int LENGTH-LONGEST-WITHOUT-REPEATING(String s)
     int left = 0, max = 0;
     Set<Character> set = new HashSet<>();
@@ -21,6 +54,64 @@ int LENGTH-LONGEST-WITHOUT-REPEATING(String s)
         set.add(c);
         max = Math.max(max, right - left + 1);
     return max;
+
+int LENGTH-OF-LONGEST-SUBSTRING-K-DISTINCT(String s, int k)
+    if (k == 0 || s.length() == 0) return 0;
+    Map<Character, Integer> freq = new HashMap<>();
+    int left = 0, maxLen = 0;
+    for (int right = 0; right < s.length(); right++)
+        char c = s.charAt(right);
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+        while (freq.size() > k) {
+            char leftChar = s.charAt(left);
+            freq.put(leftChar, freq.get(leftChar) - 1);
+            if (freq.get(leftChar) == 0) {
+                freq.remove(leftChar);
+            left++;
+        maxLen = Math.max(maxLen, right - left + 1);
+    return maxLen;
+
+int LONGEST-SUBSTRING-WITH-K-REPEATING-CHARACTERS(String s, int k) //leetcode 395
+    int n = s.length();
+    int maxLen = 0;
+    for (int targetUnique = 1; targetUnique <= 26; targetUnique++)
+        Map<Character, Integer> map = new HashMap<>();
+        int left = 0, right = 0, unique = 0, countAtLeastK = 0;
+        while (right < n)
+            if (unique <= targetUnique)
+                char c = s.charAt(right);
+                map.put(c, map.getOrDefault(c, 0) + 1);
+                if (map.get(c) == 1) unique++;
+                if (map.get(c) == k) countAtLeastK++;
+                right++;
+            else
+                char c = s.charAt(left);
+                if (map.get(c) == k) countAtLeastK--;
+                map.put(c, map.get(c) - 1);
+                if (map.get(c) == 0) {
+                    map.remove(c);
+                    unique--;
+                left++;
+            if (unique == targetUnique && unique == countAtLeastK) {
+                maxLen = Math.max(maxLen, right - left);
+    return maxLen;
+
+int SUB-ARRAYS-WITH-K-DISTINCT(int[] nums, int k)
+    return atMostK(nums, k) - atMostK(nums, k - 1);
+int atMostK(int[] nums, int K)
+    Map<Integer, Integer> freq = new HashMap<>();
+    int left = 0, count = 0;
+    for (int right = 0; right < nums.length; right++)
+        freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);
+        if (freq.get(nums[right]) == 1)
+            K--;
+        while (K < 0)
+            freq.put(nums[left], freq.get(nums[left]) - 1);
+            if (freq.get(nums[left]) == 0)
+                K++;
+            left++;
+        count += (right - left + 1);
+    return count;
 
 boolean PERMUTATION-STRING(String s1, String s2)
     int[] count = new int[26];

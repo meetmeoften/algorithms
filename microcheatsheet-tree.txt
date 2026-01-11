@@ -5,6 +5,35 @@ Node INVERT-TREE(Node root)
     invertTree(root.right);
     return root;
 
+List<Integer> INORDER-USING-STACK(TreeNode root)
+    Stack<TreeNode> st = new Stack<>();
+    TreeNode node = root;
+    List<Integer> inorder = new ArrayList<>();
+    while (true)
+        if (node != null)
+            st.push(node);
+            node = node.left;
+        else
+            if (st.isEmpty())  break;
+            node = st.pop();
+            inorder.add(node.data);
+            node = node.right;
+    return inorder;
+
+List<Integer> POST-ORDER-USING-STACK(Node root)
+    List<Integer> postorder = new ArrayList<>();  // List to store the postorder traversal
+    Stack<Node> st1 = new Stack<>();  // First stack for iterative traversal
+    Stack<Node> st2 = new Stack<>();  // Second stack to store the nodes in postorder
+    st1.push(root);
+    while (!st1.isEmpty())
+        root = st1.pop();  // Get the top node from st1
+        st2.push(root);  // Push the node onto st2
+        if (root.left != null) st1.push(root.left);
+        if (root.right != null) st1.push(root.right);
+    while (!st2.isEmpty())
+        postorder.add(st2.pop().data);  // Add the node's value to the postorder result
+    return postorder;
+
 boolean VALIDATE-BST(Node root, Integer min, Integer max)
     if(root.val < min || root.val >= max)
         return false;
@@ -463,3 +492,180 @@ void dfs2(int node, int parent, List<Integer>[] tree, int[] count, int[] res, in
         if (child == parent) continue;
         res[child] = res[node] - count[child] + (n - count[child]);
         dfs2(child, node, tree, count, res, n);
+
+List<Integer> NODES-DISTANCE-K(TreeNode root, TreeNode target, int k) // Strive solution -test
+    if (root == null) return new ArrayList<>();
+    Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+    mapParents(root, parentMap);
+    return bfsFromTarget(target, parentMap, k);
+void mapParents(TreeNode root, Map<TreeNode, TreeNode> parentMap)
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    while (!queue.isEmpty())
+        TreeNode node = queue.poll();
+        if (node.left != null)
+            parentMap.put(node.left, node);
+            queue.offer(node.left);
+        if (node.right != null)
+            parentMap.put(node.right, node);
+            queue.offer(node.right);
+List<Integer> bfsFromTarget(TreeNode target, Map<TreeNode, TreeNode> parentMap, int k)
+    Queue<TreeNode> queue = new LinkedList<>();
+    Set<TreeNode> visited = new HashSet<>();
+    queue.offer(target);
+    visited.add(target);
+    int currentLevel = 0;
+    while (!queue.isEmpty())
+        int size = queue.size();
+        if (currentLevel++ == k) break;
+        for (int i = 0; i < size; i++)
+            TreeNode node = queue.poll();
+            if (node.left != null && !visited.contains(node.left))
+                visited.add(node.left);
+                queue.offer(node.left);
+            if (node.right != null && !visited.contains(node.right))
+                visited.add(node.right);
+                queue.offer(node.right);
+            if (parentMap.containsKey(node) && !visited.contains(parentMap.get(node)))
+                visited.add(parentMap.get(node));
+                queue.offer(parentMap.get(node));
+    List<Integer> result = new ArrayList<>();
+    while (!queue.isEmpty())
+        result.add(queue.poll().val);
+    return result;
+ANOTHER-SOLUTION-DISTANECE-K-NODES
+    Map<TreeNode, List<TreeNode>> graph = new HashMap<>();
+List<Integer> distanceK(TreeNode root, TreeNode target, int k)
+    buildGraph(root, null);
+    List<Integer> result = new ArrayList<>();
+    Queue<TreeNode> queue = new LinkedList<>();
+    Set<TreeNode> visited = new HashSet<>();
+    queue.offer(target);
+    visited.add(target);
+    int dist = 0;
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        if (dist == k)
+            for (int i = 0; i < size; i++)
+                result.add(queue.poll().val);
+            return result;
+        for (int i = 0; i < size; i++)
+            TreeNode node = queue.poll();
+            for (TreeNode nei : graph.get(node))
+                if (!visited.contains(nei))
+                    visited.add(nei);
+                    queue.offer(nei);
+        dist++;
+    return result;
+void buildGraph(TreeNode node, TreeNode parent)
+    if (node == null) return;
+    graph.putIfAbsent(node, new ArrayList<>());
+    if (parent != null) {
+        graph.get(node).add(parent);
+        graph.get(parent).add(node);
+    buildGraph(node.left, node);
+    buildGraph(node.right, node);
+
+Node BUILD-INORDER-PREORDER(int[] preorder, int[] inorder)
+    for (int i = 0; i < inorder.length; i++)  inorderMap.put(inorder[i], i);
+    return buildUsingPreOrder(preorder, 0, inorder.length - 1);
+Node buildUsingPreOrder(int[] preorder, int inStart, int inEnd)
+    if (inStart > inEnd) return null;
+    int rootVal = preorder[preIndex++];
+    Node root = new Node(rootVal);
+    int rootIndex = inorderMap.get(rootVal);
+    root.left = buildUsingPreOrder(preorder, inStart, rootIndex - 1);
+    root.right = buildUsingPreOrder(preorder, rootIndex + 1, inEnd);
+    return root;
+
+Node BUILD-INORDER-POSTORDER(int[] inorder, int[] postorder)
+    for (int i = 0; i < inorder.length; i++)  inorderMap.put(inorder[i], i);
+    return buildUsingPostOrder(postorder, 0, inorder.length - 1);
+Node buildUsingPostOrder(int[] postorder, int inStart, int inEnd)
+    if (inStart > inEnd) return null;
+    int rootVal = postorder[postIndex++];
+    Node root = new Node(rootVal);
+    int rootIndex = inorderMap.get(rootVal);
+    root.right = buildUsingPostOrder(postorder, rootIndex + 1, inEnd);
+    root.left = buildUsingPostOrder(postorder, inStart, rootIndex - 1);
+    return root;
+
+Node BUILD-PREORDER-POSTORDER(int[] preorder, int[] postorder) {
+    Map<Integer, Integer> postIndexMap = new HashMap<>();
+    for (int i = 0; i < postorder.length; i++) postIndexMap.put(postorder[i], i);
+    return buildUsingPostOrderPreOrder(preorder, 0, preorder.length - 1, postorder, 0, postorder.length - 1, postIndexMap);
+Node buildUsingPostOrderPreOrder(int[] preorder, int preStart, int preEnd, int[] postorder, int postStart, int postEnd, Map<Integer, Integer> postIndexMap)
+    if (preStart > preEnd || postStart > postEnd) return null;
+    if (preStart == preEnd) return new Node(preorder[preStart]);
+    Node root = new Node(preorder[preStart]);
+    int leftChildVal = preorder[preStart + 1];
+    int leftChildIndex = postIndexMap.get(leftChildVal);
+    int leftSubTreeSize = leftChildIndex - postStart + 1;
+    root.left = buildUsingPostOrderPreOrder(preorder, preStart + 1, leftSubTreeSize, postorder, postStart, leftChildIndex, postIndexMap);
+    root.right = buildUsingPostOrderPreOrder(preorder, preStart + leftSubTreeSize + 1, preEnd, postorder, leftChildIndex - 1, postEnd - 1, postIndexMap);
+    return root;
+
+Node BUILD-INORDER-LEVELORDER(int[] inorder, int[] levelOrder)
+    Map<Integer, Integer> inorderIndexMap = new HashMap<>();
+    for (int i = 0; i < inorder.length; i++)
+        inorderIndexMap.put(inorder[i], i);
+    return buildUsingLevelOrder(levelOrder, 0, inorder.length - 1, inorderIndexMap);
+Node buildUsingLevelOrder(int[] levelOrder, int inStart, int inEnd, Map<Integer, Integer> inorderMap)
+    if (inStart > inEnd || levelOrder.length == 0) return null;
+    Node root = new Node(levelOrder[0]);
+    if (levelOrder.length == 1) return root;
+    int rootIndex = inorderMap.get(root.data);
+    List<Integer> leftSubtree = new ArrayList<>();
+    List<Integer> rightSubtree = new ArrayList<>();
+    for (int i = 1; i < levelOrder.length; i++)
+        int currentVal = levelOrder[i];
+        int currentIndex = inorderMap.get(currentVal);
+        if (currentIndex < rootIndex) leftSubtree.add(currentVal);
+        else rightSubtree.add(currentVal);
+    int[] leftLevelOrder = leftSubtree.stream().mapToInt(i -> i).toArray();
+    int[] rightLevelOrder = rightSubtree.stream().mapToInt(i -> i).toArray();
+    root.left = buildUsingLevelOrder(leftLevelOrder, inStart, rootIndex - 1, inorderMap);
+    root.right = buildUsingLevelOrder(rightLevelOrder, rootIndex + 1, inEnd, inorderMap);
+    return root;
+
+
+HuFFMAN-CODING
+class Node
+    char character;
+    int frequency;
+    Node left;
+    Node right;
+Node(char character, int frequency)
+        this.character = character;
+        this.frequency = frequency;
+        this.left = this.right = null;
+Node buildHuffmanTree(Map<Character, Integer> frequencyMap)
+    PriorityQueue<Node> minHeap = new PriorityQueue<>((a, b) -> a.frequency - b.frequency);
+    for (Map.Entry<Character, Integer> entry : frequencyMap.entrySet())  minHeap.add(new Node(entry.getKey(), entry.getValue()));
+    while (minHeap.size() > 1)
+        Node left = minHeap.poll();
+        Node right = minHeap.poll();
+        Node newNode = new Node('\0', left.frequency + right.frequency);
+        newNode.left = left;
+        newNode.right = right;
+        minHeap.add(newNode);
+    return minHeap.poll();
+void generateHuffmanCodes(Node root, String code, Map<Character, String> huffmanCodes)
+    if (root == null) return;
+    if (root.left == null && root.right == null) huffmanCodes.put(root.character, code);
+    generateHuffmanCodes(root.left, code + "0", huffmanCodes);
+    generateHuffmanCodes(root.right, code + "1", huffmanCodes);
+String encode(String input, Map<Character, String> huffmanCodes)
+    StringBuilder encodedString = new StringBuilder();
+    for (char c : input.toCharArray())  encodedString.append(huffmanCodes.get(c));
+    return encodedString.toString();
+decode(String encodedString, Node root)
+    StringBuilder decodedString = new StringBuilder();
+    Node current = root;
+    for (int i = 0; i < encodedString.length(); i++)
+        if (encodedString.charAt(i) == '0') current = current.left;
+        else current = current.right;
+        if (current.left == null && current.right == null)
+            decodedString.append(current.character);
+            current = root;  // Go back to the root to start decoding the next character
+    return decodedString.toString();
