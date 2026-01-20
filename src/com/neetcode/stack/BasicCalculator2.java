@@ -33,7 +33,6 @@ public class BasicCalculator2 {
 				num = 0;
 			}
 		}
-
 		int re = 0;
 		for (int i : stack) {
 			re += i;

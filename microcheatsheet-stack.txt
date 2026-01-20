@@ -94,6 +94,32 @@ int BASIC-CALCULATOR(String s)
     		result = result * stack.pop() + stack.pop();
     return result;
 
+int BASIC-CALCULATOR-3(String s) {
+    return helper(s.toCharArray(), new int[]{0});
+int helper(char[] arr, int[] index) {
+    Stack<Integer> stack = new Stack<>();
+    int num = 0;
+    char sign = '+';
+    while (index[0] < arr.length)
+        char c = arr[index[0]];
+        if (Character.isDigit(c))
+            num = num * 10 + (c - '0');
+        if (c == '(')
+            index[0]++;
+            num = helper(arr, index); // solve inside parentheses
+        if ((!Character.isDigit(c) && c != ' ') || index[0] == arr.length - 1) {
+            if (sign == '+') stack.push(num);
+            else if (sign == '-') stack.push(-num);
+            else if (sign == '*') stack.push(stack.pop() * num);
+            else if (sign == '/') stack.push(stack.pop() / num);
+            sign = c;
+            num = 0;
+        if (c == ')') break;  // return to previous call
+        index[0]++;
+    int result = 0;
+    for (int v : stack) result += v;
+    return result;
+
 int BASIC-CALCULATOR-2(String s)
     int len; int num = 0;
     if(s==null || (len = s.length())==0) return 0;

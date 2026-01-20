@@ -58,7 +58,7 @@ public class SingleThreadedCPU {
 		int ansIndex = 0, currTime = 0;
 
 		for (int i = 0; i < newTasks.length; i++) {
-			while (currTime < newTasks[i][0] && !pq.isEmpty()) {
+				while (currTime < newTasks[i][0] && !pq.isEmpty()) {
 				int[] topTask = pq.remove();
 				ans[ansIndex++] = topTask[1];
 				currTime += topTask[0];
@@ -75,7 +75,7 @@ public class SingleThreadedCPU {
 	}
 
 	public static void main(String[] args) {
-		int[][] tasks = { { 1, 2 }, { 2, 4 }, { 4, 2 }, { 5, 1 } };
+		int[][] tasks = { { 1, 2 }, { 2, 4 }, { 3, 2 }, { 4, 1 } };
 		getOrder2(tasks);
 	}
 

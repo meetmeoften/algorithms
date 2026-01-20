@@ -11,6 +11,7 @@ public class AggressiveCows {
         int result = 0;
 
         while (low <= high) {
+            System.out.println(low + " " + high);
             int mid = (low + high) / 2;
 
             if (canPlaceCows(stalls, k, mid)) {

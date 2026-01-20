@@ -2,7 +2,7 @@ package com.algoexpert2.graph;
 
 import java.util.*;
 
-public class TwoEdgeConnectedGraph {
+public class TwoEdgeConnectedGraphTarjan {
 
     /**
      * You are given an undirected graph represented as an adjacency list.

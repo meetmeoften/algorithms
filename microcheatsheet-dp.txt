@@ -51,7 +51,7 @@ int BUY-SELL-STOCK(int[] arr, int n, int ind, int buy, int cap, Map<String, Inte
     			arr[ind] + helper(arr, n, ind + 1, 0, cap - 1, map));
     map.put(key, profit);
     return profit;
-    
+
 long BALL-ARRANGEMENT(int r, int g, int b, char prev)
     if (r == 0 && g == 0 && b == 0) return 1;
     String key = r + "," + g + "," + b + "," + prev;
@@ -203,7 +203,25 @@ int helper  (int[] nums, int left, int right)
             + helper(nums, i, right);
         maxCoins = Math.max(coins, maxCoins);
     return maxCoins;
-=================================================================================
+
+List<TreeNode> UNIQUE-BINARY-SEARCH-TREES-BST(int n)
+    if (n == 0) return new ArrayList<>();
+    return build(1, n);
+private List<TreeNode> build(int start, int end)
+    List<TreeNode> result = new ArrayList<>();
+    if (start > end)
+        result.add(null); return result;
+    for (int root = start; root <= end; root++)
+        List<TreeNode> leftTrees = build(start, root - 1);
+        List<TreeNode> rightTrees = build(root + 1, end);
+        for (TreeNode left : leftTrees)
+            for (TreeNode right : rightTrees)
+                TreeNode node = new TreeNode(root);
+                node.left = left;
+                node.right = right;
+                result.add(node);
+    return result;
+
 int ACTIVITY-SELECTION(Activity[] activities, int i, Integer[] memo)
     if (i >= activities.length) return 0;
     if (memo[i] != null)  return memo[i];
@@ -214,7 +232,7 @@ int ACTIVITY-SELECTION(Activity[] activities, int i, Integer[] memo)
                 1 + recursiveSelect(activities, j, memo));
     memo[i] = maxActivities;
     return maxActivities;
-    
+
 int JOB-SCHEDULING(int[] start, int[] end, int[] profit)
     int n = start.length;
     Job[] jobs = new Job[n];
