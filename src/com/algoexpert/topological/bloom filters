@@ -1,0 +1,129 @@
+A **Bloom filter** is a space-efficient data structure used to quickly test whether an item is **possibly in a set** or **definitely not in a set**.
+
+* ✅ If it says **"not present"**, the item is definitely not in the set.
+* ⚠️ If it says **"present"**, the item might be in the set (there can be false positives).
+
+### Simple Example
+
+Suppose we have:
+
+* A bit array of **8 bits**, initially all zeros:
+
+```
+Index: 0 1 2 3 4 5 6 7
+Bits : 0 0 0 0 0 0 0 0
+```
+
+We'll use **2 simple hash functions**:
+
+* **h1(word) = first letter position mod 8**
+* **h2(word) = length of word mod 8**
+
+### Step 1: Insert "cat"
+
+For `"cat"`:
+
+* h1("cat") = 'c' = 3 → index **3**
+* h2("cat") = length = 3 → index **3**
+
+Set bit 3 to 1.
+
+```
+Bits : 0 0 0 1 0 0 0 0
+```
+
+---
+
+### Step 2: Insert "dog"
+
+For `"dog"`:
+
+* h1("dog") = 'd' = 4 → index **4**
+* h2("dog") = length = 3 → index **3**
+
+Set bits 4 and 3.
+
+```
+Bits : 0 0 0 1 1 0 0 0
+```
+
+---
+
+### Step 3: Check "dog"
+
+Hashes:
+
+* h1 = 4
+* h2 = 3
+
+Both bits are **1**.
+
+**Result:** `"dog"` is **possibly present** (it actually is).
+
+---
+
+### Step 4: Check "ant"
+
+For `"ant"`:
+
+* h1("ant") = 'a' = 1 → index **1**
+* h2("ant") = length = 3 → index **3**
+
+Bit 1 is **0**.
+
+**Result:** `"ant"` is **definitely not present**.
+
+---
+
+### Step 5: False Positive Example
+
+Suppose we check `"egg"`:
+
+* h1("egg") = 'e' = 5 → index **5**
+* h2("egg") = length = 3 → index **3**
+
+If bit 5 had already been set by some other inserted word, both required bits (3 and 5) would be 1.
+
+The Bloom filter would report:
+
+> **"egg is possibly present"**
+
+even though `"egg"` was never inserted. This is called a **false positive**.
+
+---
+
+## Visualization
+
+```
+Initial:
+0 0 0 0 0 0 0 0
+
+Insert "cat":
+0 0 0 1 0 0 0 0
+
+Insert "dog":
+0 0 0 1 1 0 0 0
+
+Lookup "ant":
+Needs bits 1 and 3
+Bit 1 = 0
+=> Definitely NOT present
+
+Lookup "dog":
+Needs bits 3 and 4
+Both are 1
+=> Possibly present (actually present)
+```
+
+### Why Bloom Filters Are Useful
+
+* Very memory efficient.
+* Extremely fast insertions and lookups (typically **O(k)**, where *k* is the number of hash functions).
+* Widely used in:
+
+  * Databases to avoid unnecessary disk lookups.
+  * Web caches to check whether an object may exist.
+  * Distributed systems to reduce network requests.
+  * Spell checkers and duplicate detection.
+
+The trade-off is that Bloom filters **never produce false negatives**, but they **can produce false positives**.

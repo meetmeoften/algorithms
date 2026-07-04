@@ -1,0 +1,313 @@
+For a **Senior Staff / Principal / Distinguished Engineer** interview, a **Distributed Messaging Queue** (similar to Kafka, Pulsar, RabbitMQ, SQS, Pub/Sub) discussion should cover the following topics:
+
+# 1. Requirements
+
+* Functional Requirements
+* Non-functional Requirements
+* Messaging Guarantees
+* Ordering Requirements
+* Durability Requirements
+
+# 2. Capacity Planning
+
+* Messages/sec
+* Peak Throughput
+* Storage Estimation
+* Retention Requirements
+* Network Bandwidth
+* Consumer Count
+
+# 3. High-Level Architecture
+
+* Producers
+* Brokers
+* Consumers
+* Metadata Service
+* Storage Layer
+* Coordination Layer
+
+# 4. API Design
+
+* Publish
+* Consume
+* Acknowledge
+* Commit Offset
+* Batch APIs
+* Admin APIs
+
+# 5. Message Model
+
+* Topic
+* Partition
+* Offset
+* Key
+* Headers
+* Metadata
+
+# 6. Topic Management
+
+* Topic Creation
+* Dynamic Topics
+* Partition Expansion
+* Retention Policies
+
+# 7. Partitioning
+
+* Hash-based
+* Range-based
+* Sticky Partitioning
+* Custom Partitioners
+
+# 8. Message Ordering
+
+* Per Partition
+* Per Key
+* Global Ordering
+* Out-of-order Handling
+
+# 9. Replication
+
+* Leader-Follower
+* ISR (In-Sync Replicas)
+* Quorum Replication
+* Cross-region Replication
+
+# 10. Storage Engine
+
+* Append-only Log
+* Segment Files
+* Log Compaction
+* Indexing
+* Zero Copy
+
+# 11. Producer Design
+
+* Sync vs Async Publish
+* Producer Batching
+* Compression
+* Idempotent Producers
+* Transactions
+
+# 12. Consumer Design
+
+* Push vs Pull
+* Consumer Groups
+* Offset Management
+* Flow Control
+* Parallel Consumption
+
+# 13. Consumer Rebalancing
+
+* Static Membership
+* Dynamic Membership
+* Sticky Assignment
+* Cooperative Rebalancing
+
+# 14. Delivery Guarantees
+
+* At-most-once
+* At-least-once
+* Exactly-once
+
+# 15. Acknowledgement Strategies
+
+* Auto Ack
+* Manual Ack
+* Batch Ack
+
+# 16. Retry Strategy
+
+* Immediate Retry
+* Exponential Backoff
+* Retry Topics
+* Retry Queues
+
+# 17. Dead Letter Queue (DLQ)
+
+# 18. Message Deduplication
+
+# 19. Transactions
+
+# 20. Idempotency
+
+# 21. Flow Control
+
+* Backpressure
+* Rate Limiting
+* Slow Consumer Handling
+
+# 22. Fault Tolerance
+
+* Broker Failure
+* Consumer Failure
+* Producer Failure
+* Network Partition
+
+# 23. High Availability
+
+* Leader Election
+* Automatic Failover
+* Quorum Management
+
+# 24. Distributed Coordination
+
+* Metadata Management
+* Leader Election
+* Cluster Membership
+
+# 25. Consistency Model
+
+* Strong
+* Eventual
+* Read-after-write
+
+# 26. Scalability
+
+* Horizontal Broker Scaling
+* Partition Scaling
+* Consumer Scaling
+
+# 27. Load Balancing
+
+* Producer Load Balancing
+* Consumer Assignment
+* Broker Balancing
+
+# 28. Multi-Tenancy
+
+* Isolation
+* Quotas
+* Fair Scheduling
+* Noisy Neighbor Protection
+
+# 29. Security
+
+* Authentication
+* Authorization
+* Encryption
+* ACLs
+
+# 30. Message Retention
+
+* Time-based
+* Size-based
+* Infinite Retention
+* Log Compaction
+
+# 31. Data Lifecycle
+
+* Cleanup
+* Archival
+* Tiered Storage
+
+# 32. Compression
+
+* Gzip
+* Snappy
+* LZ4
+* ZSTD
+
+# 33. Geo Distribution
+
+* Multi-Region
+* Active-Active
+* Disaster Recovery
+* Geo Replication
+
+# 34. Disaster Recovery
+
+* Broker Recovery
+* Metadata Recovery
+* Log Recovery
+
+# 35. Monitoring
+
+* Queue Depth
+* Consumer Lag
+* Throughput
+* Latency
+* Error Rate
+
+# 36. Observability
+
+* Metrics
+* Logging
+* Distributed Tracing
+* Audit Logs
+
+# 37. Performance Optimizations
+
+* Batching
+* Sendfile/Zero Copy
+* Page Cache
+* Sequential Disk Writes
+* Async I/O
+
+# 38. Storage Optimization
+
+* Segment Rolling
+* Sparse Index
+* Memory Mapping
+* Tiered Storage
+
+# 39. Cost Optimization
+
+* Compression
+* Tiered Storage
+* Batch Processing
+* Resource Autoscaling
+
+# 40. Operational Excellence
+
+* Rolling Upgrades
+* Cluster Expansion
+* Rebalancing
+* Schema Evolution
+
+# 41. Trade-offs
+
+* Availability vs Consistency
+* Latency vs Durability
+* Ordering vs Throughput
+* Replication Factor vs Cost
+* Push vs Pull
+* Queue vs Log
+* Memory vs Disk
+* Partition Count vs Rebalancing Cost
+
+# 42. Advanced Topics
+
+* Event Sourcing
+* Change Data Capture (CDC)
+* Stream Processing Integration
+* Schema Registry
+* Event Versioning
+* Exactly-once Pipelines
+* Priority Queues
+* Delayed Messages
+* Message TTL
+* Request-Reply Pattern
+
+# 43. Real-World Systems for Comparison
+
+* Apache Kafka
+* Apache Pulsar
+* RabbitMQ
+* ActiveMQ
+* Amazon SQS
+* Google Pub/Sub
+* Azure Service Bus
+* NATS
+* Redpanda
+* RocketMQ
+* NSQ
+* ZeroMQ
+
+At the **Principal/Distinguished Engineer** level, interviewers typically focus on:
+
+* Designing for **millions of messages per second** with predictable latency.
+* Achieving **correctness under failures** (broker crashes, network partitions, split-brain).
+* Providing **exactly-once semantics** and transactional messaging.
+* Balancing **ordering guarantees, throughput, and scalability**.
+* Supporting **multi-region, multi-tenant deployments** while maintaining operational simplicity and cost efficiency.
+* Exploring storage internals (append-only logs, page cache, zero-copy, compaction) and operational concerns (rebalancing, rolling upgrades, observability).

@@ -1,0 +1,177 @@
+For a **Global Scalable Multi-Tenant Notification System** (similar to those used by social media, e-commerce, banking, or SaaS platforms), these are the major system design topics to discuss:
+
+1. Requirements Gathering
+
+   * Functional Requirements
+   * Non-functional Requirements
+
+2. Capacity Estimation
+
+   * Daily Notifications
+   * Peak QPS
+   * Storage Requirements
+   * Bandwidth Estimation
+
+3. High-Level Architecture
+
+4. Notification Types
+
+   * Push Notifications
+   * Email
+   * SMS
+   * In-App
+   * Web Push
+   * WhatsApp/Chat Platforms
+
+5. API Design
+
+6. Notification Data Model
+
+7. Multi-Tenant Architecture
+
+   * Tenant Isolation
+   * Tenant Configuration
+   * Tenant-Specific Branding
+   * Tenant Quotas
+
+8. User Preferences
+
+   * Opt-in/Opt-out
+   * Quiet Hours
+   * Channel Preferences
+   * Frequency Limits
+
+9. Event Ingestion
+
+10. Message Queue Design
+
+11. Notification Routing
+
+12. Rule Engine
+
+* Conditional Notifications
+* Segmentation
+* Targeting
+
+13. Template Management
+
+* Localization
+* Variables
+* Versioning
+
+14. Scheduling
+
+* Delayed Notifications
+* Recurring Notifications
+* Time Zone Support
+
+15. Delivery Pipeline
+
+16. Channel Adapters
+
+* Email Provider
+* SMS Provider
+* Push Provider
+* WebSocket Service
+
+17. Retry Mechanism
+
+18. Dead Letter Queue (DLQ)
+
+19. Idempotency & Duplicate Prevention
+
+20. Rate Limiting
+
+* Per User
+* Per Tenant
+* Per Provider
+* Global
+
+21. Priority Handling
+
+* Critical
+* High
+* Normal
+* Low
+
+22. Ordering Guarantees
+
+23. Backpressure Handling
+
+24. Delivery Status Tracking
+
+* Sent
+* Delivered
+* Opened
+* Clicked
+* Failed
+
+25. Analytics & Reporting
+
+26. Multi-Region Deployment
+
+27. Global Load Balancing
+
+28. Data Partitioning (Sharding)
+
+29. Replication Strategy
+
+30. Consistency Model
+
+31. High Availability
+
+32. Fault Tolerance
+
+33. Disaster Recovery
+
+34. Security
+
+* Authentication
+* Authorization
+* Encryption
+* Secret Management
+
+35. Compliance
+
+* GDPR
+* CAN-SPAM
+* Data Residency
+
+36. Scalability
+
+* Horizontal Scaling
+* Auto Scaling
+
+37. Provider Failover
+
+* Multiple SMS Providers
+* Multiple Email Providers
+* Push Provider Fallback
+
+38. Monitoring & Alerting
+
+39. Logging & Distributed Tracing
+
+40. Cost Optimization
+
+41. Notification Deduplication
+
+42. Batch Processing
+
+43. Campaign/Bulk Notifications
+
+44. Personalization Engine
+
+45. A/B Testing
+
+46. TTL & Notification Expiration
+
+47. Offline User Handling
+
+48. Device Token Management
+
+49. API Gateway
+
+50. Trade-offs & Design Decisions
+
+These topics provide a comprehensive framework for discussing a production-grade notification platform capable of serving millions of users across multiple tenants worldwide.

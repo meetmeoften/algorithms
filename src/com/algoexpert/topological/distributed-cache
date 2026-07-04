@@ -1,0 +1,152 @@
+For a **System Design interview** on designing a distributed cache like Redis, here are the key discussion topics (topics only):
+
+1. Requirements Gathering
+
+   * Functional Requirements
+   * Non-functional Requirements
+
+2. Capacity Estimation
+
+   * Storage
+   * Throughput (QPS)
+   * Network Bandwidth
+   * Memory Requirements
+
+3. High-Level Architecture
+
+4. API Design
+
+5. Data Model
+
+6. Cache Operations
+
+   * GET
+   * SET
+   * DELETE
+   * EXPIRE (TTL)
+   * UPDATE
+
+7. In-Memory Data Structures
+
+8. Cache Eviction Policies
+
+   * LRU
+   * LFU
+   * FIFO
+   * Random
+
+9. Expiration (TTL) Management
+
+10. Data Partitioning (Sharding)
+
+    * Hash-based Sharding
+    * Consistent Hashing
+    * Virtual Nodes
+
+11. Replication Strategy
+
+    * Leader–Follower
+    * Multi-Leader
+    * Read Replicas
+
+12. Request Routing
+
+13. Service Discovery
+
+14. Load Balancing
+
+15. Fault Tolerance
+
+16. High Availability
+
+17. Consistency Model
+
+    * Strong
+    * Eventual
+    * Tunable Consistency
+
+18. Distributed Locking
+
+19. Cache Coherence & Synchronization
+
+20. Cache Invalidation Strategies
+
+21. Cache Update Patterns
+
+    * Cache-Aside
+    * Write-Through
+    * Write-Back
+    * Write-Around
+
+22. Handling Cache Misses
+
+23. Hot Key Handling
+
+24. Large Value Handling
+
+25. Serialization & Compression
+
+26. Persistence
+
+    * Snapshots
+    * Append-Only Log
+    * Recovery
+
+27. Backup & Disaster Recovery
+
+28. Concurrency Control
+
+29. Network Protocol
+
+    * TCP
+    * RESP-like Protocol
+    * Pipelining
+
+30. Client Libraries & Connection Pooling
+
+31. Scalability
+
+    * Horizontal Scaling
+    * Online Resharding
+
+32. Rebalancing Data
+
+33. Monitoring & Metrics
+
+34. Logging & Auditing
+
+35. Security
+
+    * Authentication
+    * Authorization
+    * Encryption
+
+36. Rate Limiting & Quotas
+
+37. Multi-Tenancy
+
+38. Observability
+
+    * Metrics
+    * Tracing
+    * Alerts
+
+39. Performance Optimizations
+
+    * Batching
+    * Pipelining
+    * Zero-copy
+    * Memory Optimization
+
+40. Trade-offs & Bottlenecks
+
+41. Extensions
+
+    * Pub/Sub
+    * Streams
+    * Distributed Counters
+    * Bloom Filters
+    * HyperLogLog
+    * Geospatial Data
+    * Transactions
+    * Lua Scripting

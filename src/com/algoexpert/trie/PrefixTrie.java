@@ -22,6 +22,8 @@ public class PrefixTrie {
 	}
 
 
+
+
 	private TrieNode root;
 
 	public PrefixTrie() {
@@ -113,6 +115,7 @@ public class PrefixTrie {
 		return results;
 	}
 
+
 	private void dfs(TrieNode node, StringBuilder stringBuilder, List<String> results) {
 		if(node.isEndWord) {
 			results.add(stringBuilder.toString());
@@ -164,6 +167,7 @@ public class PrefixTrie {
 	public static void main(String[] args) {
 		PrefixTrie prefixTrie = new PrefixTrie();
 		prefixTrie.insert("apple");
+		prefixTrie.autoComplete("ap");
 		System.out.println(prefixTrie.search("apple"));
 		System.out.println(prefixTrie.wordSearch("ap.l."));
 		System.out.println(prefixTrie.startsWith("app"));

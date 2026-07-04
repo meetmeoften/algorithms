@@ -1,0 +1,433 @@
+## What is Consistent Hashing?
+
+**Consistent hashing** is a technique for distributing data across multiple servers so that **adding or removing servers causes only a small fraction of the data to move**.
+
+Without consistent hashing, adding one server usually requires redistributing almost all the data. With consistent hashing, only the data belonging to the affected server's range is moved.
+
+---
+
+# Problem with Normal Hashing
+
+Suppose we have 4 cache servers.
+
+```text
+Server A
+Server B
+Server C
+Server D
+```
+
+A common approach is:
+
+```text
+server = hash(key) % 4
+```
+
+Example:
+
+| User    | hash(user) | Server |
+| ------- | ---------: | ------ |
+| Alice   |         12 | 0 → A  |
+| Bob     |         19 | 3 → D  |
+| Charlie |         26 | 2 → C  |
+
+Now suppose we add a new server.
+
+```text
+Server A
+Server B
+Server C
+Server D
+Server E
+```
+
+Now:
+
+```text
+server = hash(key) % 5
+```
+
+Almost every key maps to a different server.
+
+```text
+Before:
+
+Alice -> A
+Bob   -> D
+Charlie -> C
+
+After:
+
+Alice -> C
+Bob   -> E
+Charlie -> B
+```
+
+Nearly **80% of cached data moves**, causing cache misses and increased database load.
+
+---
+
+# Consistent Hashing Idea
+
+Instead of hashing to server numbers, hash both **servers** and **keys** onto a circular hash space (often called the **hash ring**).
+
+Example ring:
+
+```text
+                0
+          A
+
+     900             100
+
+ D                        B
+
+     700             300
+
+          C
+               500
+```
+
+Suppose:
+
+| Server | Position |
+| ------ | -------: |
+| A      |       50 |
+| B      |      220 |
+| C      |      480 |
+| D      |      760 |
+
+---
+
+## Placing Keys
+
+Hash the keys onto the same ring.
+
+Suppose:
+
+| Key   | Position |
+| ----- | -------- |
+| User1 | 40       |
+| User2 | 170      |
+| User3 | 350      |
+| User4 | 650      |
+| User5 | 900      |
+
+A key is assigned to the **first server encountered when moving clockwise**.
+
+```text
+Ring
+
+40(User1)
+     ↓
+50(A)
+
+170(User2)
+      ↓
+220(B)
+
+350(User3)
+      ↓
+480(C)
+
+650(User4)
+      ↓
+760(D)
+
+900(User5)
+      ↓ wraps around
+50(A)
+```
+
+Assignments:
+
+| Key   | Server |
+| ----- | ------ |
+| User1 | A      |
+| User2 | B      |
+| User3 | C      |
+| User4 | D      |
+| User5 | A      |
+
+---
+
+# Adding a New Server
+
+Add server **E** at position **600**.
+
+```text
+Old:
+
+C(480) -------- D(760)
+
+New:
+
+C(480) ---- E(600) ---- D(760)
+```
+
+Only keys in the interval **(480, 600]** move to **E**.
+
+Everything else stays where it is.
+
+Example:
+
+```text
+User3 -> C (unchanged)
+
+User4
+Position = 550
+
+Old:
+550 -> D
+
+New:
+550 -> E
+```
+
+Only a small subset of keys is redistributed.
+
+---
+
+# Removing a Server
+
+Suppose server **C** fails.
+
+Only C's keys move to the next server clockwise (D).
+
+No other data moves.
+
+---
+
+# Problem: Uneven Distribution
+
+Suppose servers hash to:
+
+```text
+A = 50
+B = 100
+C = 900
+```
+
+The ranges become:
+
+```text
+A handles:
+901–50
+
+B handles:
+51–100
+
+C handles:
+101–900
+```
+
+Server C now owns **most of the ring**, creating a hotspot.
+
+---
+
+# Virtual Nodes (VNodes)
+
+Instead of assigning **one position per server**, assign **many positions** to each server.
+
+Example:
+
+Instead of:
+
+```text
+A
+B
+C
+```
+
+Create:
+
+```text
+A1
+A2
+A3
+
+B1
+B2
+B3
+
+C1
+C2
+C3
+```
+
+Example positions:
+
+| Virtual Node | Position |
+| ------------ | -------: |
+| A1           |       20 |
+| B1           |       70 |
+| C1           |      110 |
+| A2           |      250 |
+| B2           |      320 |
+| C2           |      410 |
+| A3           |      620 |
+| B3           |      790 |
+| C3           |      930 |
+
+Now the ownership is spread around the ring.
+
+```text
+20   A1
+70   B1
+110  C1
+250  A2
+320  B2
+410  C2
+620  A3
+790  B3
+930  C3
+```
+
+Each physical server owns the combined ranges of its virtual nodes, resulting in a much more even distribution.
+
+### Benefits of Virtual Nodes
+
+* Better load balancing.
+* Smoother data distribution.
+* Easier scaling.
+* When a server joins or leaves, only the ranges owned by its virtual nodes are affected.
+
+---
+
+# Celebrity Problem (Hot Partitions)
+
+Consistent hashing balances **keys**, but it doesn't guarantee balanced **traffic**.
+
+Imagine a social media cache:
+
+```text
+User123 -> Server A
+Celebrity -> Server C
+User456 -> Server B
+```
+
+Requests per second:
+
+| User         | Requests/sec |
+| ------------ | -----------: |
+| Normal user  |           20 |
+| Another user |           15 |
+| Celebrity    |    5,000,000 |
+
+Even though only one key ("Celebrity") maps to Server C, that server becomes overloaded while others remain mostly idle. This is called a **hot partition** or **hot key** problem.
+
+---
+
+# Handling Hot Partitions
+
+## 1. Replicate the Hot Key
+
+Instead of storing one cache entry:
+
+```text
+Celebrity -> Server C
+```
+
+Create multiple replicas:
+
+```text
+Celebrity#1 -> Server A
+Celebrity#2 -> Server B
+Celebrity#3 -> Server C
+Celebrity#4 -> Server D
+```
+
+Reads can be distributed across all replicas (for example, by randomly selecting a replica), dramatically reducing the load on any single server. Writes or updates must propagate to all replicas.
+
+---
+
+## 2. Read Replicas
+
+Keep one primary copy but create read-only replicas.
+
+```text
+Primary
+
+Celebrity
+     ↓
+Replica A
+Replica B
+Replica C
+```
+
+Read requests are balanced across replicas, while writes go to the primary.
+
+---
+
+## 3. Request-Level Load Balancing
+
+A front-end cache or proxy can detect very hot keys and spread requests across multiple backend instances, preventing a single machine from becoming a bottleneck.
+
+---
+
+## 4. Cache Frequently Accessed Data at Multiple Layers
+
+For extremely popular content (for example, a celebrity profile), use multiple caching layers:
+
+```text
+Browser Cache
+      ↓
+CDN
+      ↓
+Application Cache
+      ↓
+Redis
+      ↓
+Database
+```
+
+Many requests are served before they even reach the Redis cluster.
+
+---
+
+## 5. Shard the Value (When Possible)
+
+If the value itself can be partitioned (for example, a celebrity's followers list), split it into multiple keys:
+
+```text
+followers:celeb:0
+followers:celeb:1
+followers:celeb:2
+followers:celeb:3
+```
+
+Each shard can live on a different server, distributing both storage and request load. This approach works when the data is naturally divisible; it is not suitable for every type of value.
+
+---
+
+# Complete Picture
+
+```text
+                 Hash Ring
+
+            A1         B1
+        *---------------*
+      /                   \
+   C3                       C1
+   *                         *
+   |                         |
+   |                         |
+   *                         *
+  B3                       A2
+      \                   /
+       *---------------*
+           C2     A3
+
+Each physical server owns several virtual nodes.
+
+Normal keys:
+Evenly distributed.
+
+Hot key (Celebrity):
+Replicated or served by read replicas/CDNs so one server doesn't receive all requests.
+```
+
+### Summary
+
+* **Consistent hashing** maps both servers and keys onto a ring, minimizing data movement when servers are added or removed.
+* **Virtual nodes** assign multiple positions on the ring to each physical server, improving load balance and making scaling smoother.
+* **Hot partitions (celebrity problem)** occur when one key receives disproportionately high traffic. Consistent hashing alone cannot solve this because all requests for that key still map to the same partition. Common solutions include replication, read replicas, multi-layer caching, request-aware load balancing, or sharding the underlying data when feasible.

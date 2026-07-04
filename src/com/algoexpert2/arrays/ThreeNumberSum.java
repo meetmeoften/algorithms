@@ -74,7 +74,7 @@ public class ThreeNumberSum {
 		expected.add(new Integer[] {-6, 1, 5});
 		List<Integer[]> output = threeNumberSum(new int[] {12, 3, 1, 2, -6, 5, -8, 6}, 0);
 
-		 threeSum(new int[] {12, 3});
+		 threeSum(new int[] {-1, 0, 1, 2, -1, -1});
 	}
 
 }

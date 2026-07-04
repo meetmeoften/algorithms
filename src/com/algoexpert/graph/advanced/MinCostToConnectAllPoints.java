@@ -103,7 +103,10 @@ public class MinCostToConnectAllPoints {
     public static void main(String[] args) {
         // int[][] points = {{0,0},{2,2},{3,10},{5,2},{7,0}};
         int[][] points = {{3, 12}, {-2, 5}, {-4, 1}};
-        minCostConnectPoints(points);
+        //minCostConnectPoints(points);
+
+        MinCostToConnectAllPoints minCostToConnectAllPoints = new MinCostToConnectAllPoints();
+        minCostToConnectAllPoints.minCostConnectPoints2(points);
     }
 
 }

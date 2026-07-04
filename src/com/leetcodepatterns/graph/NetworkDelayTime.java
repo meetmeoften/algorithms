@@ -107,7 +107,8 @@ public class NetworkDelayTime {
     public static void main(String[] args) {
         int[][] flights = new int[][]{{2, 1, 1}, {2, 3, 1}, {3, 4, 1}};
         int n = 4, k = 2;
-        new NetworkDelayTime().networkDelayTime(flights, n, k);
+        //new NetworkDelayTime().networkDelayTime(flights, n, k);
+        new NetworkDelayTime().networkDelayTimeDijk(flights, n, k);
     }
 
 }

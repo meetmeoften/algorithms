@@ -26,16 +26,11 @@ public class MatchSticksToSquare {
 		if (index == -1) {
 			return true;
 		}
-
 		for (int i = 0; i < 4; i++) {
-			if ((sum[i] + matchsticks[index] > target)
-					|| (i > 0 && sum[i] == sum[i - 1])) // THIS CONDITION IS NOT REQUIRED
-			{
+			if ((sum[i] + matchsticks[index] > target)) {
 				continue;
 			}
-
 			sum[i] += matchsticks[index];
-
 			if (dfs(matchsticks, sum, index - 1, target)) {
 				return true;
 			}
@@ -45,7 +40,8 @@ public class MatchSticksToSquare {
 	}
 
 	public static void main(String[] args) {
-		int[] matchsticks = { 1, 1, 2, 2, 2 };
+		//int[] matchsticks = { 1, 1, 2, 2, 2 };
+		int[] matchsticks = { 3,3,3,3,4 };
 		makesquare(matchsticks);
 	}
 

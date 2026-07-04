@@ -48,7 +48,7 @@ public class Find132Pattern {
 	}
 
 	public static void main(String[] args) {
-		int[] nums = { 3, 1, 4, 2 };
+		int[] nums = { -1, 3, 0, 2 };
 		find132pattern(nums);
 		find132pattern2(nums);
 	}

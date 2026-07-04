@@ -12,6 +12,77 @@ import java.util.stream.Collectors;
 
 public class AccountsMerge {
 
+
+
+	public List<List<String>> accountsMergeDFS(List<List<String>> accounts) {
+		Map<String, Set<String>> graph = new HashMap<>();
+		Map<String, String> emailToName = new HashMap<>();
+
+//		// Build graph
+//		for (List<String> account : accounts) {
+//			String name = account.get(0);
+//			for (int i = 1; i < account.size(); i++) {
+//				String email = account.get(i);
+//				graph.putIfAbsent(email, new HashSet<>());
+//				emailToName.put(email, name);
+//
+//				if (i > 1) {
+//					String prevEmail = account.get(i - 1);
+//					graph.get(email).add(prevEmail);
+//					graph.get(prevEmail).add(email);
+//				}
+//			}
+//		}
+
+		// Build graph
+		for (List<String> account : accounts) {
+			String name = account.get(0);
+			String firstEmail = account.get(1);
+
+			graph.putIfAbsent(firstEmail, new HashSet<>());
+
+			for (int i = 1; i < account.size(); i++) {
+				String email = account.get(i);
+
+				graph.putIfAbsent(email, new HashSet<>());
+
+				// connect emails
+				graph.get(firstEmail).add(email);
+				graph.get(email).add(firstEmail);
+
+				emailToName.put(email, name);
+			}
+		}
+
+		Set<String> visited = new HashSet<>();
+		List<List<String>> result = new ArrayList<>();
+
+		// DFS each component
+		for (String email : graph.keySet()) {
+			if (!visited.contains(email)) {
+				List<String> component = new ArrayList<>();
+				dfs(email, graph, visited, component);
+				Collections.sort(component);
+				component.add(0, emailToName.get(email));
+				result.add(component);
+			}
+		}
+
+		return result;
+	}
+
+	private void dfs(String email, Map<String, Set<String>> graph,
+					 Set<String> visited, List<String> component) {
+		visited.add(email);
+		component.add(email);
+
+		for (String neighbor : graph.get(email)) {
+			if (!visited.contains(neighbor)) {
+				dfs(neighbor, graph, visited, component);
+			}
+		}
+	}
+
 	public List<List<String>> accountsMerge(List<List<String>> accounts) {
 		UnionFind uf = new UnionFind(accounts.size());
 
@@ -84,7 +155,7 @@ public class AccountsMerge {
 	public static void main(String[] args) {
 		String[][] accounts = {
 				{ "John", "johnsmith@mail.com", "john_newyork@mail.com" },
-				{ "John", "johnsmith@mail.com", "john00@mail.com" },
+				{ "John", "johna@mail.com", "johnsmith@mail.com", "john00@mail.com" },
 				{ "Mary", "mary@mail.com" },
 				{ "John", "johnnybravo@mail.com" } };
 		List<List<String>> resList = new ArrayList<>();
@@ -92,7 +163,8 @@ public class AccountsMerge {
 			resList.add(Arrays.stream(rows).collect(Collectors.toList()));
 		}
 		AccountsMerge merge = new AccountsMerge();
-		merge.accountsMerge(resList);
+		//merge.accountsMerge(resList);
+		merge.accountsMergeDFS(resList);
 
 	}
 

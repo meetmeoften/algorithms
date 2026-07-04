@@ -38,4 +38,10 @@ public class NQueens {
 		return true;
 	}
 
+	public static void main(String[] args) {
+
+		NQueens nQueens = new NQueens();
+		System.out.println(nQueens.nonAttackingQueens(1));
+	}
+
 }

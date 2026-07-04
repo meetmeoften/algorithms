@@ -147,7 +147,7 @@ LRU-CACHE
 	Map<Integer, Integer> m = new HashMap<>();
 	Deque<Integer> q = new LinkedList<>();
 LRUCache(int capacity) {
-		size = capacity;
+	size = capacity;
 int get(int key)
     if (!m.containsKey(key)) return -1;
     q.remove(key);
@@ -155,10 +155,9 @@ int get(int key)
     return m.get(key);
 void put(int key, int value)
     if (q.size() == size)
-    	int oldKey = q.removeLast();
-    	m.remove(oldKey);
-    else
-        q.remove(key);
+        int oldKey = q.removeLast();
+        m.remove(oldKey);
+    else q.remove(key);
     q.push(key);
     m.put(key, value);
 

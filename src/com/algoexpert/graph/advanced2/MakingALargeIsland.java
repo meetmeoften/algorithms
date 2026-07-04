@@ -65,10 +65,15 @@ public class MakingALargeIsland {
     public static void main(String[] args) {
         MakingALargeIsland obj = new MakingALargeIsland();
         int[][] grid = {
+                {1, 0, 1},
+                {1, 0, 1},
+                {1, 0, 1}
+        };
+        int[][] grid2 = {
                 {1, 0},
                 {0, 1}
         };
-        System.out.println(obj.largestIsland(grid)); // Output: 3
+        System.out.println(obj.largestIsland(grid2)); // Output: 3
     }
 }
 

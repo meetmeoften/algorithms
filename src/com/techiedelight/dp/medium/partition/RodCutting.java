@@ -36,6 +36,18 @@ public class RodCutting {
         return dp[n]; // The maximum profit for rod of length n
     }
 
+
+    public static int rodCut(int[] price, int i, int n) {
+        if (n == 0) return 0;       // no rod left
+        if (i < 0) return Integer.MIN_VALUE;
+        // not take
+        int notTake = rodCut(price, i - 1, n);
+        // take
+        int take = price[i] + rodCut(price, i, n - (i + 1));
+        return Math.max(take, notTake);
+    }
+
+
     public static void main(String[] args) {
         int price[] = {1, 5, 8, 9, 10, 17, 17, 20};
         // rod length

@@ -49,11 +49,11 @@ public class WordPattern2 {
             String candidate = s.substring(sIndex, end);
 
             // Skip if some other pattern letter already uses this substring
-            if (used.contains(candidate)) continue;
+            //if (used.contains(candidate)) continue;
 
             // Try mapping currentChar → candidate
             map.put(currentChar, candidate);
-            used.add(candidate);
+            //used.add(candidate);
 
             if (backtrack(pattern, pIndex + 1, s, end, map, used)) {
                 return true;

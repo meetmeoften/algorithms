@@ -1,0 +1,195 @@
+A **Redis Sorted Set (ZSET)** is a collection of **unique members**, where each member is associated with a **score**. Redis automatically keeps the members **sorted by their scores**.
+
+Think of it as a combination of:
+
+* A **set** (no duplicate members)
+* A **priority queue** (ordered by score)
+
+---
+
+## Example
+
+Suppose you're storing player scores in a game.
+
+### Add players
+
+```redis
+ZADD leaderboard 100 Alice
+ZADD leaderboard 250 Bob
+ZADD leaderboard 180 Charlie
+```
+
+Here:
+
+* Alice → 100
+* Bob → 250
+* Charlie → 180
+
+Redis stores them sorted by score:
+
+| Rank | Player  | Score |
+| ---- | ------- | ----: |
+| 1    | Alice   |   100 |
+| 2    | Charlie |   180 |
+| 3    | Bob     |   250 |
+
+---
+
+## Get all members
+
+```redis
+ZRANGE leaderboard 0 -1 WITHSCORES
+```
+
+Output:
+
+```text
+1) Alice
+2) 100
+3) Charlie
+4) 180
+5) Bob
+6) 250
+```
+
+---
+
+## Get highest scorer
+
+```redis
+ZREVRANGE leaderboard 0 0 WITHSCORES
+```
+
+Output:
+
+```text
+Bob
+250
+```
+
+`ZREVRANGE` returns results in **descending** order of score.
+
+---
+
+## Update a score
+
+Suppose Alice earns 200 more points.
+
+```redis
+ZINCRBY leaderboard 200 Alice
+```
+
+Alice's score becomes:
+
+```text
+300
+```
+
+Now the leaderboard is:
+
+| Rank | Player  | Score |
+| ---- | ------- | ----: |
+| 1    | Charlie |   180 |
+| 2    | Bob     |   250 |
+| 3    | Alice   |   300 |
+
+---
+
+## Find a player's rank
+
+Ascending rank:
+
+```redis
+ZRANK leaderboard Alice
+```
+
+Output:
+
+```text
+2
+```
+
+(Ranks are **0-based**.)
+
+Descending rank (highest score first):
+
+```redis
+ZREVRANK leaderboard Alice
+```
+
+Output:
+
+```text
+0
+```
+
+---
+
+## Get players within a score range
+
+Players with scores between 150 and 300:
+
+```redis
+ZRANGEBYSCORE leaderboard 150 300
+```
+
+Output:
+
+```text
+Charlie
+Bob
+Alice
+```
+
+---
+
+## Remove a player
+
+```redis
+ZREM leaderboard Charlie
+```
+
+Remaining:
+
+```text
+Alice
+Bob
+```
+
+---
+
+## Internal Implementation
+
+Redis implements Sorted Sets using:
+
+* A **hash table** for fast member lookup (`O(1)` average).
+* A **skip list** for maintaining members in sorted order (`O(log n)` insert, delete, and rank operations).
+
+This combination makes Sorted Sets efficient for both direct lookups and ordered queries.
+
+---
+
+## Time Complexity
+
+| Operation | Complexity                                         |
+| --------- | -------------------------------------------------- |
+| `ZADD`    | `O(log n)`                                         |
+| `ZREM`    | `O(log n)`                                         |
+| `ZRANK`   | `O(log n)`                                         |
+| `ZRANGE`  | `O(log n + m)` (`m` = number of returned elements) |
+| `ZINCRBY` | `O(log n)`                                         |
+
+---
+
+## Common Use Cases
+
+* 🏆 Game leaderboards
+* 📈 Ranking users by reputation or score
+* ⏰ Scheduling tasks by timestamp (using timestamps as scores)
+* 🔥 Trending posts sorted by popularity
+* 🎵 Music charts
+* 📊 Top-N analytics (e.g., most-viewed pages)
+
+### Summary
+
+A Redis Sorted Set stores **unique members with numeric scores**, automatically keeping them ordered. This makes it ideal for scenarios where you need both **fast lookups** and **efficient ranking**, such as leaderboards, scheduling, and priority-based processing.

@@ -1,0 +1,476 @@
+LRUCache
+    class Node
+        int key;
+        int value;
+        Node prev;
+        Node next;
+        Node(int key, int value)
+            this.key = key;
+            this.value = value;
+    Node head;
+    Node tail;
+    int capacity;
+    Map<Integer, Node> cache;
+    public LRUCache(int capacity)
+        this.capacity = capacity;
+        this.cache = new HashMap<>();
+        this.head = new Node(0, 0);
+        this.tail = new Node(0, 0);
+        head.next = tail;
+        tail.prev = head;
+    public int get(int key)
+        Node node = cache.get(key);
+        if(node == null) return -1;
+        moveToFront(node);
+        return node.value;
+    public void put(int key, int value)
+        if(cache.containsKey(key))
+            Node existing = cache.get(key);
+            existing.value = value;
+            moveToFront(existing);
+            return;
+        if(cache.size() == capacity)
+            Node lru = tail.prev;
+            removeNode(lru);
+            cache.remove(lru.key);
+        Node newNode = new Node(key, value);
+        addToFront(newNode);
+        cache.put(key, newNode);
+    private void moveToFront(Node node)
+        removeNode(node);
+        addToFront(node);
+    private void addToFront(Node node)
+        node.next = head.next;
+        node.prev = head;
+        head.next.prev = node;
+        head.next = node;
+    private void removeNode(Node node)
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+
+
+LFUCache
+    Map<Integer, Integer> values;
+    Map<Integer, Integer> counts;
+    Map<Integer, LinkedHashSet<Integer>> freqMap;
+    int capacity;
+    int minFreq;
+    LFUCache(int capacity)
+        this.capacity = capacity;
+        this.minFreq = 0;
+        values = new HashMap<>();
+        counts = new HashMap<>();
+        freqMap = new HashMap<>();
+    public void put(int key, int value)
+        if (capacity == 0) return;
+        if (values.containsKey(key)) {
+            values.put(key, value);
+            get(key);
+            return;
+        if (values.size() >= capacity)
+            LinkedHashSet<Integer> minFreqKeys = freqMap.get(minFreq);
+            int evictKey = minFreqKeys.iterator().next();
+            minFreqKeys.remove(evictKey);
+            values.remove(evictKey);
+            counts.remove(evictKey);
+        values.put(key, value);
+        counts.put(key, 1);
+        freqMap.putIfAbsent(1, new LinkedHashSet<>());
+        freqMap.get(1).add(key);
+        minFreq = 1;
+    public int get(int key)
+        if (!values.containsKey(key))
+            return -1;
+        Integer freq = counts.get(key);
+        freqMap.get(freq).remove(key);
+        // update minFreq
+        if (freq == minFreq && freqMap.get(freq).isEmpty())
+            minFreq++;
+        // increase freq
+        counts.put(key, freq + 1);
+        freqMap.putIfAbsent(freq + 1, new LinkedHashSet<>());
+        freqMap.get(freq + 1).add(key);
+        return values.get(key);
+
+AllOne
+    class Node
+        int count;
+        Set<String> keys;
+        Node prev, next;
+        Node(int count)
+            this.count = count;
+            this.keys = new HashSet<>();
+    Node head;
+    Node tail;
+    Map<String, Node> map;
+    public AllOne()
+        head = new Node(0);
+        tail = new Node(0);
+        head.next = tail;
+        tail.prev = head;
+        map = new HashMap<>();
+    public void decr(String key)
+        Node curr = map.get(key);
+        if (curr.count == 1) {
+            curr.keys.remove(key);
+            map.remove(key);
+            if (curr.keys.isEmpty())
+                remove(curr);
+        else
+            Node prev = curr.prev;
+            if (prev == head || prev.count != curr.count - 1)
+                Node newNode = new Node(curr.count - 1);
+                addAfter(prev, newNode);
+                prev = newNode;
+            prev.keys.add(key);
+            map.put(key, prev);
+            curr.keys.remove(key);
+            if (curr.keys.isEmpty())
+                remove(curr);
+    public void incr(String key)
+        if (map.containsKey(key))
+            Node curr = map.get(key);
+            Node next = curr.next;
+            if (next == tail || next.count != curr.count + 1)
+                Node newNode = new Node(curr.count + 1);
+                addAfter(curr, newNode);
+                next = newNode;
+            next.keys.add(key);
+            map.put(key, next);
+            curr.keys.remove(key);
+            if (curr.keys.isEmpty())
+                remove(curr);
+        else
+            Node first = head.next;
+            if (first == tail || first.count != 1)
+                Node newNode = new Node(1);
+                addAfter(head, newNode);
+                first = newNode;
+            first.keys.add(key);
+            map.put(key, first);
+    public String getMaxKey()
+        if (tail.prev == head) {
+            return "";
+        return tail.prev.keys.iterator().next();
+    public String getMinKey()
+        if (head.next == tail)
+            return "";
+        return head.next.keys.iterator().next();
+    private void addAfter(Node prevNode, Node newNode) {
+        Node nextNode = prevNode.next;
+        prevNode.next = newNode;
+        newNode.prev = prevNode;
+        newNode.next = nextNode;
+        nextNode.prev = newNode;
+    private void remove(Node node) {
+        node.next.prev = node.next;
+        node.prev.next = node.prev;
+
+
+MaxStack
+    class Node
+        int val;
+        Node prev;
+        Node next;
+        Node(int val)
+            this.val = val;
+    private TreeMap<Integer, List<Node>> map;
+    private Node head;
+    private Node tail;
+    public MaxStack()
+        map = new TreeMap<>();
+        head = new Node(0);
+        tail = new Node(0);
+        head.next = tail;
+        tail.prev = head;
+    public void push(int x) {
+        Node node = new Node(x);
+        addToTop(node);
+        map.computeIfAbsent(x, key -> new ArrayList<>()).add(node);
+    public int pop()
+        Node node = tail.prev;
+        removeNode(node);
+        List<Node> list = map.get(node.val);
+        list.remove(list.size() - 1);
+        if (list.isEmpty()) {
+            map.remove(node.val);
+        return node.val;
+    public int top() {
+        return tail.prev.val;
+    public int peekMax() {
+        return map.lastKey();
+    public int popMax() {
+        int max = map.lastKey();
+        List<Node> list = map.get(max);
+        Node node = list.remove(list.size() - 1);
+        if (list.isEmpty()) {
+            map.remove(max);
+        removeNode(node);
+        return max;
+    private void addToTop(Node node) {
+        Node prev = tail.prev;
+        prev.next = node;
+        node.prev = prev;
+        node.next = tail;
+        tail.prev = node;
+    private void removeNode(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
+        prev.next = next;
+        next.prev = prev;
+
+class RandomizedSet
+    private List<Integer> list;
+    private Map<Integer, Integer> hm;
+    public RandomizedSet()
+        list = new ArrayList<>();
+        hm = new HashMap<>();
+    public boolean insert(int val)
+        if (hm.containsKey(val)) return false;
+        list.add(val);
+        hm.put(val, list.size() - 1);
+        return true;
+    public boolean remove(int val)
+        if (!hm.containsKey(val))  return false;
+        int idx = hm.get(val);
+        int lastElement = list.get(list.size() - 1);
+        list.set(idx, lastElement);
+        list.remove(list.size() - 1);
+        hm.put(lastElement, idx);
+        hm.remove(val);
+        return true;
+    public int getRandom()
+        Random rand = new Random();
+        int randIdx = rand.nextInt(list.size());
+        return list.get(randIdx);
+
+RandomizedCollection - Duplicates allowed
+    private List<Integer> list;
+    private Map<Integer, Set<Integer>> map;
+    private Random random;
+    public RandomizedCollection()
+        list = new ArrayList<>();
+        map = new HashMap<>();
+        random = new Random();
+    public boolean insert(int val)
+        boolean firstOccurrence = !map.containsKey(val);
+        list.add(val);
+        map.putIfAbsent(val, new HashSet<>());
+        map.get(val).add(nums.size() - 1);
+        return firstOccurrence;
+    public boolean remove(int val)
+        if (!map.containsKey(val)) return false;
+        int removeIndex = map.get(val).iterator().next();
+        int lastVal = list.get(list.size() - 1);
+        list.set(removeIndex, lastVal);
+        map.get(lastVal).add(removeIndex);
+        map.get(lastVal).remove(list.size() - 1);
+        map.get(val).remove(removeIndex);
+        list.remove(list.size() - 1);
+        if (map.get(val).isEmpty())
+            map.remove(val);
+        return true;
+    public int getRandom()
+        return nums.get(random.nextInt(nums.size()));
+
+
+class MakingALargeIsland
+int n;
+int[][] grid;
+int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+public int largestIsland(int[][] grid)
+    this.grid = grid;
+    this.n = grid.length;
+    Map<Integer, Integer> areaMap = new HashMap<>();
+    int id = 2; // start island ids from 2 (since grid has 0 and 1)
+    int maxArea = 0;
+    // 1️⃣ Label each island with a unique id and store area
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            if (grid[i][j] == 1)
+                int area = dfs(i, j, id);
+                areaMap.put(id, area);
+                maxArea = Math.max(maxArea, area); // track largest existing island
+                id++;
+    // 2️⃣ Try flipping each 0 → 1 and calculate new island size
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 0) {
+                Set<Integer> neighbors = new HashSet<>();
+                for (int[] d : dirs) {
+                    int ni = i + d[0], nj = j + d[1];
+                    if (ni >= 0 && nj >= 0 && ni < n && nj < n && grid[ni][nj] > 1) {
+                        neighbors.add(grid[ni][nj]);
+                int newArea = 1; // flipped cell
+                for (int nid : neighbors) newArea += areaMap.get(nid);
+                maxArea = Math.max(maxArea, newArea);
+    return maxArea;
+private int dfs(int i, int j, int id)
+    if (i < 0 || j < 0 || i >= n || j >= n || grid[i][j] != 1) return 0;
+    grid[i][j] = id;
+    int area = 1;
+    for (int[] d : dirs) {
+        area += dfs(i + d[0], j + d[1], id);
+    return area;
+
+
+BestMeetingPoint
+public int minTotalDistance(int[][] grid)
+    List<Integer> rows = new ArrayList<>();
+    List<Integer> cols = new ArrayList<>();
+    int m = grid.length;
+    int n = grid[0].length;
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            if (grid[i][j] == 1)
+                rows.add(i);
+    for (int j = 0; j < n; j++)
+        for (int i = 0; i < m; i++)
+            if (grid[i][j] == 1)
+                cols.add(j);
+    return getDistance(rows) + getDistance(cols);
+private int getDistance(List<Integer> points)
+    int left = 0;
+    int right = points.size() - 1;
+    int distance = 0;
+    while (left < right)
+        distance += points.get(right) - points.get(left);
+        left++;
+        right--;
+    return distance;
+
+
+int LARGEST-RECTANGLE(int[] heights)
+    int n = heights.length; int max =0;
+    for(int i=0; i <=n ; i++)
+        int h = i == n ? 0 : heights[i];
+        while(!stack.isEmpty() && heights[stack.peek()] > h)
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek()-1;
+            max = Math.max(area, height * width);
+        stack.push(i);
+    return max;
+
+public int WORD-LADDER(String beginWord, String endWord, List<String> wordList)
+    if (beginWord.equals(endWord)) return 1;
+    Set<String> dict = new HashSet<>(wordList);
+    Queue<String> q = new LinkedList<>();
+    q.offer(beginWord);
+    int steps = 1;
+    while (!q.isEmpty())
+    	int level = q.size();
+    	for (int i = 0; i < level; i++)
+    		String s = q.poll();
+    		if (s.equals(endWord)) return steps;
+    		char[] letters = s.toCharArray();
+    		for (int j = 0; j < s.length(); j++)
+    			char prevCh = letters[j];
+    			for (char ch = 'a'; ch <= 'z'; ch++)
+    				letters[j] = ch;
+    				String nextWord = new String(letters);
+    				if (dict.contains(nextWord))
+    					q.offer(nextWord);
+    					dict.remove(nextWord);
+    			letters[j] = prevCh;
+    	++steps;
+    return 0;
+
+public String MIN-WINDOW-SUBSTRING(String s, String t)
+    int left, right= 0;
+    Map<Character, Integer> map = new HashMap<>();
+    for(char ch: t.toCharArray())
+        map.put(ch, map.getOrDefault(ch, 0) + 1);
+    int matched = 0; min = Integer.MAX_VALUE;
+    String result = "";
+    while(right < s.length())
+        char rightCh = s.charAt(right);
+        if(map.containsKey(rightCh))
+            map.put(rightCh, map.get(rightCh) - 1);
+            if(map.get(rightCh) == 0) matched++;
+        while(matched == map.size())
+            if(min > right - left + 1)
+                min = right - left  + 1;
+                result = s.substring(left, right+1);
+            char leftCh = s.charAt(left);
+            if(map.containsKey(leftCh))
+                if(map.get(leftCh) == 0)  matched--;
+                map.put(leftCh, map.get(leftCh) + 1);
+            left++;
+        right++;
+    return result;
+
+
+public int maxPoints(int[][] points)
+    int n = points.length;
+    if (n <= 2) return n;
+    int ans = 2;
+    for (int i = 0; i < n; i++)
+        Map<String, Integer> map = new HashMap<>();
+        int max = 0;
+        for (int j = i + 1; j < n; j++)
+            int dx = points[j][0] - points[i][0];
+            int dy = points[j][1] - points[i][1];
+            int gcd = gcd(dx, dy);
+            dx /= gcd;
+            dy /= gcd;
+            // normalize slope
+            if (dx < 0)
+                dx = -dx;
+                dy = -dy;
+            if (dx == 0) dy = 1;   // vertical line
+            if (dy == 0) dx = 1;   // horizontal line
+            String key = dy + "/" + dx;
+            map.put(key, map.getOrDefault(key, 0) + 1);
+            max = Math.max(max, map.get(key));
+        ans = Math.max(ans, max + 1);
+    return ans;
+    private int gcd(int a, int b)
+        if (b == 0) return Math.abs(a);
+        return gcd(b, a % b);
+
+
+public boolean CourseSchedule(int numCourses, int[][] prerequisites)
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    int[] inDegrees = new int[numCourses];
+    for(int[] p: prerequisites) {
+        map.putIfAbsent(p[1], new ArrayList<>());
+        map.get(p[1]).add(p[0]);
+        inDegrees[p[0]]++;
+    Queue<Integer> q = new LinkedList<>();
+    for(int i= 0; i < inDegrees.length; i++)
+        if(inDegrees[i] == 0) q.offer(i);
+    int count = 0;
+    while(!q.isEmpty())
+        int val = q.poll();
+        if(inDegrees[val] == 0) count++;
+        if(!map.containsKey(val)) continue;
+        for(Integer i:map.get(val))
+            inDegrees[i]--;
+            if(inDegrees[i] == 0) q.offer(i);
+    return count == numCourses;
+
+public int ROTTEN-ORANGES(int[][] grid)
+    Queue<int[]> q;
+    int count = -1, noOfOnes = 0;
+    for(int i = 0; i<grid.length; i++)
+        for(int j = 0; j<grid[0].length; j++)
+            if(grid[i][j]==2) q.add(new int[]i,j);
+            if(grid[i][j]==1) noOfOnes++;
+    if(noOfOnes == 0) return 0;
+    int xmoves[] = 0, 0, -1, 1;
+    int ymoves[] = -1, 1, 0, 0;
+    while(!q.isEmpty())
+        for(int i = 0; i<q.size(); i++)
+            int coord[] = q.poll();
+            for(int k = 0; k<4; k++)
+                int x = xmoves[k] + coord[0];
+                int y = ymoves[k] + coord[1];
+                if(isValid(grid, x, y) && grid[x][y] == 1)
+                    grid[x][y] = 2; q.add(new int[]x,y);
+        count++;
+    for(int row[]: grid)
+        for(int cell: row)
+            if(cell == 1) return -1;
+    return count;
+private static boolean isValid(int[][] grid, int i, int j)
+    return i>=0 && j>=0 && i<grid.length && j<grid[0].length;

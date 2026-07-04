@@ -38,7 +38,7 @@ public class KthLargestElementInArray {
 		int[] nums = { 2, 4, 1, 5, 6, 3 };
 		int k = 2;
 		KthLargestElementInArray kth = new KthLargestElementInArray();
-		kth.findKthLargest(nums, k);
+		System.out.println(kth.findKthLargest(nums, k));
 
 	}
 

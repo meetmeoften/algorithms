@@ -27,9 +27,10 @@ public class CheapestFlights {
 					continue;
 				}
 
-				if (prices[s] + p < temp[d]) {
-					temp[d] = prices[s] + p;
-				}
+//				if (prices[s] + p < temp[d]) {
+//					temp[d] = prices[s] + p;
+//				}
+				temp[d] = Math.min(temp[d], prices[s] + p);
 			}
 
 			// set prices to temp

@@ -1,0 +1,40 @@
+trending hashtags
+typeahead search
+
+notification system
+metrics aggregator
+system metrics and monitoring platform
+top -k
+top-k url system for linkedin posts
+calendar (meetings and also schedules)
+job scheduler
+rate limiter (quota manager for linkedin APIs)
+key value store (cassandra)
+distributed search - Design a system which takes stream of linkedin posts and form a inverted index of all the words in the post.
+    The user will query a list of words, you have to return all the post ids which has all the given list of words.
+
+
+malicious IP detection system
+recommender system
+database like bitcask
+coderpad(collaborative coding platform)
+review and reward system for food delivery
+chat-gpt
+
+=========================================================
+conflict with co worker
+conflict between different teams and organization
+conflict at work
+dint agree with your manager or supervisor
+skill developed from manager or from co-worker
+significant set back to achieve goal
+hardest challenge you have overcome at work
+failed and overcome at work
+tough of critical piece of feedback received
+complex project/impactful project/project most proud of
+How do you define a quality product/system
+Describe your strategy regarding code reviews
+What are your principles of mentorship? How do you manage technical and non-technical mentorship?
+
+=========================================================
+

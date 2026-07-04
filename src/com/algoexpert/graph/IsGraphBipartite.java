@@ -62,6 +62,43 @@ public class IsGraphBipartite {
         return true;
     }
 
+    public static boolean possibleBipartition(int n, int[][] dislikes) {
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int[] d : dislikes) {
+            graph.get(d[0]).add(d[1]);
+            graph.get(d[1]).add(d[0]);
+        }
+        int[] color = new int[n + 1]; // 0 = unvisited, 1 and -1 = two groups
+
+        for (int i = 1; i <= n; i++) {
+
+            if (color[i] == 0) {
+                Queue<Integer> queue = new LinkedList<>();
+                queue.add(i);
+                color[i] = 1;
+
+                while (!queue.isEmpty()) {
+                    int curr = queue.poll();
+
+                    for (int nei : graph.get(curr)) {
+                        if (color[nei] == 0) {
+                            color[nei] = -color[curr];
+                            queue.add(nei);
+                        } else if (color[nei] == color[curr]) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+
     public static void main(String[] args) {
         // Example graph input (adjacency list)
         int[][] graph = {
@@ -70,6 +107,14 @@ public class IsGraphBipartite {
                 {1, 3},
                 {0, 2}
         };
+
+        int[][] graph2 = {
+                {1, 2},
+                {1, 3},
+                {2, 4}
+        };
+
+        possibleBipartition(4, graph2);
 
         boolean result = IsGraphBipartite.isBipartite(graph);
         System.out.println("Is the graph bipartite? " + result);

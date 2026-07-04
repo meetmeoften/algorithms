@@ -57,7 +57,7 @@ public class NumberOfProvinces {
                 {0, 0, 1}
         };
         NumberOfProvinces solution = new NumberOfProvinces();
-        int result = solution.findCircleNum2(isConnected);
+        int result = solution.findCircleNum(isConnected);
         System.out.println("Number of Provinces: " + result); // Output: 2
     }
 }
