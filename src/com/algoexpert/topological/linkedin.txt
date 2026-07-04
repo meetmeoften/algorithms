@@ -1,0 +1,79 @@
+https://leetcode.com/discuss/post/7820370/india-linkedin-swe-interview-experience-euyf2/
+
+https://leetcode.com/discuss/post/6487244/linkedin-sse-bangalore-rejected-by-anony-dlq3/
+
+
+https://leetcode.com/discuss/post/7840006/interview-experience-swe-architecture-de-iqs6/
+
+https://leetcode.com/discuss/post/7645779/linkedin-interview-experience-software-e-4ueh/
+
+
+https://leetcode.com/discuss/post/7714267/linkedin-sde2-phone-screen-by-oavo-x70c/
+
+
+N-ary Tree – detect cyclic dependencies
+
+https://leetcode.com/discuss/post/7611072/linkedin-sde-interview-experience-bangal-zkfs/
+
+
+https://leetcode.com/discuss/post/7644399/linkedin-sse-interview-by-anonymous_user-nyey/
+
+https://leetcode.com/discuss/post/7602797/linkedin-sse-infrastructure-team-rejecte-k2qz/
+
+
+https://leetcode.com/discuss/post/7638173/linkedin-phone-screen-interview-by-anony-qo3m/
+
+https://leetcode.com/discuss/post/7661919/linkedin-sde-ng-vo-by-oavo-9wnq/
+
+https://leetcode.com/discuss/post/7606337/linkedin-loop-first-dsa-round-for-softwa-x35c/
+
+
+https://leetcode.com/discuss/post/7421217/ai-engineer-linkedin-virtual-onsite-reje-2dhs/ - ML
+
+Staff:
+
+https://leetcode.com/discuss/post/4802490/linkedin-staff-onsite-by-anonymous_user-7lyq/
+https://leetcode.com/discuss/post/7103201/staff-software-engineer-linkedin-by-anon-3ufy/
+https://leetcode.com/discuss/post/6974432/linkedin-staff-infra-interview-experienc-ca0u/
+https://leetcode.com/discuss/post/5806328/linkedin-staff-phone-virtual-on-site-us-cg7au/
+https://leetcode.com/discuss/post/6664968/linkedin-us-staff-infra-by-anonymous_use-qe87/
+https://leetcode.com/discuss/post/149563/linkedin-staff-software-engineer-sunnyva-c43v/
+https://leetcode.com/discuss/post/7479450/linkedin-ai-enabled-coding-round-staff-s-0jv0/
+https://leetcode.com/discuss/post/6589904/linkedin-staff-software-engineer-applica-qpmd/
+
+https://leetcode.com/discuss/post/6858262/linkedin-staff-software-engineer-intervi-mg5c/ - selected
+
+
+https://www.showoffer.io/practice/navan/navan-sd-1  - notification system
+https://www.showoffer.io/practice/openai/openai-sd-1 - Multi Tenant CI CD System
+https://www.showoffer.io/practice/oracle/oracle-sd-1 - instagram
+https://www.showoffer.io/practice/stripe/stripe-sd-1 - Fraud Detection
+https://www.showoffer.io/practice/databricks/databricks-sd-1 - Job Scheduler for GPU
+https://www.showoffer.io/practice/anthropic/anthropic-sd-1 - chat application
+https://www.showoffer.io/practice/amazon/amazon-pd-1 - Door Dash
+https://www.showoffer.io/practice/apple/apple-code-1 - depth of n ary tree
+https://www.showoffer.io/practice/apple/apple-sd-1  - ticket booking system
+https://www.showoffer.io/practice/google/google-sd-1  - meta live comments
+https://www.showoffer.io/practice/meta/meta-mlsd-1
+
+
+Transformer Architecture from scratch
+✅ LLM Fine-Tuning (LoRA, QLoRA, DPO, RLHF)
+✅ Knowledge Distillation & Small Language Models
+✅ Vision Language Models (VLMs)
+✅ Whisper Fine-Tuning
+✅ Embedding Models & Matryoshka Embeddings
+✅ Production RAG Systems
+✅ Advanced RAG (Hybrid, Graph RAG, Agentic RAG)
+✅ LangChain
+✅ LangGraph
+✅ MCP (Model Context Protocol)
+✅ Multi-Agent Systems
+✅ Amazon Bedrock AgentCore
+✅ A2A (Agent-to-Agent Protocol)
+✅ Prompt Engineering
+✅ Context Engineering
+✅ LLM Evaluation
+✅ Harness Engineering
+✅ LLMOps
+✅ CI/CD for AI Systems
