@@ -14,18 +14,18 @@ public class MergeIntervals {
 		Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
 
 		List<int[]> result = new ArrayList<>();
-		int[] interval = intervals[0];
+		int[] prevInterval = intervals[0];
 
 		for (int i = 1; i < intervals.length; i++) {
-			if (interval[1] >= intervals[i][0]) {
-				interval[1] = Math.max(interval[1], intervals[i][1]);
+			if (prevInterval[1] >= intervals[i][0]) {
+				prevInterval[1] = Math.max(prevInterval[1], intervals[i][1]);
 			} else {
-				result.add(interval);
-				interval = intervals[i];
+				result.add(prevInterval);
+				prevInterval = intervals[i];
 			}
 		}
 
-		result.add(interval);
+		result.add(prevInterval);
 
 		return result.toArray(new int[result.size()][]);
 	}

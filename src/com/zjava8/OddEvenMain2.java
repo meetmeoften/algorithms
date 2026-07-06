@@ -2,6 +2,9 @@ package com.zjava8;
 
 public class OddEvenMain2 implements Runnable {
 
+
+
+
 	public static final int MAX_COUNT = 10;
 	public int rem = 0;
 	static Object lock = new Object();

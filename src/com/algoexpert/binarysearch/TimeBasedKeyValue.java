@@ -54,8 +54,8 @@ public class TimeBasedKeyValue {
 	public static void main(String[] args) {
 		TimeBasedKeyValue keyValue = new TimeBasedKeyValue();
 		keyValue.set("foo", "bar", 1);
-		keyValue.get("foo", 1);
-		keyValue.get("foo", 3);
+		System.out.println(keyValue.get("foo", 1));
+		System.out.println(keyValue.get("foo", 3));
 	}
 
 

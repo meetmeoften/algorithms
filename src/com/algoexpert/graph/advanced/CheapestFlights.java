@@ -45,7 +45,7 @@ public class CheapestFlights {
 
 	public static void main(String[] args) {
 		int[][] points = { { 0, 1, 100 }, { 1, 2, 100 }, { 2, 0, 100 }, { 1, 3, 600 }, { 2, 3, 200 } };
-		findCheapestPrice(4, points, 0, 4, 1);
+		findCheapestPrice(4, points, 0, 3, 1);
 	}
 
 }

@@ -1,9 +1,7 @@
 package com.algoexpert.graph.advanced;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class NetworkDelayTime {
 
@@ -26,8 +24,8 @@ public class NetworkDelayTime {
 
 		while (!pq.isEmpty()) {
 			Pair p = pq.poll(); // Use poll() instead of peek() to remove the element
-			int dis = p.distance;
 			int node = p.node;
+			int dis = p.distance;
 
 			for (Pair neighbor : adj.get(node)) {
 				int adjnode = neighbor.node;
@@ -103,9 +101,45 @@ public class NetworkDelayTime {
 		return result;
 	}
 
-	public static void main(String[] args) {
+	public static int networkDelayTime3(int[][] times, int n, int k) {
+		List<int[]>[] graph = new List[n + 1];
+		for (int i = 0; i <= n; i++) graph[i] = new ArrayList<>();
+		for (int[] time : times) graph[time[0]].add(new int[]{time[1], time[2]});
+
+		int[] dist = new int[n + 1];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		dist[k] = 0;
+
+		PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+		pq.offer(new int[]{k, 0});
+
+		while (!pq.isEmpty()) {
+			int[] curr = pq.poll();
+			int node = curr[0], currDist = curr[1];
+			if (currDist > dist[node]) continue;
+
+			for (int[] edge : graph[node]) {
+				int neighbor = edge[0], weight = edge[1];
+				int newDist = currDist + weight;
+				if (newDist < dist[neighbor]) {
+					dist[neighbor] = newDist;
+					pq.offer(new int[]{neighbor, newDist});
+				}
+			}
+		}
+
+		int maxDist = 0;
+		for (int i = 1; i <= n; i++) {
+			if (dist[i] == Integer.MAX_VALUE) return -1;
+			maxDist = Math.max(maxDist, dist[i]);
+		}
+		return maxDist;
+	}
+
+
+public static void main(String[] args) {
 		int[][] points = {{2,1,1},{2,3,1},{3,4,1}};
-		networkDelayTime(points, 4, 2);
+		networkDelayTime3(points, 4, 2);
 	}
 
 }

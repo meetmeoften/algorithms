@@ -19,7 +19,19 @@ public class WordLadder {
 		Queue<String> q = new LinkedList<>();
 		q.offer(beginWord);
 
+
+
+
 		int steps = 1;
+
+
+		while(!q.isEmpty()){
+			int level = q.size();
+
+			for(int i = 0; i < level; i++){
+
+			}
+		}
 
 		while (!q.isEmpty()) {
 			int level = q.size();

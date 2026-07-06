@@ -22,13 +22,13 @@ public class KadaneAlgorithm {
 	 * It will work for negative numbers too
 	 */
 	public int kandaneForMaxSubArrayForNegativ(int[] arr) {
-		int maxEndHere = arr[0];
-		int maxSoFar = arr[0];
+		int curr = arr[0];
+		int max = arr[0];
 		for(int i=1;i<arr.length;i++){
-			maxEndHere = Math.max(arr[i], maxEndHere+arr[i]);
-			maxSoFar = Math.max(maxSoFar,maxEndHere);
+			curr = Math.max(arr[i], curr+arr[i]);
+			max = Math.max(max,curr);
 		}
-		return maxSoFar;
+		return max;
 	}
 
 	public static void main(String args[]) {

@@ -4,6 +4,7 @@ public class UnionFind {
 
     private int[] parent;
     private int[] rank;
+    // size also would be there
     int count;
 
     public UnionFind(int n) {

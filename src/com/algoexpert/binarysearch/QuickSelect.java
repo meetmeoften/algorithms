@@ -1,10 +1,27 @@
+
 package com.algoexpert.binarysearch;
 
 public class QuickSelect {
 	public static int quickselect(int[] array, int k) {
 		// Write your code here.
 		int position = k-1;
-		return quickselect(array, 0, array.length-1, position);
+//		return quickselect2(array, 0, array.length-1, position);
+		int val =  quickSelect2(array, 0, array.length-1, k);
+		return val;
+	}
+
+
+	private static int quickSelect2(int[] nums, int low, int high, int k) {
+		int idx = low, pivot = high;
+		for (int i = low; i < high; i++)
+			if (nums[i] <= nums[pivot]) {
+				swap(i, idx, nums);
+				idx++;
+			}
+		swap(idx, pivot, nums);
+		if (idx == k) return nums[idx];
+		else if (idx < k) return quickSelect2(nums, idx + 1, high, k);
+		else return quickSelect2(nums, low, idx - 1, k);
 	}
 
 	public static int quickselect(int[] array, int startIndex, int endIndex, int position) {

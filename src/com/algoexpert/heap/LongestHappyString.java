@@ -61,6 +61,19 @@ public class LongestHappyString {
 		}
 	}
 
+// dynamic k
+	private boolean wouldViolate(StringBuilder sb, char ch, int k) {
+		int len = sb.length();
+		if (len < k - 1) return false;
+
+		for (int i = 0; i < k - 1; i++) {
+			if (sb.charAt(len - 1 - i) != ch) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static void main(String[] args) {
 		int a = 1, b = 1, c = 7;
 		LongestHappyString longest = new LongestHappyString();

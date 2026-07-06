@@ -78,10 +78,8 @@ int DISTINCT-SUBSEQUENCE(String s, String t, int sIdx, int tIdx)
     memo[sIdx][tIdx] = recursion(s, t, sIdx + 1, tIdx, memo);
     return memo[sIdx][tIdx];
     
-boolean INTERLEAVING(String A, String B, String C,
-int i, int j, int k)
-    if (k == C.length())
-        return i == A.length() && j == B.length();
+boolean INTERLEAVING(String A, String B, String C, int i, int j, int k)
+    if (k == C.length()) return i == A.length() && j == B.length();
     String key = i + "," + j;
     if (memo.containsKey(key)) return memo.get(key);
     boolean valid = false;

@@ -1,5 +1,7 @@
 package com.algoexpert.graph.leetcode;
 
+import java.util.Arrays;
+
 public class SurroundedRegions {
 
 	public void solve(char[][] board) {
@@ -40,6 +42,7 @@ public class SurroundedRegions {
 				}
 			}
 		}
+		System.out.println(Arrays.deepToString(board));
 	}
 
 	// Use DFS algo to turn internal however boundary-connected 'O' to '*';
@@ -61,7 +64,7 @@ public class SurroundedRegions {
 		char[][] board = {
 				{ 'X', 'X', 'X', 'X' },
 				{ 'X', 'O', 'O', 'X' },
-				{ 'X', 'X', 'O', 'X' },
+				{ 'X', 'O', 'O', 'X' },
 				{ 'X', 'O', 'X', 'X' } };
 		new SurroundedRegions().solve(board);
 	}

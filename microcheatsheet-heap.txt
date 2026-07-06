@@ -220,7 +220,7 @@ List<Integer> mergeSortedArrays(List<List<Integer>> lists)
     		pq.add(min);
     return new ArrayList<Integer>();
 
-List<Integer> MAX-SUm-COMBINATIONS(int[] nums1, int[] nums2, int k) // Striver heap
+List<Integer> MAX-SUM-COMBINATIONS(int[] nums1, int[] nums2, int k) // Striver heap
     Arrays.sort(nums1); Arrays.sort(nums2);
     int n = nums1.length;
     PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> b[0] - a[0]);

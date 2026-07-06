@@ -122,7 +122,6 @@ int getMin(int[] time)
     return min;
 
 
-
 int MINIMUM-DAYS-TO-MAKE-BOUQUETS(int[] bloomDay, int m, int k)
     int start = 0;
     int end = 0;

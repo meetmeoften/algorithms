@@ -88,9 +88,10 @@ public class SplitArrayLargestSum {
 	}
 
 	public static void main(String[] args) {
-		int[] nums = {7,2,5,10,8};
+		//int[] nums = {7,2,5,10,8};
+		int[] nums = {3, 5, 2, 3};
 		int k = 2;
-		splitArray(nums, k);
+		System.out.println(splitArray(nums, k));
 	}
 
 }

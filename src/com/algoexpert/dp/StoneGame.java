@@ -25,7 +25,7 @@ public class StoneGame {
 	}
 
 	public static void main(String[] args) {
-		int[] piles = {5, 3, 4, 5};
+		int[] piles = {5, 3};
 		StoneGame game = new StoneGame();
 		game.stoneGame(piles);
 	}
