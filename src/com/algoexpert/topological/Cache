@@ -1,0 +1,681 @@
+Below are the common caching strategies with the flow between **Application**, **Cache**, and **Database**, followed by a detailed comparison table.
+
+---
+
+# 1. Cache-Aside (Lazy Loading)
+
+## Architecture
+
+```text
+        Read
+Application
+     |
+     v
+   Cache
+   /   \
+Hit     Miss
+ |        |
+ |        v
+ |     Database
+ |        |
+ |        v
+ +------ Cache
+          |
+          v
+     Application
+```
+
+### Read Flow
+
+1. Application checks the cache.
+2. If found (**Cache Hit**), return data.
+3. If not found (**Cache Miss**):
+
+   * Read from the database.
+   * Store the result in the cache.
+   * Return the data.
+
+### Write Flow
+
+```text
+Application
+      |
+      v
+ Database
+      |
+      v
+Invalidate Cache (or Update Cache)
+```
+
+The application writes to the database first and then either:
+
+* Removes the cached item (most common), or
+* Updates the cache with the new value.
+
+### Best For
+
+* E-commerce product catalog
+* User profiles
+* News articles
+* Frequently read data with occasional updates
+
+### Pros
+
+* Simple to implement.
+* Only requested data is cached.
+* Reduces database load.
+
+### Cons
+
+* First request is slower (cache miss).
+* Cache can become stale if not invalidated properly.
+
+---
+
+# 2. Read-Through Cache
+
+## Architecture
+
+```text
+Application
+      |
+      v
+     Cache
+      |
+  Hit / \ Miss
+     /   \
+    |     v
+    |  Database
+    |     |
+    +-----+
+```
+
+### Read Flow
+
+1. Application always requests data from the cache.
+2. If the cache misses, the cache itself loads the data from the database.
+3. Cache stores it.
+4. Cache returns it to the application.
+
+### Write Flow
+
+Usually combined with Write-Through.
+
+```text
+Application
+      |
+      v
+     Cache
+      |
+      v
+   Database
+```
+
+### Best For
+
+* Systems using managed cache providers.
+* Applications where developers don't want cache logic in application code.
+
+### Pros
+
+* Simpler application code.
+* Cache manages data loading.
+
+### Cons
+
+* Cache layer is more complex.
+* Less control over loading behavior.
+
+---
+
+# 3. Write-Through Cache
+
+## Architecture
+
+```text
+Application
+      |
+      v
+     Cache
+      |
+      v
+   Database
+```
+
+### Read Flow
+
+```text
+Application
+      |
+      v
+     Cache
+```
+
+Most reads are served from the cache.
+
+### Write Flow
+
+1. Application writes to the cache.
+2. Cache immediately writes to the database.
+3. Both are updated before the write is considered complete.
+
+### Best For
+
+* Banking dashboards
+* Inventory systems
+* Frequently read data that must remain current
+
+### Pros
+
+* Cache and database stay synchronized.
+* No stale cache after writes.
+
+### Cons
+
+* Every write updates both cache and database.
+* Slower writes than write-back.
+
+---
+
+# 4. Write-Behind (Write-Back)
+
+## Architecture
+
+```text
+Application
+      |
+      v
+     Cache
+      |
+      v
+ Database (Later)
+```
+
+### Read Flow
+
+```text
+Application
+      |
+      v
+     Cache
+```
+
+Reads are served from the cache.
+
+### Write Flow
+
+1. Application writes to the cache.
+2. Cache immediately acknowledges success.
+3. Cache asynchronously writes to the database later.
+
+### Best For
+
+* Logging
+* Analytics
+* IoT data
+* Metrics collection
+* High-volume write workloads
+
+### Pros
+
+* Extremely fast writes.
+* Reduces database write load.
+
+### Cons
+
+* Risk of losing recent writes if the cache fails before persisting them.
+* Database may temporarily lag behind the cache.
+
+---
+
+# 5. Write-Around
+
+## Architecture
+
+```text
+Application
+      |
+      v
+   Database
+
+(Cache is skipped during writes)
+```
+
+### Read Flow
+
+```text
+Application
+      |
+      v
+     Cache
+   /      \
+ Hit      Miss
+            |
+            v
+        Database
+            |
+            v
+          Cache
+```
+
+### Write Flow
+
+Application writes directly to the database.
+
+The cache is **not updated** during the write.
+
+Only a later read loads the data into the cache.
+
+### Best For
+
+* Systems with many writes and few reads.
+* Data that may never be requested again after being written.
+
+### Pros
+
+* Prevents the cache from being filled with rarely used data.
+* Keeps the cache focused on frequently accessed items.
+
+### Cons
+
+* First read after a write is slower because it results in a cache miss.
+
+---
+
+# Detailed Comparison Table
+
+| Strategy                       | Read Operation                                                                                                 | Write Operation                                                                        | Best For                                                        | Advantages                                                         | Disadvantages                                                                       |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| **Cache-Aside (Lazy Loading)** | Application checks cache. On a miss, reads from the database, stores the result in the cache, then returns it. | Application writes to the database, then invalidates or updates the cache.             | Product catalogs, user profiles, blogs, CMS content.            | Simple, widely used, caches only requested data.                   | First read is slower; stale cache if invalidation is missed.                        |
+| **Read-Through**               | Application always reads from the cache. On a miss, the cache loads the data from the database automatically.  | Usually paired with Write-Through so writes update both cache and database.            | Managed cache solutions, simpler application architecture.      | Application code is simpler because cache handles loading.         | More complex cache layer; less application control.                                 |
+| **Write-Through**              | Reads are typically served from the cache.                                                                     | Every write updates the cache and the database synchronously before returning success. | Banking, inventory, pricing, dashboards requiring fresh data.   | Cache and database stay synchronized; no stale cache after writes. | Higher write latency because each write goes to both cache and database.            |
+| **Write-Behind (Write-Back)**  | Reads are served from the cache.                                                                               | Writes go to the cache first; the cache writes to the database asynchronously later.   | Logging, analytics, IoT telemetry, high-throughput systems.     | Very fast writes and reduced database load.                        | Risk of data loss if the cache fails before flushing changes; eventual consistency. |
+| **Write-Around**               | Reads check the cache first. On a miss, data is fetched from the database and then cached.                     | Writes go directly to the database; the cache is not updated.                          | Write-heavy systems where recently written data is rarely read. | Avoids polluting the cache with infrequently accessed data.        | First read after a write is slower because it must fetch from the database.         |
+
+## Interview Memory Trick
+
+| Strategy          | Easy to Remember                                                         |
+| ----------------- | ------------------------------------------------------------------------ |
+| **Cache-Aside**   | **Read → Cache first; Write → Database first.**                          |
+| **Read-Through**  | **Always ask the cache; the cache fetches from the database if needed.** |
+| **Write-Through** | **Write to cache and database together.**                                |
+| **Write-Behind**  | **Write to cache now, database later.**                                  |
+| **Write-Around**  | **Write only to the database; cache on the next read.**                  |
+
+### Which strategy is used most?
+
+* **Cache-Aside** is the most common strategy in applications using Redis or Memcached because it gives the application explicit control over caching.
+* **Write-Through** is preferred when cache consistency is more important than write performance.
+* **Write-Behind** is chosen when write throughput is critical and eventual consistency is acceptable.
+* **Write-Around** works well when many writes are unlikely to be read again soon.
+
+
+====================================
+
+## 1. Cache Failures
+
+Cache failures occur when the cache is unavailable, contains stale data, or doesn't return the expected data. If not handled properly, they can overload the database or return incorrect information.
+
+### A. Cache Miss
+
+**Definition:**
+The requested data is **not present** in the cache.
+
+### Flow
+
+```text
+Application
+      |
+      v
+    Cache
+   (Miss)
+      |
+      v
+  Database
+      |
+      v
+ Store in Cache
+      |
+      v
+ Application
+```
+
+### Example
+
+* User requests Product 101.
+* Redis doesn't have Product 101.
+* Application fetches it from the database.
+* Stores it in Redis.
+* Returns the response.
+
+**Impact**
+
+* Slightly slower response for the first request.
+* Normal and expected behavior.
+
+---
+
+## B. Cache Failure (Cache Server Down)
+
+**Definition:**
+The cache server (e.g., Redis) is unavailable.
+
+### Flow
+
+```text
+Application
+      |
+      v
+ Redis ❌ Down
+      |
+      v
+ Database
+```
+
+### Example
+
+* Redis crashes.
+* Every request goes directly to the database.
+
+**Impact**
+
+* Database receives all traffic.
+* Increased response time.
+* Database may become overloaded.
+
+**Solution**
+
+* Redis replication/high availability.
+* Circuit breaker pattern.
+* Fallback to the database with rate limiting.
+
+---
+
+## C. Stale Cache
+
+**Definition:**
+The cache contains old data while the database has newer data.
+
+### Example
+
+Database
+
+```text
+Product Price = ₹1000
+```
+
+Cache
+
+```text
+Product Price = ₹900
+```
+
+The application returns ₹900 even though the database has ₹1000.
+
+**Causes**
+
+* Cache not invalidated after an update.
+* Long TTL (Time-To-Live).
+
+**Solution**
+
+* Cache invalidation.
+* Write-through strategy.
+* Appropriate TTL values.
+
+---
+
+## D. Cache Penetration
+
+**Definition:**
+Repeated requests are made for data that **does not exist**.
+
+### Example
+
+```
+GET Product 999999
+```
+
+Cache
+
+```
+Miss
+```
+
+Database
+
+```
+Not Found
+```
+
+Since the item doesn't exist, every request keeps hitting the database.
+
+### Solution
+
+* Cache null/empty results for a short time.
+* Use a Bloom Filter to reject impossible keys before checking the database.
+* Validate IDs before querying.
+
+---
+
+## E. Cache Breakdown (Hot Key Expiration)
+
+**Definition:**
+A **very popular cache entry** expires, causing many requests to hit the database simultaneously.
+
+### Example
+
+```
+Product 101
+```
+
+is requested **50,000 times per minute**.
+
+At 10:00 AM the cache expires.
+
+```
+50,000 users
+      |
+      v
+ Cache Miss
+      |
+      v
+ Database
+```
+
+The database receives thousands of requests at once.
+
+### Solution
+
+* Never expire very hot keys, or use a long TTL.
+* Refresh hot keys before they expire.
+* Use distributed locking so only one request refreshes the cache.
+
+---
+
+## F. Cache Avalanche
+
+**Definition:**
+Many cache entries expire **at the same time**, overwhelming the database.
+
+### Example
+
+At 12:00 PM
+
+```
+Product 1
+Product 2
+Product 3
+Product 4
+```
+
+all expire simultaneously.
+
+Thousands of requests suddenly hit the database.
+
+### Solution
+
+* Use random TTLs (jitter) so keys expire at different times.
+* Warm up the cache after restart.
+* Rate limiting and load balancing.
+
+---
+
+# 2. Thundering Herd Problem
+
+The **Thundering Herd Problem** occurs when **many requests try to regenerate the same missing or expired cache entry at the same time**.
+
+It is closely related to **cache breakdown**, but the emphasis is on **multiple application threads/processes doing the same work concurrently**.
+
+## Example
+
+Suppose:
+
+```
+Product 101
+```
+
+is cached.
+
+TTL expires.
+
+Immediately:
+
+```
+10,000 Users
+      |
+      v
+ Cache Miss
+```
+
+Without protection:
+
+```
+Request 1 --> Database
+Request 2 --> Database
+Request 3 --> Database
+...
+Request 10000 --> Database
+```
+
+The database receives 10,000 identical queries.
+
+---
+
+## Solution: Distributed Lock
+
+Only one request refreshes the cache.
+
+```
+10,000 Requests
+        |
+        v
+     Cache Miss
+        |
+        v
+Acquire Lock
+        |
+   +----+----+
+   |         |
+Success    Wait
+   |
+   v
+Database
+   |
+Update Cache
+   |
+Release Lock
+```
+
+After the cache is updated, waiting requests read from the cache instead of the database.
+
+---
+
+## Other Solutions
+
+### 1. Distributed Lock (Most Common)
+
+Only one request reads from the database and updates the cache.
+
+Example: Redis distributed lock.
+
+---
+
+### 2. Request Coalescing (Single Flight)
+
+If multiple requests ask for the same key:
+
+```
+100 Requests
+      |
+      v
+Merge into One Database Call
+      |
+      v
+Share the Result
+```
+
+Only one database query is executed.
+
+---
+
+### 3. Background Cache Refresh
+
+Refresh popular cache entries **before** they expire.
+
+```
+Cache
+   |
+TTL = 5 min
+   |
+Refresh at 4 min 50 sec
+```
+
+Users never experience a cache miss.
+
+---
+
+### 4. Random TTL
+
+Instead of:
+
+```
+All expire in 60 minutes
+```
+
+Use:
+
+```
+58 min
+61 min
+63 min
+59 min
+```
+
+This spreads out expirations and avoids spikes.
+
+---
+
+# Summary Table
+
+| Problem                       | What Happens                                                        | Impact                                           | Solution                                                                     |
+| ----------------------------- | ------------------------------------------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------- |
+| **Cache Miss**                | Data isn't in the cache.                                            | One database read, then cache is populated.      | Cache the data after reading from the database.                              |
+| **Cache Failure**             | Cache server is unavailable.                                        | All requests go to the database.                 | High availability, replication, circuit breakers, fall back carefully.       |
+| **Stale Cache**               | Cache contains outdated data.                                       | Users receive old information.                   | Cache invalidation, write-through, suitable TTLs.                            |
+| **Cache Penetration**         | Requests target non-existent data.                                  | Repeated unnecessary database lookups.           | Cache null results, Bloom Filter, input validation.                          |
+| **Cache Breakdown (Hot Key)** | A frequently accessed key expires.                                  | Many requests hit the database for the same key. | Distributed lock, background refresh, longer TTL for hot keys.               |
+| **Cache Avalanche**           | Many keys expire simultaneously.                                    | Sudden spike in database traffic.                | Randomize TTLs, cache warm-up, rate limiting.                                |
+| **Thundering Herd**           | Many threads/processes try to rebuild the same cache entry at once. | Duplicate database work and potential overload.  | Distributed locking, request coalescing (single flight), background refresh. |
+
+## Interview Tip
+
+A common interview question is:
+
+**"What is the difference between Cache Breakdown and the Thundering Herd Problem?"**
+
+* **Cache Breakdown** focuses on **a hot cache key expiring**, causing many requests to miss the cache.
+* **Thundering Herd** focuses on **many requests simultaneously trying to regenerate that same cache entry**, resulting in duplicate work unless coordinated.
+
+In practice, cache breakdown often **causes** a thundering herd if no coordination mechanism (such as a distributed lock or request coalescing) is in place.
+
