@@ -163,8 +163,8 @@ public class AccountsMerge {
 			resList.add(Arrays.stream(rows).collect(Collectors.toList()));
 		}
 		AccountsMerge merge = new AccountsMerge();
-		//merge.accountsMerge(resList);
-		merge.accountsMergeDFS(resList);
+		merge.accountsMerge(resList);
+		//merge.accountsMergeDFS(resList);
 
 	}
 

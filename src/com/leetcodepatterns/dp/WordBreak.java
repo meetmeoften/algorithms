@@ -18,7 +18,7 @@ public class WordBreak {
 
 		for (int i = 1; i <= s.length(); i++) {
 			for (int j = 0; j < i; j++) {
-				System.out.println(s.substring(j, i));
+				//System.out.println(s.substring(j, i));
 				if (dp[j] && dict.contains(s.substring(j, i))) {
 					dp[i] = true;
 					System.out.println(s.substring(j, i) + " " + dp[i]);
@@ -56,6 +56,9 @@ public class WordBreak {
 		// "code"}));
 		boolean result = new WordBreak().wordBreak("catsandog",
 				Arrays.asList(new String[] { "cats", "dog", "sand", "and", "cat" }));
+		 new WordBreak().wordBreak(
+				Arrays.asList(new String[] { "cats", "dog", "sand", "and", "cat" }), "catsandog", "" );
+
 		System.out.println(result);
 	}
 

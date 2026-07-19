@@ -45,7 +45,7 @@ public class DirectedCycle {
         Map<Integer, List<Integer>> graph = new HashMap<>();
         graph.put(0, Arrays.asList(1));
         graph.put(1, Arrays.asList(2));
-        graph.put(2, Arrays.asList(0)); // cycle 0->1->2->0
+     //   graph.put(2, Arrays.asList(0)); // cycle 0->1->2->0
 
         DirectedCycle dc = new DirectedCycle(graph, 3);
         System.out.println("Directed graph has cycle? " + dc.hasCycle());
