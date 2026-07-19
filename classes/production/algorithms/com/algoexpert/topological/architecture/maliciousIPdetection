@@ -1,0 +1,359 @@
+If this were a **Principal Engineer / Distinguished Engineer** system design interview, the expectation is not just to describe components, but to demonstrate clear thinking about scale, trade-offs, reliability, data modeling, and operational excellence.
+
+# System Design: Global Malicious IP Detection Platform
+
+## Problem Statement
+
+Design a platform that:
+
+* Detects malicious IPs in real time.
+* Processes billions of network events per day.
+* Supports multiple detection techniques:
+
+  * Threat intelligence
+  * Behavioral analytics
+  * Machine learning
+* Generates a risk score for every IP.
+* Automatically blocks high-confidence threats.
+* Exposes APIs for security products.
+* Supports enterprise-scale deployment.
+
+---
+
+# Functional Requirements
+
+### Core
+
+* Ingest network logs from millions of devices.
+* Identify malicious IPs.
+* Compute a dynamic reputation score.
+* Provide real-time detection (<100 ms for online queries).
+* Support historical investigations.
+* Push alerts.
+* Integrate with firewalls, SIEMs, and SOAR platforms.
+
+### Advanced
+
+* Detect botnets.
+* Detect port scanning.
+* Detect brute-force attacks.
+* Detect DDoS sources.
+* Detect command-and-control (C2) infrastructure.
+* Detect lateral movement.
+
+---
+
+# Non-Functional Requirements
+
+| Requirement             | Target                |
+| ----------------------- | --------------------- |
+| Availability            | 99.99%                |
+| Latency                 | <100 ms               |
+| Detection latency       | <5 seconds            |
+| Daily events            | 10–50 billion         |
+| Peak ingestion          | >5 million events/sec |
+| Storage retention       | 365 days              |
+| False positive rate     | <1%                   |
+| Horizontal scalability  | Required              |
+| Multi-region deployment | Required              |
+
+---
+
+# High-Level Architecture
+
+```text
+                 Customer Networks
+          (Firewalls, IDS, Routers, EDR)
+                        │
+                        ▼
+               ┌─────────────────┐
+               │ Edge Collectors │
+               └─────────────────┘
+                        │
+                        ▼
+               ┌─────────────────┐
+               │ Kafka Cluster   │
+               └─────────────────┘
+                        │
+      ┌─────────────────┼─────────────────┐
+      ▼                 ▼                 ▼
+ Threat Feed      Stream Analytics   Raw Storage
+  Enrichment         (Flink)          (Object Store)
+      │                 │
+      └──────────┬──────┘
+                 ▼
+        Feature Extraction Service
+                 │
+                 ▼
+        Online Feature Store (Redis)
+                 │
+                 ▼
+         Detection & Scoring Engine
+        ┌───────────┼────────────┐
+        ▼           ▼            ▼
+ Signature     Rules Engine    ML Models
+        └───────────┼────────────┘
+                    ▼
+           Reputation Service
+                    ▼
+         Alerting / SOAR / Firewalls
+                    ▼
+           REST & gRPC Query APIs
+```
+
+---
+
+# Data Flow
+
+### Step 1: Event Collection
+
+Sources include:
+
+* Firewalls
+* IDS/IPS
+* Zeek
+* NetFlow
+* DNS logs
+* Proxy logs
+* Authentication logs
+* Cloud VPC flow logs
+* Endpoint agents
+
+Collectors normalize events into a common schema before publishing them to the streaming platform.
+
+---
+
+### Step 2: Stream Processing
+
+A distributed streaming engine performs:
+
+* Deduplication
+* Parsing
+* IP normalization
+* GeoIP enrichment
+* ASN lookup
+* WHOIS enrichment
+* Threat intelligence correlation
+* Sliding-window aggregation
+
+---
+
+### Step 3: Feature Extraction
+
+Features are maintained over multiple time windows (e.g., 1 minute, 5 minutes, 1 hour, 24 hours).
+
+Examples:
+
+| Feature             | Description                                 |
+| ------------------- | ------------------------------------------- |
+| Connection rate     | Requests per second                         |
+| Unique destinations | Fan-out behavior                            |
+| Unique ports        | Port scan indicator                         |
+| Failed logins       | Brute-force signal                          |
+| DNS entropy         | Domain generation algorithm (DGA) indicator |
+| Country changes     | Geolocation anomalies                       |
+| ASN reputation      | Historical abuse by network                 |
+| Packet statistics   | Volume and size patterns                    |
+
+These features are stored in an online feature store for low-latency access and persisted for model training.
+
+---
+
+# Detection Pipeline
+
+### 1. Threat Intelligence Matching
+
+Check incoming IPs against:
+
+* Commercial feeds
+* Open-source feeds
+* Internal reputation databases
+
+This stage provides fast, deterministic detection.
+
+---
+
+### 2. Rule Engine
+
+Examples:
+
+* More than 100 destination ports in 60 seconds.
+* More than 1,000 failed logins in 10 minutes.
+* High request rate with repeated authentication failures.
+* Traffic to known C2 infrastructure.
+
+Rules are versioned and centrally managed for safe rollout.
+
+---
+
+### 3. Machine Learning
+
+Different models address different threat classes:
+
+| Threat                | Model                            |
+| --------------------- | -------------------------------- |
+| Unknown attacks       | Isolation Forest                 |
+| Reputation prediction | Gradient Boosted Trees           |
+| Bot detection         | Random Forest                    |
+| DDoS detection        | Time-series models               |
+| Sequential behavior   | LSTM or Transformer-based models |
+
+Models output a probability score rather than a binary decision.
+
+---
+
+# Reputation Engine
+
+Rather than maintaining a static blacklist, assign each IP a dynamic score.
+
+Example scoring formula:
+
+```
+Score =
+0.30 × Threat Intelligence +
+0.20 × Behavioral Score +
+0.30 × ML Score +
+0.10 × Historical Reputation +
+0.10 × Analyst Feedback
+```
+
+Scores decay over time if malicious activity stops, preventing permanent penalties for transient issues such as reassigned cloud IPs.
+
+---
+
+# Storage Strategy
+
+| Data                 | Technology                 |
+| -------------------- | -------------------------- |
+| Raw events           | Object storage             |
+| Hot features         | Redis                      |
+| Event search         | Elasticsearch/OpenSearch   |
+| Metadata             | PostgreSQL                 |
+| Historical analytics | Data lake                  |
+| Reputation cache     | Redis                      |
+| Time series          | ClickHouse or Apache Druid |
+
+This separates operational workloads from analytical workloads.
+
+---
+
+# API Design
+
+### Query IP Reputation
+
+```
+GET /v1/ip/{ip}
+```
+
+Response:
+
+```json
+{
+  "ip": "192.0.2.10",
+  "riskScore": 92,
+  "confidence": 0.98,
+  "category": [
+    "PortScan",
+    "Botnet"
+  ],
+  "recommendedAction": "BLOCK"
+}
+```
+
+### Submit Observations
+
+```
+POST /v1/events
+```
+
+### Bulk Lookup
+
+```
+POST /v1/reputation/bulk
+```
+
+---
+
+# Scalability Considerations
+
+### Partitioning
+
+Partition event streams by source IP (or a stable hash) so all events for the same IP are processed consistently.
+
+### Stateless Services
+
+API gateways and collectors remain stateless and scale horizontally behind load balancers.
+
+### Stateful Stream Processing
+
+Use keyed state in the stream processor with checkpointing for fault tolerance.
+
+### Caching
+
+Keep the most frequently queried reputations in Redis to achieve sub-10 ms lookups.
+
+---
+
+# Reliability
+
+* Multi-region deployment with active-active replication.
+* Exactly-once processing where supported.
+* Idempotent event ingestion to handle retries.
+* Circuit breakers around external threat intelligence providers.
+* Backpressure handling in streaming pipelines.
+* Dead-letter queues for malformed events.
+
+---
+
+# Security
+
+* Mutual TLS between services.
+* Encryption at rest and in transit.
+* Role-based access control for APIs.
+* Audit logging for rule and model changes.
+* Tenant isolation for multi-tenant deployments.
+
+---
+
+# Observability
+
+Track key metrics:
+
+* Ingestion rate
+* End-to-end processing latency
+* Detection latency
+* API latency (P50/P95/P99)
+* False-positive and false-negative rates
+* Model drift
+* Queue lag
+* Cache hit ratio
+* Rule evaluation latency
+
+Use distributed tracing to diagnose latency across ingestion, enrichment, scoring, and alerting.
+
+---
+
+# Design Trade-offs
+
+| Decision                   | Benefit                     | Trade-off                                        |
+| -------------------------- | --------------------------- | ------------------------------------------------ |
+| Streaming analytics        | Near real-time detection    | Higher operational complexity                    |
+| Dynamic reputation scoring | Adapts to changing behavior | Requires continuous feature updates              |
+| Feature store              | Fast online inference       | Additional infrastructure to maintain            |
+| ML + rules                 | Better detection coverage   | Model lifecycle and explainability challenges    |
+| Multi-region active-active | High availability           | Increased replication and consistency complexity |
+
+---
+
+## What Distinguishes a Principal/Distinguished Engineer Design
+
+At this level, the focus extends beyond components to long-term platform evolution:
+
+* **Design for extensibility:** New detection algorithms, threat feeds, and enrichment services can be added through well-defined interfaces without changing the core pipeline.
+* **Operational excellence:** Safe deployments (canary, blue/green), rollback mechanisms, feature flags, and automated recovery are built into the platform.
+* **Data governance:** Clear retention policies, privacy controls, schema evolution, and compliance requirements are addressed from the outset.
+* **Cost efficiency:** Tiered storage, adaptive sampling, intelligent caching, and autoscaling balance performance with infrastructure cost.
+* **Feedback-driven improvement:** Analyst feedback is incorporated into reputation scoring and ML retraining to continuously reduce false positives.
+* **Clear SLOs:** Success is measured through service-level objectives for latency, availability, detection quality, and operational reliability.
+
+A design presented this way demonstrates not only technical depth but also the architectural thinking, trade-off analysis, and operational maturity expected from a Principal or Distinguished Engineer.

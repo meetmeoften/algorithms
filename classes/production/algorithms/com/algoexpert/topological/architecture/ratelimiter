@@ -1,0 +1,144 @@
+For a **Distributed Rate Limiter** system design interview, these are the key topics to discuss:
+
+1. Requirements Gathering
+
+   * Functional Requirements
+   * Non-functional Requirements
+
+2. Capacity Estimation
+
+   * Requests per Second (RPS)
+   * Number of Clients
+   * Number of Keys (Users/IPs/API Keys)
+
+3. High-Level Architecture
+
+4. Rate Limiting Scope
+
+   * Per User
+   * Per IP
+   * Per API Key
+   * Per Tenant
+   * Per Endpoint
+   * Global
+
+5. API Design
+
+6. Rate Limiting Algorithms
+
+   * Fixed Window Counter
+   * Sliding Window Log
+   * Sliding Window Counter
+   * Token Bucket
+   * Leaky Bucket
+   * GCRA (Generic Cell Rate Algorithm)
+
+7. Counter Storage
+
+   * In-Memory
+   * Distributed Cache
+   * Persistent Store
+
+8. Data Model
+
+9. Request Flow
+
+10. Key Generation Strategy
+
+11. Time Synchronization
+
+12. Atomic Updates
+
+13. Distributed Counter Design
+
+14. Data Partitioning (Sharding)
+
+15. Consistent Hashing
+
+16. Replication Strategy
+
+17. Consistency Model
+
+18. Fault Tolerance
+
+19. High Availability
+
+20. Rate Limit Configuration
+
+* Global
+* Per Service
+* Per Tenant
+* Dynamic Configuration
+
+21. Hierarchical Rate Limits
+
+* Organization
+* User
+* API
+
+22. Burst Handling
+
+23. Soft vs Hard Limits
+
+24. Retry and Backoff
+
+25. Queueing vs Rejection
+
+26. Response Format
+
+* HTTP 429
+* Retry-After Header
+* Remaining Quota
+
+27. Multi-Region Deployment
+
+28. Clock Skew Handling
+
+29. Horizontal Scaling
+
+30. Hot Key Mitigation
+
+31. Caching Strategies
+
+32. Monitoring & Metrics
+
+* Allowed Requests
+* Rejected Requests
+* Latency
+* Error Rate
+
+33. Logging & Auditing
+
+34. Security
+
+* Abuse Prevention
+* DDoS Protection
+* Authentication
+
+35. Observability
+
+* Dashboards
+* Tracing
+* Alerting
+
+36. Failure Scenarios
+
+* Cache Failure
+* Network Partition
+* Node Failure
+
+37. Cost Optimization
+
+38. Trade-offs
+
+* Accuracy vs Performance
+* Memory vs Precision
+* Availability vs Consistency
+
+39. Real-World Examples
+
+* API Gateway Rate Limiting
+* Login Rate Limiting
+* OTP Request Limiting
+* Payment API Protection
+* AI API Token Limiting

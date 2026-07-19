@@ -1,0 +1,536 @@
+**ACID** is a set of properties that ensure database transactions are processed reliably. A **transaction** is a sequence of one or more database operations treated as a single unit of work.
+
+## ACID Properties
+
+### 1. Atomicity (All or Nothing)
+
+A transaction either completes fully or does not happen at all.
+
+**Example: Bank Transfer**
+Suppose you transfer **₹500** from Account A to Account B.
+
+Transaction:
+
+1. Deduct ₹500 from A.
+2. Add ₹500 to B.
+
+If the system crashes after deducting money from A but before adding it to B, the transaction is **rolled back**, so A still has the original balance.
+
+**Without Atomicity:**
+
+* A loses ₹500.
+* B does not receive ₹500.
+
+**With Atomicity:**
+
+* Either both operations succeed or both fail.
+
+---
+
+### 2. Consistency (Valid State to Valid State)
+
+A transaction must leave the database in a valid state, following all rules and constraints.
+
+**Example:**
+A bank has a rule:
+
+> Total money in the system should remain the same after a transfer.
+
+Before transfer:
+
+* A = ₹1000
+* B = ₹500
+* Total = ₹1500
+
+After transferring ₹300:
+
+* A = ₹700
+* B = ₹800
+* Total = ₹1500 ✅
+
+The database remains consistent.
+
+---
+
+### 3. Isolation (Transactions Don't Interfere)
+
+Multiple transactions executing simultaneously should not affect each other's results.
+
+**Example:**
+
+Transaction T1:
+
+```sql
+UPDATE Account
+SET Balance = Balance - 500
+WHERE Id = 1;
+```
+
+Transaction T2:
+
+```sql
+SELECT Balance
+FROM Account
+WHERE Id = 1;
+```
+
+If T1 has not yet committed, T2 should not read the temporary balance unless the isolation level allows it.
+
+Isolation levels control this behavior.
+
+---
+
+### 4. Durability (Permanent Changes)
+
+Once a transaction is committed, its changes remain even if the database crashes.
+
+**Example:**
+You place an online order.
+
+After:
+
+```sql
+COMMIT;
+```
+
+Even if the server crashes immediately afterward, the order remains stored in the database.
+
+---
+
+# Isolation Levels
+
+Isolation levels determine how transactions interact with each other.
+
+There are **4 standard isolation levels**.
+
+---
+
+## 1. Read Uncommitted (Lowest Isolation)
+
+A transaction can read data modified by another transaction before it is committed.
+
+### Dirty Read Example
+
+**T1**
+
+```sql
+UPDATE Employee
+SET Salary = 60000
+WHERE Id = 1;
+```
+
+(Not committed yet)
+
+**T2**
+
+```sql
+SELECT Salary
+FROM Employee
+WHERE Id = 1;
+```
+
+Output:
+
+```
+60000
+```
+
+If T1 later performs:
+
+```sql
+ROLLBACK;
+```
+
+The salary returns to **50000**.
+
+T2 read data that never became permanent. This is called a **Dirty Read**.
+
+---
+
+## 2. Read Committed (Most Common Default)
+
+A transaction can read only committed data.
+
+### Example
+
+**T1**
+
+```sql
+UPDATE Employee
+SET Salary = 60000
+WHERE Id = 1;
+```
+
+(No commit yet)
+
+**T2**
+
+```sql
+SELECT Salary
+FROM Employee
+WHERE Id = 1;
+```
+
+T2 waits (or sees the last committed value, depending on the database).
+
+After:
+
+```sql
+COMMIT;
+```
+
+T2 reads:
+
+```
+60000
+```
+
+**Prevents:**
+
+* ✅ Dirty Reads
+
+**Still allows:**
+
+* Non-repeatable Reads
+* Phantom Reads
+
+---
+
+## 3. Repeatable Read
+
+If a transaction reads the same row twice, it gets the same value throughout the transaction.
+
+### Non-Repeatable Read Example
+
+Initial Salary:
+
+```
+50000
+```
+
+**T1**
+
+```sql
+BEGIN;
+
+SELECT Salary
+FROM Employee
+WHERE Id = 1;
+```
+
+Output:
+
+```
+50000
+```
+
+Meanwhile **T2**
+
+```sql
+UPDATE Employee
+SET Salary = 60000
+WHERE Id = 1;
+
+COMMIT;
+```
+
+Now T1 runs:
+
+```sql
+SELECT Salary
+FROM Employee
+WHERE Id = 1;
+```
+
+### Read Committed Result
+
+```
+60000
+```
+
+The same query returned different values.
+
+This is a **Non-Repeatable Read**.
+
+With **Repeatable Read**, T1 continues to see:
+
+```
+50000
+```
+
+**Prevents:**
+
+* ✅ Dirty Reads
+* ✅ Non-Repeatable Reads
+
+**Still allows:**
+
+* Phantom Reads
+
+---
+
+## 4. Serializable (Highest Isolation)
+
+Transactions behave as though they execute one after another, not concurrently.
+
+### Phantom Read Example
+
+Table:
+
+```
+Orders
+-------
+OrderID
+1
+2
+```
+
+**T1**
+
+```sql
+SELECT *
+FROM Orders
+WHERE OrderID > 0;
+```
+
+Result:
+
+```
+1
+2
+```
+
+Meanwhile **T2**
+
+```sql
+INSERT INTO Orders
+VALUES (3);
+
+COMMIT;
+```
+
+T1 runs the same query again.
+
+At lower isolation levels:
+
+```
+1
+2
+3
+```
+
+The new row is called a **Phantom Row**.
+
+Under **Serializable**, T1 still sees:
+
+```
+1
+2
+```
+
+The insert waits until T1 completes.
+
+**Prevents:**
+
+* ✅ Dirty Reads
+* ✅ Non-Repeatable Reads
+* ✅ Phantom Reads
+
+---
+
+# Comparison Table
+
+| Isolation Level  | Dirty Read  | Non-Repeatable Read | Phantom Read | Performance |
+| ---------------- | ----------- | ------------------- | ------------ | ----------- |
+| Read Uncommitted | ❌ Possible  | ❌ Possible          | ❌ Possible   | Fastest     |
+| Read Committed   | ✅ Prevented | ❌ Possible          | ❌ Possible   | Fast        |
+| Repeatable Read  | ✅ Prevented | ✅ Prevented         | ❌ Possible   | Medium      |
+| Serializable     | ✅ Prevented | ✅ Prevented         | ✅ Prevented  | Slowest     |
+
+---
+
+# Quick Interview Summary
+
+### ACID
+
+* **A – Atomicity:** All operations succeed or all fail.
+* **C – Consistency:** Database always remains valid.
+* **I – Isolation:** Concurrent transactions do not interfere in unexpected ways.
+* **D – Durability:** Committed data survives crashes.
+
+### Isolation Levels
+
+* **Read Uncommitted:** Allows dirty reads.
+* **Read Committed:** Prevents dirty reads (common default in many databases).
+* **Repeatable Read:** Prevents dirty and non-repeatable reads.
+* **Serializable:** Prevents dirty, non-repeatable, and phantom reads; offers the strongest consistency but with the highest performance cost.
+
+
+
+
+
+Using the **Orders** table is a great way to understand the difference between **Repeatable Read** and **Serializable**.
+
+## Initial Data
+
+| OrderId | Customer |
+| ------- | -------- |
+| 1       | John     |
+| 2       | Alice    |
+
+---
+
+# 1. Repeatable Read (Phantom Read is possible)
+
+Suppose T1 wants all orders.
+
+### Transaction T1
+
+```sql
+BEGIN;
+
+SELECT *
+FROM Orders
+WHERE OrderId > 0;
+```
+
+Output:
+
+```
+1  John
+2  Alice
+```
+
+### Transaction T2
+
+```sql
+INSERT INTO Orders
+VALUES (3, 'Bob');
+
+COMMIT;
+```
+
+### Transaction T1 runs the same query again
+
+```sql
+SELECT *
+FROM Orders
+WHERE OrderId > 0;
+```
+
+**Possible Output:**
+
+```
+1  John
+2  Alice
+3  Bob
+```
+
+### What happened?
+
+T1 executed the **same query twice**, but the second time it saw a **new row**.
+
+This is a **Phantom Read**.
+
+**Repeatable Read guarantees that existing rows won't change, but it does not necessarily prevent new rows that match the query from appearing** (this is the SQL standard behavior; some databases, such as MySQL's InnoDB, use additional locking to prevent many phantom reads).
+
+---
+
+# 2. Serializable (No Phantom Read)
+
+Same initial data.
+
+### Transaction T1
+
+```sql
+BEGIN;
+
+SELECT *
+FROM Orders
+WHERE OrderId > 0;
+```
+
+Output:
+
+```
+1  John
+2  Alice
+```
+
+### Transaction T2
+
+```sql
+INSERT INTO Orders
+VALUES (3, 'Bob');
+```
+
+**T2 cannot complete yet.** It waits because T1 is still active.
+
+### Transaction T1 runs the query again
+
+```sql
+SELECT *
+FROM Orders
+WHERE OrderId > 0;
+```
+
+Output:
+
+```
+1  John
+2  Alice
+```
+
+No new row appears.
+
+### T1 commits
+
+```sql
+COMMIT;
+```
+
+Now T2 continues:
+
+```sql
+INSERT INTO Orders
+VALUES (3, 'Bob');
+
+COMMIT;
+```
+
+A new transaction now executes:
+
+```sql
+SELECT *
+FROM Orders
+WHERE OrderId > 0;
+```
+
+Output:
+
+```
+1  John
+2  Alice
+3  Bob
+```
+
+---
+
+# Difference
+
+| Repeatable Read                                                              | Serializable                                                                         |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Existing rows remain unchanged during the transaction.                       | Existing rows remain unchanged, and the set of matching rows also remains unchanged. |
+| New matching rows may appear (phantom read is possible in the SQL standard). | New matching rows cannot appear until the transaction finishes.                      |
+| Better concurrency.                                                          | Strongest isolation, but more blocking and lower concurrency.                        |
+
+### Easy way to remember
+
+Imagine T1 asks:
+
+> "Show me **all orders**."
+
+* **Repeatable Read:** "The orders I already saw won't change, but a new order might be added before I query again."
+* **Serializable:** "The entire result stays the same while I'm working. Anyone trying to add a matching order has to wait until I finish."
+
+**Note:** If you're using **MySQL InnoDB**, `REPEATABLE READ` uses next-key (gap) locking in many cases, which prevents many phantom reads. That's why practical behavior in MySQL can differ from the SQL standard and from databases like PostgreSQL.

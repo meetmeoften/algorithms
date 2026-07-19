@@ -11,25 +11,59 @@ public class Nested {
      * // This is the interface that allows for creating nested lists.
      * // You should not implement it in LeetCode.
      */
-    public int depthSumInverse(List<NestedInteger> nestedList) {
-        Queue<NestedInteger> queue = new LinkedList<>(nestedList);
 
+    public int nestedWeightListSum1(List<NestedInteger> nestedList) {
+        return dfs(nestedList, 0);
+    }
+
+    private int dfs(List<NestedInteger> nestedList, int depth) {
+        int depthSum = 0;
+        for (NestedInteger item : nestedList) {
+            if (item.isInteger()) {
+                depthSum += item.getInteger() * depth;
+            } else {
+                depthSum += dfs(item.getList(), depth + 1);
+            }
+        }
+        return depthSum;
+    }
+
+    public int nestedWeightListSum1BFS(List<NestedInteger> nestedList) {
+        Queue<NestedInteger> queue = new LinkedList<>(nestedList);
+        int depth = 1;
+        int sum = 0;
+
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i= 0; i < size; i++) {
+                NestedInteger ni = queue.poll();
+                if (ni.isInteger()) {
+                    sum += ni.getInteger() * depth;
+                } else {
+                    queue.addAll(ni.getList());
+                }
+            }
+            depth++;
+        }
+        return sum;
+    }
+
+    //=============================
+
+    public int depthSumInverseBFS(List<NestedInteger> nestedList) {
+        Queue<NestedInteger> queue = new LinkedList<>(nestedList);
         int unweighted = 0;
         int weighted = 0;
-
         while (!queue.isEmpty()) {
             int size = queue.size();
-
             for (int i = 0; i < size; i++) {
                 NestedInteger current = queue.poll();
-
                 if (current.isInteger()) {
                     unweighted += current.getInteger();
                 } else {
                     queue.addAll(current.getList());
                 }
             }
-
             weighted += unweighted;
         }
         return weighted;
@@ -38,8 +72,8 @@ public class Nested {
     // -------------------------------------
 
     public int depthSumInverse2(List<NestedInteger> nestedList) {
-        int depth = maxDepth(nestedList);
-        return dfs(nestedList, 1);
+        int maxDepth = maxDepth(nestedList);
+        return dfsInverse(nestedList, 1, maxDepth);
     }
 
     private int maxDepth(List<NestedInteger> nestedList) {
@@ -53,16 +87,16 @@ public class Nested {
         return depth;
     }
 
-    private int dfs(List<NestedInteger> nestedList, int depth) {
-        int depthSum = 0;
-        for (NestedInteger item : nestedList) {
-            if (item.isInteger()) {
-                depthSum += item.getInteger() * depth;
+    private int dfsInverse(List<NestedInteger> list, int depth, int maxDepth) {
+        int sum = 0;
+        for (NestedInteger ni : list) {
+            if (ni.isInteger()) {
+                sum += ni.getInteger() * (maxDepth - depth + 1);
             } else {
-                depthSum += dfs(item.getList(), depth + 1);
+                sum += dfsInverse(ni.getList(), depth + 1, maxDepth);
             }
         }
-        return depthSum;
+        return sum;
     }
 
     // ---------------- MAIN METHOD FOR DEMO ----------------
@@ -82,7 +116,7 @@ public class Nested {
         NestedInteger list4 = new NI(Arrays.asList(n4, list6));
         List<NestedInteger> input = Arrays.asList(n1, list4);
         Nested sol = new Nested();
-        int result = sol.depthSumInverse(input);
+        int result = sol.depthSumInverseBFS(input);
         System.out.println("Result = " + result);
         int result1 = sol.depthSumInverse2(input);
         System.out.println("Result = " + result1);

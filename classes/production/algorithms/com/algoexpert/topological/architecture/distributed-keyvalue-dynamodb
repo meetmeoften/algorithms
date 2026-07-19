@@ -1,0 +1,338 @@
+For a **Senior Staff / Principal / Distinguished Engineer** interview, a **Distributed Key-Value Store** (similar to Cassandra, DynamoDB, Riak, Voldemort) discussion should cover the following topics.
+
+# 1. Requirements
+
+* Functional Requirements
+* Non-functional Requirements
+* Data Model
+* Consistency Requirements
+* Availability Requirements
+* Durability Requirements
+
+# 2. Capacity Planning
+
+* Data Volume
+* Read/Write QPS
+* Object Size Distribution
+* Storage Growth
+* Network Bandwidth
+* Replication Overhead
+
+# 3. High-Level Architecture
+
+* Clients
+* Coordinator Nodes
+* Storage Nodes
+* Metadata Service
+* Cluster Membership
+
+# 4. API Design
+
+* GET
+* PUT
+* DELETE
+* Conditional Update (CAS)
+* Batch Operations
+* Range Queries (if supported)
+
+# 5. Data Model
+
+* Key
+* Value
+* Partition Key
+* Clustering Key
+* Secondary Indexes
+* TTL
+* Metadata
+
+# 6. Partitioning
+
+* Consistent Hashing
+* Virtual Nodes (vnodes)
+* Token Ring
+* Hash Functions
+* Dynamic Sharding
+
+# 7. Data Placement
+
+* Replica Placement
+* Rack Awareness
+* Zone Awareness
+* Region Awareness
+* Failure Domains
+
+# 8. Replication
+
+* Replication Factor
+* Leaderless Replication
+* Leader-Follower
+* Quorum Replication
+* Multi-Region Replication
+
+# 9. Consistency Model
+
+* Strong Consistency
+* Eventual Consistency
+* Tunable Consistency
+* Read Repair
+* Monotonic Reads
+* Read-after-Write
+
+# 10. Quorum Protocols
+
+* Read Quorum (R)
+* Write Quorum (W)
+* Replication Factor (N)
+* R + W > N
+* Sloppy Quorum
+
+# 11. Versioning
+
+* Vector Clocks
+* Logical Clocks
+* Hybrid Logical Clocks (HLC)
+* Last-Write-Wins (LWW)
+
+# 12. Conflict Resolution
+
+* Read Repair
+* Client-side Merge
+* Server-side Merge
+* CRDTs
+* Timestamp-based Resolution
+
+# 13. Write Path
+
+* Coordinator
+* Commit Log
+* Memtable
+* Replication
+* Acknowledgement
+
+# 14. Read Path
+
+* Replica Selection
+* Bloom Filters
+* Memtable Lookup
+* SSTable Lookup
+* Read Repair
+
+# 15. Storage Engine
+
+* LSM Trees
+* SSTables
+* Memtables
+* Commit Log
+* Bloom Filters
+* Sparse Indexes
+* Compaction
+
+# 16. Compaction
+
+* Size-Tiered
+* Leveled
+* Time-Window
+* Tombstone Cleanup
+
+# 17. Tombstones
+
+* Deletes
+* TTL Expiration
+* Garbage Collection
+* Zombie Data Prevention
+
+# 18. Secondary Indexes
+
+* Local Indexes
+* Global Indexes
+* Inverted Indexes
+* Materialized Views
+
+# 19. Transactions
+
+* Single-Key Atomicity
+* Lightweight Transactions
+* Compare-and-Set (CAS)
+* Multi-Key Transactions
+
+# 20. Concurrency Control
+
+* Optimistic Concurrency
+* Conditional Writes
+* MVCC
+
+# 21. Failure Handling
+
+* Node Failure
+* Disk Failure
+* Network Partition
+* Coordinator Failure
+
+# 22. Failure Detection
+
+* Gossip Protocol
+* Heartbeats
+* Phi Accrual Failure Detector
+
+# 23. Hinted Handoff
+
+# 24. Anti-Entropy Repair
+
+* Merkle Trees
+* Incremental Repair
+* Full Repair
+
+# 25. Cluster Membership
+
+* Node Join
+* Node Leave
+* Node Replacement
+* Decommissioning
+
+# 26. Rebalancing
+
+* Token Movement
+* Streaming Data
+* Bootstrap
+* Auto Rebalancing
+
+# 27. Scalability
+
+* Horizontal Scaling
+* Online Expansion
+* Hot Partition Handling
+
+# 28. Hotspot Mitigation
+
+* Key Salting
+* Adaptive Partitioning
+* Request Routing
+* Caching
+
+# 29. Multi-Tenancy
+
+* Tenant Isolation
+* Resource Quotas
+* Fair Scheduling
+* Noisy Neighbor Protection
+
+# 30. Caching
+
+* Client Cache
+* Row Cache
+* Key Cache
+* Distributed Cache Integration
+
+# 31. Security
+
+* Authentication
+* Authorization
+* Encryption at Rest
+* Encryption in Transit
+* Audit Logs
+
+# 32. Backup & Recovery
+
+* Snapshots
+* Incremental Backup
+* Point-in-Time Recovery
+* Cross-Region Backup
+
+# 33. Multi-Region Deployment
+
+* Active-Active
+* Active-Passive
+* Geo Replication
+* Data Residency
+
+# 34. Disaster Recovery
+
+* Region Failure
+* Cross-Region Failover
+* Recovery Objectives (RPO/RTO)
+
+# 35. Observability
+
+* Metrics
+* Logging
+* Distributed Tracing
+* Audit Trails
+
+# 36. Monitoring
+
+* Read Latency
+* Write Latency
+* Compaction Metrics
+* Repair Status
+* Replication Lag
+* Disk Usage
+
+# 37. Performance Optimizations
+
+* Bloom Filters
+* Compression
+* Zero-Copy Reads
+* Sequential Writes
+* Async Replication
+* Batching
+
+# 38. Cost Optimization
+
+* Compression
+* Tiered Storage
+* Cold Data Archival
+* Storage Compaction
+
+# 39. Operational Excellence
+
+* Rolling Upgrades
+* Schema Evolution
+* Cluster Expansion
+* Online Maintenance
+
+# 40. Trade-offs
+
+* CAP Theorem
+* PACELC
+* Consistency vs Availability
+* Latency vs Durability
+* LSM Tree vs B-Tree
+* Leaderless vs Leader-Based Replication
+* Write Optimization vs Read Optimization
+* Storage Cost vs Read Amplification
+* Compaction Strategy Trade-offs
+
+# 41. Advanced Topics
+
+* Change Data Capture (CDC)
+* TTL-based Expiration
+* Materialized Views
+* Global Secondary Indexes
+* Adaptive Replication
+* CRDT-based Replication
+* Time-Series Optimization
+
+# 42. Real-World Systems for Comparison
+
+* Apache Cassandra
+* Amazon DynamoDB
+* Riak
+* Project Voldemort
+* ScyllaDB
+* Apache HBase
+* Google Bigtable
+* FoundationDB
+* CockroachDB (KV Layer)
+* TiKV
+* YugabyteDB
+
+## Distinguished Engineer Discussion Areas
+
+At the Distinguished Engineer level, interviewers often dive into:
+
+* **Partition tolerance and correctness** under network partitions and regional outages.
+* **Replication protocols** (leaderless, quorum, consensus) and their trade-offs.
+* **Storage engine internals**, including LSM trees, compaction, Bloom filters, write/read amplification, and garbage collection.
+* **Consistency mechanisms** such as vector clocks, hinted handoff, anti-entropy repair, and tunable consistency.
+* **Operating at hyperscale**, including trillions of keys, multi-region deployments, online rebalancing, hotspot mitigation, and zero-downtime upgrades.
+* **Architectural trade-offs** using frameworks like **CAP** and **PACELC**, and explaining why systems such as Cassandra and DynamoDB make different design choices.

@@ -32,7 +32,16 @@ public class PhoneNumberCombination {
 			helper(digits, idx + 1, sb, result, keypad);
 			sb.deleteCharAt(sb.length() - 1);
 		}
+
+		if(sb.length() == digits.length()) {
+			result.add(sb.toString());
+			return;
+		}
+
+
 	}
+
+
 
 	private Map<Character, String> buildKeypad() {
 		Map<Character, String> keypad = new HashMap<>();

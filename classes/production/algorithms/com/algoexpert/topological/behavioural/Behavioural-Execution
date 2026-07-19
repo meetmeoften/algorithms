@@ -1,0 +1,594 @@
+These three rounds overlap, but they evaluate **different dimensions of engineering leadership**. Think of them as **Why you lead → How you deliver → How you engineer**.
+
+| Round             | Primary Focus          | What Interviewer Wants                                            | Typical Questions                                                                                                       |
+| ----------------- | ---------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Host Leader**   | Leadership & Influence | Can you lead senior engineers and influence across organizations? | "Tell me about your biggest initiative.", "How did you influence stakeholders?", "How did you resolve conflict?"        |
+| **Execution**     | Delivering Results     | Can you consistently execute large, complex projects?             | "Walk me through a project end-to-end.", "How did you manage risks?", "How did you keep the team on schedule?"          |
+| **Craftsmanship** | Engineering Excellence | Are you a strong technical leader who raises engineering quality? | "Why did you choose this architecture?", "How do you improve code quality?", "How do you mentor engineers technically?" |
+
+---
+
+# 1. Host Leader Round (Leadership)
+
+This round is about **people, influence, and organizational leadership**.
+
+The interviewer is trying to answer:
+
+> **"If we hire this person as a senior engineering leader, can they influence LinkedIn beyond just writing code?"**
+
+Expect behavioral questions.
+
+Examples:
+
+* Tell me about your biggest achievement.
+* Tell me about a difficult stakeholder.
+* How did you convince leadership?
+* How do you mentor senior engineers?
+* How do you build alignment across teams?
+* Tell me about conflict.
+
+Notice that technology is **secondary**.
+
+The conversation usually looks like:
+
+```
+Problem
+↓
+Stakeholders
+↓
+Influence
+↓
+Tradeoffs
+↓
+Communication
+↓
+Business Impact
+```
+
+Metrics matter.
+
+Instead of saying
+
+> "We migrated services."
+
+say
+
+> "The migration reduced deployment time from 45 minutes to 8 minutes, improved release frequency by 3x, and enabled four product teams to ship independently."
+
+---
+
+# 2. Execution Round
+
+This round asks:
+
+> **"Can this person consistently deliver difficult projects?"**
+
+Here they care about execution.
+
+They want to know whether you can take a vague idea and deliver production software.
+
+Typical flow:
+
+```
+Problem
+↓
+Planning
+↓
+Roadmap
+↓
+Execution
+↓
+Risks
+↓
+Delivery
+↓
+Lessons
+```
+
+Typical questions:
+
+* How did you break down the project?
+* How did you estimate timelines?
+* What happened when things slipped?
+* How did you prioritize?
+* How did you handle changing requirements?
+* What decisions did you own personally?
+* What work did the team own?
+
+Unlike Host Leader, this round goes deep into **one project**.
+
+They often spend 40+ minutes on one project.
+
+They want details like:
+
+* sprint planning
+* milestones
+* dependencies
+* blockers
+* ownership
+* prioritization
+* launch
+* rollback
+* metrics
+
+---
+
+# 3. Craftsmanship Round
+
+This is the most technical of the three.
+
+The interviewer asks:
+
+> **"Is this person someone other engineers would trust technically?"**
+
+This is not a coding interview.
+
+It's about engineering judgment.
+
+Topics include:
+
+* Architecture
+* Scalability
+* Performance
+* Reliability
+* Observability
+* Testing
+* Design reviews
+* Build vs Buy
+* Tech debt
+* Operational excellence
+
+Example questions:
+
+Why Kafka instead of RabbitMQ?
+
+Why PostgreSQL instead of Cassandra?
+
+Why microservices instead of monolith?
+
+Why GraphQL?
+
+How did you test this?
+
+How did you monitor production?
+
+What dashboards existed?
+
+What alerts existed?
+
+What performance improvements did you make?
+
+How do you review code?
+
+How do you ensure quality?
+
+How do you mentor engineers technically?
+
+How do you improve engineering velocity?
+
+They want depth.
+
+---
+
+# Same Project, Different Angle
+
+Suppose your biggest project was **migrating a monolith to microservices**.
+
+### Host Leader asks
+
+* Why did the organization need this?
+* Who disagreed?
+* How did you convince teams?
+* How did you get funding?
+* How did you coordinate multiple organizations?
+* Business impact?
+
+Focus = **Influence**
+
+---
+
+### Execution asks
+
+* How did you plan migration?
+* Timeline?
+* Milestones?
+* Risks?
+* Rollout?
+* Team coordination?
+* Delays?
+* Metrics?
+
+Focus = **Delivery**
+
+---
+
+### Craftsmanship asks
+
+* Why microservices?
+* Why gRPC?
+* Why Kafka?
+* Why Kubernetes?
+* Why this database?
+* Testing strategy?
+* Monitoring?
+* Performance?
+* Failure handling?
+
+Focus = **Engineering Decisions**
+
+---
+
+# What LinkedIn is Evaluating
+
+### Host Leader
+
+* Leadership
+* Communication
+* Stakeholder management
+* Cross-functional influence
+* Mentorship
+* Organizational impact
+
+---
+
+### Execution
+
+* Ownership
+* Planning
+* Delivery
+* Prioritization
+* Risk management
+* Accountability
+
+---
+
+### Craftsmanship
+
+* Technical depth
+* Engineering excellence
+* Architecture
+* Code quality
+* Reliability
+* Operational maturity
+* Mentorship through technical leadership
+
+---
+
+## Preparation Strategy
+
+You can prepare around **2–3 major projects** and tell each story from different perspectives:
+
+* **Host Leader:** Emphasize stakeholders, influence, conflict resolution, and business outcomes.
+* **Execution:** Emphasize planning, milestones, ownership, execution challenges, and measurable delivery.
+* **Craftsmanship:** Emphasize architecture, design trade-offs, testing, monitoring, performance, reliability, and technical mentoring.
+
+This approach ensures you're ready to adapt the same core experiences to the distinct focus of each interview without needing entirely different examples.
+
+
+Leadership: Stakeholders, influence, conflicts, mentoring, business impact.
+Execution: Planning, milestones, risks, ownership, delivery, metrics.
+Craftsmanship: Architecture, trade-offs, testing, observability, performance, reliability, and what you'd improve if starting today.
+
+If you're interviewing for Senior Staff (L7) or Staff (L6) at LinkedIn, it's quite common for the same project to be explored from all three of these angles over separate interviews, with interviewers asking increasingly deep follow-up
+ questions rather than introducing entirely new technical problems.
+
+
+
+ Yes. I found a few useful resources and interview experiences that align well with what LinkedIn describes for the **Execution** round.
+
+ ### Official guidance
+
+ The most relevant official material is LinkedIn's own interview question guide:
+
+ * [LinkedIn Engineer Interview Question Guide](https://business.linkedin.com/hire/resources/how-to-hire-guides/engineer-interview-questions?utm_source=chatgpt.com)
+ * [LinkedIn Engineering Interview Questions (Learning Hub)](https://learning.linkedin.com/customer-success-center/get-ready-lil-hub-en/engineering?utm_source=chatgpt.com)
+
+ While these aren't specific to the "Execution" round, many of the behavioral questions are exactly the style used to evaluate execution. ([LinkedIn Business Solutions][1])
+
+ ---
+
+ ## What the Execution interviewer is trying to learn
+
+ Unlike the Host Leader round ("Can you influence?"), the Execution round asks:
+
+ > **Can you consistently deliver large, ambiguous, cross-functional projects?**
+
+ Expect the interviewer to spend **40–60 minutes on one project** rather than asking many unrelated behavioral questions.
+
+ ---
+
+ ## Questions commonly asked
+
+ Based on LinkedIn's interview guide and multiple candidate experiences, here are the kinds of questions you should prepare for:
+
+ ### 1. Project walkthrough (almost guaranteed)
+
+ * Tell me about the most complex project you've led.
+ * Why was it important?
+ * What problem were you solving?
+ * What was your role?
+
+ ---
+
+ ### 2. Planning and roadmap
+
+ * How did you break the project into milestones?
+ * How did you estimate timelines?
+ * How did you prioritize work?
+ * What was on the critical path?
+ * How did you manage dependencies?
+
+ ---
+
+ ### 3. Ownership
+
+ One of LinkedIn's favorite follow-ups:
+
+ > **What did YOU personally own?**
+
+ Be ready to distinguish:
+
+ * Your decisions
+ * Team's implementation
+ * Other teams' responsibilities
+
+ ---
+
+ ### 4. Managing ambiguity
+
+ Examples:
+
+ * Requirements changed halfway through. What did you do?
+ * Leadership changed priorities.
+ * Scope doubled.
+ * Another team missed their deadline.
+
+ How did you respond?
+
+ ---
+
+ ### 5. Risk management
+
+ Questions like:
+
+ * What was the biggest risk?
+ * Did anything go wrong?
+ * How did you identify risks early?
+ * What contingency plans did you have?
+
+ ---
+
+ ### 6. Cross-functional execution
+
+ Expect questions such as:
+
+ * How did you coordinate multiple teams?
+ * How often did you communicate status?
+ * How did you handle disagreements?
+ * How did you get buy-in?
+
+ ---
+
+ ### 7. Measuring success
+
+ LinkedIn loves metrics.
+
+ Examples:
+
+ * How did you know the project succeeded?
+ * What metrics improved?
+ * What business impact did it have?
+ * What would you measure differently today?
+
+ ---
+
+ ## Deep follow-up questions
+
+ Candidates consistently report that LinkedIn interviewers keep drilling deeper instead of moving to another question. ([LinkedIn Business Solutions][1])
+
+ For example:
+
+ **You:** "We migrated our notification platform."
+
+ **Interviewer:**
+
+ * Why did you migrate?
+ * Why then?
+ * Who requested it?
+ * How many engineers?
+ * What was the roadmap?
+ * What slipped?
+ * What trade-offs did you make?
+ * What would you change now?
+
+ A single project can occupy the entire interview.
+
+ ---
+
+ ## What they're looking for
+
+ By the end of the Execution round, they want confidence that you can:
+
+ * Own a large initiative end-to-end.
+ * Break ambiguous work into an executable plan.
+ * Deliver despite changing requirements.
+ * Coordinate multiple teams.
+ * Make sound prioritization decisions.
+ * Drive measurable business impact.
+
+ ---
+
+ ## My recommendation for preparation
+
+ Prepare **2–3 projects** and know them in detail. For each one, be ready to answer:
+
+ 1. What was the business problem?
+ 2. Why was this project prioritized?
+ 3. What was your specific ownership?
+ 4. How did you plan the roadmap?
+ 5. What risks did you identify?
+ 6. What went wrong during execution?
+ 7. How did you recover?
+ 8. How did you measure success?
+ 9. What would you do differently today?
+
+ If you can answer those nine questions confidently for two major projects, you'll be well prepared for most LinkedIn Execution interviews.
+
+ If you're interviewing for **Staff (L6)** or **Senior Staff (L7)**, I can also give you a list of **30+ actual follow-up questions** that LinkedIn interviewers commonly use after you finish describing your project. Those are often the questions that determine the outcome of the round.
+
+ [1]: https://business.linkedin.com/hire/resources/how-to-hire-guides/engineer-interview-questions?utm_source=chatgpt.com "Engineer Interview Question Guide | LinkedIn Talent Solutions"
+
+
+
+==============================================
+
+Absolutely. One thing to note is that interviewers don't follow a published script, so no one can claim these are the exact questions LinkedIn uses. However, these are highly representative of the kinds of deep follow-up questions consistently reported by candidates and aligned with LinkedIn's engineering competencies. They are especially relevant for **Staff (L6)** and **Senior Staff (L7)** interviews.
+
+I've grouped them by theme because that's how interviewers naturally probe.
+
+## 1. Project Context (5)
+
+These establish whether the project was actually significant.
+
+1. Why was this project important to the business?
+2. What problem would have occurred if you hadn't done it?
+3. Who sponsored or requested this initiative?
+4. Why was your team responsible for it?
+5. Why was the timing right for this project?
+
+---
+
+## 2. Ownership (6)
+
+LinkedIn likes to separate **your impact** from the team's.
+
+6. What exactly did you own?
+7. Which technical decisions were yours?
+8. Which decisions were made by someone else?
+9. What parts did your team implement without your involvement?
+10. If you had been unavailable for a month, what would have happened?
+11. What was the hardest problem that only you solved?
+
+---
+
+## 3. Planning & Roadmap (6)
+
+12. How did you break this into phases?
+13. How did you estimate the work?
+14. What assumptions turned out to be wrong?
+15. How did priorities change during execution?
+16. What did you deliberately leave out of the first release?
+17. If given 50% less time, what would you have cut?
+
+---
+
+## 4. Technical Decision-Making (8)
+
+These often overlap with Craftsmanship.
+
+18. What alternatives did you consider?
+19. Why didn't you choose the other approach?
+20. What was the biggest architectural trade-off?
+21. What technical debt did you knowingly accept?
+22. What performance bottlenecks did you anticipate?
+23. What would you redesign today?
+24. What design review feedback did you receive?
+25. What was the biggest technical mistake?
+
+---
+
+## 5. Cross-Team Collaboration (6)
+
+26. Which teams did you depend on?
+27. Which team was the most difficult to work with?
+28. How did you get alignment across organizations?
+29. What disagreements occurred?
+30. Did anyone strongly disagree with your proposal?
+31. How did you resolve those disagreements?
+
+---
+
+## 6. Execution Under Pressure (8)
+
+This is where LinkedIn interviewers often spend the most time.
+
+32. Tell me about a major setback.
+33. What was your biggest risk?
+34. How did you identify that risk early?
+35. What contingency plans did you have?
+36. Did the project ever fall behind schedule?
+37. How did you communicate delays?
+38. Did leadership ever ask you to change direction?
+39. Tell me about a production incident during the project.
+
+---
+
+## 7. Leadership & Influence (7)
+
+40. How did you influence engineers who didn't report to you?
+41. Did you ever have to convince senior leadership?
+42. How did you handle resistance?
+43. Who challenged your proposal the most?
+44. How did you build trust?
+45. How did you mentor engineers during the project?
+46. What would your team say your leadership style was?
+
+---
+
+## 8. Metrics & Business Impact (7)
+
+47. How did you measure success?
+48. Which metrics improved?
+49. Were your goals achieved?
+50. What surprised you after launch?
+51. What metrics didn't improve?
+52. Did the project generate measurable business value?
+53. If you had to justify this investment to the VP, what would you say?
+
+---
+
+## 9. Reflection & Learning (7)
+
+These almost always come at the end.
+
+54. What would you do differently today?
+55. What was your biggest learning?
+56. What feedback did you receive?
+57. What advice would you give another team doing this?
+58. If you could start over, what would you change?
+59. What was your biggest mistake?
+60. Looking back, was this the right solution?
+
+## Questions that often distinguish Staff/L6 and Senior Staff/L7 candidates
+
+These are the questions where interviewers evaluate engineering leadership beyond project execution:
+
+* How did this work change the engineering organization, not just the product?
+* What long-term investments did you make that outlasted the project?
+* What organizational bottleneck did you identify and fix?
+* How did you raise the technical bar for multiple teams?
+* How did this project influence future roadmaps?
+* If another organization wanted to adopt your solution, what would they need to change?
+* How did you balance short-term delivery with long-term maintainability?
+* What principles guided your decision-making when there wasn't a clear right answer?
+
+## How LinkedIn interviews typically feel
+
+A common pattern is:
+
+* You spend **5–10 minutes** describing your project.
+* The interviewer spends the remaining **35–45 minutes** asking follow-up questions.
+* They keep digging into the same project until they understand your decision-making, leadership, execution, and impact.
+
+A good rule of thumb is: if you make a statement like "We migrated to Kafka," be prepared for three or four layers of follow-up:
+
+* Why was Kafka needed?
+* What alternatives did you consider?
+* How did you migrate without downtime?
+* What was your personal role?
+* What measurable improvement did it produce?
+
+The depth of your answers, especially around ownership, trade-offs, and measurable outcomes, is often more important than the project itself.
+
+
+================================================

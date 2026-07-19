@@ -1,0 +1,314 @@
+A **Google Calendar** is not a relational database, but its data can be understood using a few logical tables. The main entities are **Calendars**, **Events**, **Attendees**, and **Reminders**.
+
+### 1. Calendar Table
+
+| Calendar ID | Calendar Name | Owner | Time Zone    |
+| ----------- | ------------- | ----- | ------------ |
+| cal_001     | Work          | Alice | Asia/Kolkata |
+| cal_002     | Personal      | Alice | Asia/Kolkata |
+
+---
+
+### 2. Events Table
+
+| Event ID | Calendar ID | Title          | Start Time       | End Time         | Location       | Description           |
+| -------- | ----------- | -------------- | ---------------- | ---------------- | -------------- | --------------------- |
+| evt_101  | cal_001     | Team Meeting   | 2026-07-03 10:00 | 2026-07-03 11:00 | Meeting Room A | Weekly sprint meeting |
+| evt_102  | cal_001     | Client Demo    | 2026-07-04 15:00 | 2026-07-04 16:00 | Zoom           | Product demonstration |
+| evt_103  | cal_002     | Birthday Party | 2026-07-05 18:00 | 2026-07-05 21:00 | Home           | Family celebration    |
+
+---
+
+### 3. Attendees Table
+
+| Attendee ID | Event ID | Name  | Email                                         | Response Status |
+| ----------- | -------- | ----- | --------------------------------------------- | --------------- |
+| att_001     | evt_101  | Bob   | [bob@example.com](mailto:bob@example.com)     | Accepted        |
+| att_002     | evt_101  | Carol | [carol@example.com](mailto:carol@example.com) | Pending         |
+| att_003     | evt_102  | David | [david@example.com](mailto:david@example.com) | Declined        |
+
+---
+
+### 4. Reminders Table
+
+| Reminder ID | Event ID | Method       | Minutes Before |
+| ----------- | -------- | ------------ | -------------- |
+| rem_001     | evt_101  | Notification | 30             |
+| rem_002     | evt_101  | Email        | 60             |
+| rem_003     | evt_103  | Notification | 10             |
+
+---
+
+### 5. Recurring Events Table (Optional)
+
+| Recurrence ID | Event ID | Frequency | Interval | Until      |
+| ------------- | -------- | --------- | -------- | ---------- |
+| rec_001       | evt_101  | Weekly    | 1        | 2026-12-31 |
+
+---
+
+## Entity Relationship (ER) Structure
+
+```text
+Calendar
+---------
+CalendarID (PK)
+CalendarName
+Owner
+TimeZone
+      |
+      | 1
+      |
+      | N
+Events
+------
+EventID (PK)
+CalendarID (FK)
+Title
+StartTime
+EndTime
+Location
+Description
+      |
+      | 1
+      |------ N Attendees
+      |
+      |------ N Reminders
+      |
+      |------ 0..1 Recurrence
+```
+
+### Example Scenario
+
+**Calendar:** Work
+
+**Event:** Team Meeting
+
+* Date: 3 July 2026
+* Time: 10:00 AM – 11:00 AM
+* Location: Meeting Room A
+* Attendees:
+
+  * Bob (Accepted)
+  * Carol (Pending)
+* Reminder:
+
+  * Notification 30 minutes before
+  * Email 1 hour before
+* Recurrence:
+
+  * Every week until 31 December 2026
+
+This structure is similar to how calendar systems (including Google Calendar APIs) organize data, with one calendar containing many events, and each event optionally having multiple attendees, reminders, and recurrence rules.
+
+=============================================================================================================
+
+Yes. A more complete Google Calendar data model includes calendars, events, invitations, attendees, availability (Free/Busy), reminders, recurrence, and notifications. Below is a practical schema similar to what an enterprise calendar application would use.
+
+---
+
+# 1. Users
+
+| User ID | Name  | Email                                         | Time Zone        |
+| ------- | ----- | --------------------------------------------- | ---------------- |
+| U001    | Alice | [alice@example.com](mailto:alice@example.com) | Asia/Kolkata     |
+| U002    | Bob   | [bob@example.com](mailto:bob@example.com)     | Asia/Kolkata     |
+| U003    | Carol | [carol@example.com](mailto:carol@example.com) | America/New_York |
+
+---
+
+# 2. Calendars
+
+| Calendar ID | User ID (Owner) | Calendar Name | Color | Is Primary |
+| ----------- | --------------- | ------------- | ----- | ---------- |
+| C001        | U001            | Work          | Blue  | Yes        |
+| C002        | U001            | Personal      | Green | No         |
+| C003        | U002            | Work          | Red   | Yes        |
+
+---
+
+# 3. Events
+
+| Event ID | Calendar ID | Title              | Description     | Start            | End              | Location        | Status    | Visibility | Event Type |
+| -------- | ----------- | ------------------ | --------------- | ---------------- | ---------------- | --------------- | --------- | ---------- | ---------- |
+| E1001    | C001        | Sprint Planning    | Weekly planning | 2026-07-10 10:00 | 2026-07-10 11:00 | Meeting Room A  | Confirmed | Default    | Meeting    |
+| E1002    | C002        | Doctor Appointment | Annual checkup  | 2026-07-11 15:00 | 2026-07-11 16:00 | Apollo Hospital | Confirmed | Private    | Personal   |
+
+---
+
+# 4. Event Invitations
+
+(Invitation sent to users)
+
+| Invitation ID | Event ID | Invited User | Invitation Sent | Status   |
+| ------------- | -------- | ------------ | --------------- | -------- |
+| INV001        | E1001    | U002         | Yes             | Pending  |
+| INV002        | E1001    | U003         | Yes             | Accepted |
+
+---
+
+# 5. Attendee Responses
+
+| Event ID | User ID | Response | Optional | Organizer |
+| -------- | ------- | -------- | -------- | --------- |
+| E1001    | U001    | Accepted | No       | Yes       |
+| E1001    | U002    | Pending  | No       | No        |
+| E1001    | U003    | Accepted | Yes      | No        |
+
+Possible responses:
+
+* Accepted
+* Declined
+* Tentative
+* Pending
+
+---
+
+# 6. Free / Busy Status
+
+This determines what others see when checking availability.
+
+| Event ID | User ID | Show As |
+| -------- | ------- | ------- |
+| E1001    | U001    | Busy    |
+| E1001    | U003    | Busy    |
+| E1002    | U001    | Busy    |
+
+Possible values:
+
+* Busy
+* Free
+* Tentative
+* Out of Office
+* Working Elsewhere
+
+---
+
+# 7. Reminders
+
+| Reminder ID | Event ID | Type         | Minutes Before |
+| ----------- | -------- | ------------ | -------------- |
+| R001        | E1001    | Notification | 30             |
+| R002        | E1001    | Email        | 60             |
+
+---
+
+# 8. Recurrence
+
+| Event ID | Frequency | Interval | Days   | Ends On    |
+| -------- | --------- | -------- | ------ | ---------- |
+| E1001    | Weekly    | 1        | Friday | 2026-12-31 |
+
+---
+
+# 9. Attachments
+
+| Attachment ID | Event ID | File Name           | Link      |
+| ------------- | -------- | ------------------- | --------- |
+| A001          | E1001    | Sprint_Backlog.xlsx | Drive URL |
+
+---
+
+# 10. Conference Details
+
+| Event ID | Meeting Type | Meeting Link                                               |
+| -------- | ------------ | ---------------------------------------------------------- |
+| E1001    | Google Meet  | [https://meet.google.com/xyz](https://meet.google.com/xyz) |
+
+---
+
+# 11. Notifications
+
+| Notification ID | Event ID | User ID | Type             | Status    |
+| --------------- | -------- | ------- | ---------------- | --------- |
+| N001            | E1001    | U002    | Invitation Email | Delivered |
+| N002            | E1001    | U003    | Reminder Push    | Delivered |
+
+---
+
+# Relationship Diagram
+
+```text
+User
+ │
+ ├── owns ─────────► Calendar
+ │                     │
+ │                     │ 1
+ │                     ▼
+ │                  Event
+ │                     │
+ │        ┌────────────┼────────────┐
+ │        │            │            │
+ ▼        ▼            ▼            ▼
+Invitation  Reminder  Attachment  Conference
+ │
+ ▼
+Attendee Response
+ │
+ ▼
+Free/Busy Status
+```
+
+---
+
+# Example End-to-End
+
+### User
+
+**Alice**
+
+↓
+
+### Calendar
+
+**Work Calendar**
+
+↓
+
+### Event
+
+| Field       | Value                    |
+| ----------- | ------------------------ |
+| Title       | Sprint Planning          |
+| Time        | 10 Jul 2026, 10:00–11:00 |
+| Organizer   | Alice                    |
+| Location    | Meeting Room A           |
+| Google Meet | Yes                      |
+| Visibility  | Default                  |
+| Status      | Confirmed                |
+
+↓
+
+### Invitations
+
+| Invitee | Status   |
+| ------- | -------- |
+| Bob     | Pending  |
+| Carol   | Accepted |
+
+↓
+
+### Availability
+
+| User  | Free/Busy            |
+| ----- | -------------------- |
+| Alice | Busy                 |
+| Bob   | Busy (once accepted) |
+| Carol | Busy                 |
+
+↓
+
+### Reminders
+
+* Notification 30 minutes before
+* Email 1 hour before
+
+↓
+
+### Recurrence
+
+Every Friday until 31 Dec 2026.
+
+---
+
+This schema closely matches the concepts exposed by the Google Calendar API while remaining normalized enough for application or database design. It supports organizers, invitations, RSVP tracking, recurring meetings, reminders, conference links, attachments, and users' free/busy availability.

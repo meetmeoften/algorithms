@@ -18,6 +18,7 @@ class BoundedBlockingQueue {
             wait();
         }
         queue.offer(element);
+        System.out.println("Producer " + element);
         notifyAll();
     }
 
@@ -59,7 +60,7 @@ class BoundedBlockingQueue {
         Thread consumer = new Thread(() -> {
             try {
                 //Thread.sleep(1000);
-                System.out.println("Consumer removed");
+                //System.out.println("Consumer removed");
                 System.out.println("Consumer removed: " + queue.dequeue());
                 Thread.sleep(1000);
                 System.out.println("Consumer removed: " + queue.dequeue());

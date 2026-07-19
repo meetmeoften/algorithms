@@ -1,6 +1,8 @@
 package com.algoexpert.topological;
 
-import common.TreeNode;
+
+
+import com.neetcode.binaryTree.TreeNode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,6 +15,53 @@ public class ClosestValue {
     private double target;
     private int k;
 
+
+    public int closestValueBST(TreeNode root, int target) {
+        int closest = root.val;
+        while(root != null) {
+            if(Math.abs(root.val - target) < Math.abs(closest - target)) {
+                closest = root.val;
+            }
+            if(target < root.val) {
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
+        return closest;
+    }
+
+
+    public List<Integer> closestKValuesBST(TreeNode root, double target, int k) {
+        LinkedList<Integer> result = new LinkedList<>();
+        inorder(root, target, k, result);
+        return result;
+    }
+
+    private static void inorder(TreeNode node,
+                                double target,
+                                int k,
+                                LinkedList<Integer> result) {
+        if(node == null) {
+            return;
+        }
+        inorder(node.left, target, k , result);
+        if(result.size() < k) {
+            result.add(node.val);
+        } else {
+            if(Math.abs(result.getFirst()) - target > Math.abs(node.val - target)) {
+                result.removeFirst();
+                result.addLast(node.val);
+            } else {
+                return;
+            }
+        }
+        inorder(node.right, target, k, result);
+    }
+
+
+
+ // --------------
     public List<Integer> closestKValues2(TreeNode root, double target, int k) {
         Stack<TreeNode> predecessors = new Stack<>();
         Stack<TreeNode> successors = new Stack<>();
@@ -115,15 +164,13 @@ public class ClosestValue {
     }
 
 
-    public static void main(String[] args) {
-        TreeNode root = new TreeNode(4,
-                new TreeNode(2,
-                        new TreeNode(1), new TreeNode(3)),
-                new TreeNode(5)
-        );
 
+
+    public static void main(String[] args) {
+        TreeNode root = TreeNode.createBinarySearchTree();
         ClosestValue closestValue = new ClosestValue();
-        closestValue.closestKValues(root, 4.7, 2);
+        //closestValue.closestKValues(root, 3.7, 2);
+        closestValue.closestKValues2(root, 3.7, 2);
     }
 
 

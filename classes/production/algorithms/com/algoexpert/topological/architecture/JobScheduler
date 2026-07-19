@@ -1,0 +1,338 @@
+For a **Senior Staff / Principal / Distinguished Engineer** interview, a **Global Distributed Job Scheduler** discussion is expected to go well beyond a simple cron service. The focus is on scalability, correctness, fault tolerance, fairness, and operational excellence.
+
+## 1. Requirements
+
+* Functional Requirements
+* Non-Functional Requirements
+* SLAs/SLOs
+* Job Types (one-time, recurring, event-driven)
+* Workflow vs Single Job
+
+## 2. Capacity Planning
+
+* Jobs/day
+* Peak scheduling rate
+* Concurrent executions
+* Worker count
+* Storage estimation
+* Network estimation
+
+## 3. High-Level Architecture
+
+* Scheduler
+* Dispatcher
+* Workers
+* Metadata Store
+* Queue
+* Monitoring
+* API Gateway
+
+## 4. API Design
+
+* Submit Job
+* Cancel Job
+* Pause/Resume
+* Retry
+* Query Status
+* Update Schedule
+* Bulk APIs
+
+## 5. Job Model
+
+* Job Metadata
+* Payload
+* Schedule
+* Priority
+* Owner
+* Tenant
+* Constraints
+* Dependencies
+
+## 6. Scheduling Algorithms
+
+* FIFO
+* Priority Queue
+* Earliest Deadline First
+* Fair Scheduling
+* Weighted Fair Queueing
+* Dominant Resource Fairness
+* Round Robin
+
+## 7. Time-Based Scheduling
+
+* Cron
+* Delayed Jobs
+* Recurring Jobs
+* Calendar Scheduling
+* Time Zone Support
+* DST Handling
+
+## 8. Event-Driven Scheduling
+
+* Message Trigger
+* Webhook Trigger
+* File Arrival
+* Database Event
+* Stream Event
+
+## 9. Dependency Management
+
+* DAG Scheduling
+* Parent/Child Jobs
+* Fan-out/Fan-in
+* Barrier Synchronization
+
+## 10. Queue Design
+
+* Distributed Queue
+* Partitioned Queue
+* Priority Queue
+* Delay Queue
+* Dead Letter Queue
+
+## 11. Worker Architecture
+
+* Stateless Workers
+* Worker Registration
+* Worker Discovery
+* Worker Heartbeats
+
+## 12. Job Dispatching
+
+* Push Model
+* Pull Model
+* Lease-based Assignment
+
+## 13. Load Balancing
+
+* Least Loaded
+* Resource Aware
+* Data Locality
+* Affinity Scheduling
+
+## 14. Resource Management
+
+* CPU
+* Memory
+* GPU
+* Storage
+* Network
+* Custom Resources
+
+## 15. Placement Strategy
+
+* Rack Awareness
+* Zone Awareness
+* Region Awareness
+* Node Affinity
+* Anti-affinity
+
+## 16. Distributed Coordination
+
+* Leader Election
+* Distributed Locks
+* Lease Management
+* Consensus
+
+## 17. Metadata Store
+
+* SQL
+* NoSQL
+* Event Store
+* Indexing Strategy
+
+## 18. State Machine
+
+* Pending
+* Scheduled
+* Queued
+* Running
+* Completed
+* Failed
+* Cancelled
+* Expired
+
+## 19. Fault Tolerance
+
+* Scheduler Failure
+* Worker Failure
+* Network Partition
+* Storage Failure
+
+## 20. Failure Detection
+
+* Heartbeats
+* Health Checks
+* Lease Expiry
+
+## 21. Retry Policies
+
+* Exponential Backoff
+* Retry Limits
+* Retry Windows
+* Retry Classification
+
+## 22. Idempotency
+
+* Duplicate Detection
+* Exactly-once Illusion
+* At-least-once Processing
+
+## 23. Distributed Transactions
+
+* Saga Pattern
+* Outbox Pattern
+* Compensation
+
+## 24. Concurrency Control
+
+* Optimistic Locking
+* Pessimistic Locking
+* Compare-and-Swap
+
+## 25. Scalability
+
+* Horizontal Scheduler Scaling
+* Worker Auto Scaling
+* Queue Scaling
+* Metadata Scaling
+
+## 26. Sharding
+
+* Job Sharding
+* Tenant Sharding
+* Time-based Sharding
+* Consistent Hashing
+
+## 27. Multi-Tenancy
+
+* Isolation
+* Fairness
+* Quotas
+* Per-tenant Priorities
+* Noisy Neighbor Protection
+
+## 28. Priority & Fairness
+
+* Priority Inversion
+* Starvation Prevention
+* Aging
+* Weighted Scheduling
+
+## 29. Backpressure
+
+* Admission Control
+* Queue Throttling
+* Worker Saturation
+* Load Shedding
+
+## 30. Long-Running Jobs
+
+* Checkpointing
+* Heartbeats
+* Progress Tracking
+* Resume Support
+
+## 31. Cancellation
+
+* Graceful Cancellation
+* Force Kill
+* Timeout Management
+
+## 32. Scheduling Accuracy
+
+* Millisecond Precision
+* Clock Drift
+* Clock Synchronization
+
+## 33. Multi-Region Architecture
+
+* Active-Active
+* Active-Passive
+* Geo Scheduling
+* Data Residency
+
+## 34. Consistency
+
+* Strong
+* Eventual
+* Read-after-Write
+
+## 35. Disaster Recovery
+
+* Metadata Backup
+* Queue Recovery
+* Cross-region Failover
+
+## 36. Security
+
+* Authentication
+* Authorization
+* Secret Management
+* Encryption
+* Audit Logs
+
+## 37. Observability
+
+* Metrics
+* Logs
+* Distributed Tracing
+* Job Timeline
+* Audit Trail
+
+## 38. Operational Excellence
+
+* Rolling Upgrades
+* Zero-downtime Deployment
+* Configuration Management
+* Feature Flags
+
+## 39. Performance Optimizations
+
+* Batch Scheduling
+* Bulk Dispatch
+* Prefetching
+* Scheduler Caching
+* Metadata Indexing
+
+## 40. Cost Optimization
+
+* Spot/Preemptible Instances
+* Bin Packing
+* Autoscaling
+* Resource Reuse
+
+## 41. Extensibility
+
+* Plugin Framework
+* Custom Executors
+* Custom Triggers
+* Policy Engine
+
+## 42. Trade-offs
+
+* Push vs Pull Workers
+* SQL vs NoSQL Metadata
+* Centralized vs Distributed Scheduler
+* Accuracy vs Throughput
+* Fairness vs Utilization
+* Availability vs Consistency
+
+## 43. Real-World Systems for Comparison
+
+* Kubernetes Scheduler
+* Kubernetes CronJobs
+* Apache Airflow
+* Apache Spark Scheduler
+* Apache Flink Scheduler
+* HashiCorp Nomad
+* Netflix Titus
+* Google Borg
+* Google Omega
+* Apache Mesos
+* Quartz Scheduler
+* Celery
+* Temporal
+* Argo Workflows
+
+A Principal/Distinguished-level interview often probes into topics such as **scheduler correctness under failures, distributed coordination, fairness across tenants, placement algorithms, scheduling theory, backpressure, and operating the scheduler at millions of jobs per second across multiple regions**. These areas typically distinguish senior candidates from staff and principal-level candidates.

@@ -10,6 +10,22 @@ public class TreeNode {
 		this.val = val;
 	}
 
+	public static TreeNode createBinarySearchTree() {
+		TreeNode rootNode = new TreeNode(4);
+		TreeNode node2 = new TreeNode(2);
+		TreeNode node5 = new TreeNode(5);
+		TreeNode node1 = new TreeNode(1);
+		TreeNode node3 = new TreeNode(3);
+
+		rootNode.left = node2;
+		rootNode.right = node5;
+
+		node2.left = node1;
+		node2.right = node3;
+
+		return rootNode;
+	}
+
 
 	public static TreeNode createBinaryTree1() {
 

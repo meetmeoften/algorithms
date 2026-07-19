@@ -2,6 +2,22 @@ package com.algoexpert.binarytree;
 
 public class BinaryTreeUpsideDown {
 
+
+    /**
+     * Every right child is either null or a leaf.
+     * Every right child has a sibling (a left child).
+     *
+     *
+     * You can turn a binary tree upside down with the following steps:
+     *
+     * The original left child becomes the new root.
+     * The original root becomes the new right child.
+     * The original right child becomes the new left child.
+     *
+     * @param root
+     * @return
+     */
+
     public TreeNode upsideDownBinaryTree(TreeNode root) {
         if (root == null || root.left == null) {
             return root;
@@ -42,6 +58,6 @@ public class BinaryTreeUpsideDown {
         // root.left.left = new TreeNode(4);
         //root.left.right = new TreeNode(5);
 
-        System.out.println(new BinaryTreeUpsideDown().upsideDownBinaryTree2(root));
+        System.out.println(new BinaryTreeUpsideDown().upsideDownBinaryTree(root));
     }
 }

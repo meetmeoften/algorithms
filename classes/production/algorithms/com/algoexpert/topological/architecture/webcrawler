@@ -1,0 +1,387 @@
+For a **Senior Staff / Principal / Distinguished Engineer** interview, a **Distributed Web Crawler** (like Googlebot-style systems, Common Crawl, or large-scale indexing crawlers) should be discussed across ingestion, politeness, scalability, and data pipelines.
+
+Here are the **topics only**:
+
+---
+
+# 1. Requirements
+
+* Functional Requirements
+* Non-functional Requirements
+* Crawl scope (web-scale vs domain-specific)
+* Freshness requirements
+* Crawl rate constraints
+
+---
+
+# 2. Capacity Planning
+
+* Number of URLs
+* Pages/sec crawl rate
+* Bandwidth usage
+* Storage requirements (raw + processed)
+* URL growth rate
+
+---
+
+# 3. High-Level Architecture
+
+* URL Frontier
+* Fetcher Service
+* Parser Service
+* Link Extractor
+* Deduplication Service
+* Storage Layer
+* Indexing Pipeline
+
+---
+
+# 4. URL Frontier (Core Component)
+
+* Priority queue of URLs
+* Per-host queues
+* Scheduling policy
+* Politeness enforcement
+
+---
+
+# 5. Crawling Strategy
+
+* BFS vs DFS crawling
+* Focused crawling
+* Incremental crawling
+* Adaptive crawling
+
+---
+
+# 6. URL Canonicalization
+
+* Normalization rules
+* Duplicate URL handling
+* Query parameter stripping
+* Canonical tags handling
+
+---
+
+# 7. Politeness Policies
+
+* Robots.txt compliance
+* Crawl-delay handling
+* Per-domain rate limiting
+* IP throttling
+
+---
+
+# 8. Distributed Scheduling
+
+* URL partitioning
+* Host-based sharding
+* Consistent hashing for domains
+* Load balancing across crawlers
+
+---
+
+# 9. Fetcher Design
+
+* HTTP client design
+* Retry policies
+* Timeout handling
+* Redirect handling
+* Compression support
+
+---
+
+# 10. Parsing Layer
+
+* HTML parsing
+* DOM extraction
+* Metadata extraction
+* Structured data extraction
+
+---
+
+# 11. Link Extraction
+
+* Anchor parsing
+* URL discovery
+* Deduplication of links
+* Outlink prioritization
+
+---
+
+# 12. Deduplication
+
+* URL-level dedup
+* Content-level dedup
+* Hashing (SimHash, MinHash)
+* Near-duplicate detection
+
+---
+
+# 13. Content Storage
+
+* Raw HTML storage
+* Compressed storage
+* Segment-based storage
+* Tiered storage (hot/cold)
+
+---
+
+# 14. Crawl Scheduling Policy
+
+* Priority-based crawling
+* Freshness scoring
+* Page importance ranking
+* Recrawl frequency
+
+---
+
+# 15. Distributed Architecture
+
+* Crawl workers
+* Central frontier vs decentralized frontier
+* Coordination service
+* Metadata store
+
+---
+
+# 16. Fault Tolerance
+
+* Worker failures
+* URL re-queuing
+* Checkpointing frontier state
+* Idempotent crawling
+
+---
+
+# 17. Retry Mechanisms
+
+* Exponential backoff
+* Dead URL handling
+* Retry limits
+* Soft vs hard failures
+
+---
+
+# 18. Rate Limiting
+
+* Per-domain limits
+* Global throttling
+* Adaptive rate control
+* Backpressure handling
+
+---
+
+# 19. Scalability
+
+* Horizontal scaling of crawlers
+* Partitioned frontier
+* Distributed queue design
+* Hot domain mitigation
+
+---
+
+# 20. Freshness Management
+
+* Recrawl scheduling
+* Change detection
+* ETag / Last-Modified usage
+* Delta crawling
+
+---
+
+# 21. Data Pipeline
+
+* Crawl → Parse → Store → Index
+* Streaming vs batch processing
+* Integration with search indexing
+
+---
+
+# 22. Storage Layer
+
+* Raw HTML store
+* Metadata store
+* Link graph storage
+* Distributed file systems
+
+---
+
+# 23. Link Graph Processing
+
+* PageRank computation
+* Graph construction
+* Outlink/inlink tracking
+* Graph partitioning
+
+---
+
+# 24. Multi-Tenancy
+
+* Crawl isolation per tenant/domain
+* Quotas
+* Priority policies
+* Abuse prevention
+
+---
+
+# 25. Security
+
+* Malicious content handling
+* Safe crawling sandbox
+* URL injection protection
+* Content filtering
+
+---
+
+# 26. Observability
+
+* Crawl rate metrics
+* Error rates per domain
+* Latency per fetch
+* Frontier size monitoring
+* Coverage metrics
+
+---
+
+# 27. Monitoring & Debugging
+
+* Crawl lag tracking
+* Dead queue detection
+* Worker health monitoring
+* Domain-level diagnostics
+
+---
+
+# 28. Distributed Coordination
+
+* Frontier synchronization
+* Leader election for scheduler
+* Metadata consistency
+* Coordination service (ZooKeeper-like systems)
+
+---
+
+# 29. Backpressure Handling
+
+* Overloaded domain handling
+* Queue shedding
+* Adaptive scheduling
+* Worker throttling
+
+---
+
+# 30. Failure Scenarios
+
+* DNS failures
+* Network partitions
+* Partial crawl failures
+* Storage outages
+
+---
+
+# 31. Data Quality
+
+* Spam detection
+* Duplicate content filtering
+* Boilerplate removal
+* Content classification
+
+---
+
+# 32. Compliance
+
+* Robots.txt enforcement
+* Legal restrictions (geo restrictions)
+* Content removal requests
+* Ethical crawling rules
+
+---
+
+# 33. Ranking Signals (for crawling priority)
+
+* PageRank-like importance
+* Click frequency signals
+* Domain authority
+* Freshness score
+
+---
+
+# 34. URL Prioritization
+
+* Priority queue scoring function
+* Weighted scoring (importance + freshness)
+* Re-ranking crawled URLs
+
+---
+
+# 35. Multi-Region Crawling
+
+* Geo-distributed crawlers
+* Regional frontier partitioning
+* Cross-region deduplication
+* Latency optimization
+
+---
+
+# 36. Cost Optimization
+
+* Bandwidth optimization
+* Compression
+* Crawl frequency tuning
+* Storage tiering
+
+---
+
+# 37. Trade-offs
+
+* Freshness vs cost
+* Coverage vs depth
+* Centralized vs distributed frontier
+* Politeness vs crawl speed
+* Accuracy vs scalability
+
+---
+
+# 38. Advanced Topics
+
+* Focused crawling (topic-specific crawlers)
+* Incremental web graph updates
+* Real-time crawling pipelines
+* ML-based URL prioritization
+* Content change detection at scale
+* Streaming crawl pipelines (Kafka-based ingestion)
+
+---
+
+# 39. Real-World Systems
+
+* Googlebot (Google Search crawler)
+* Bingbot (Microsoft Bing crawler)
+* Apache Nutch
+* Heritrix (Internet Archive crawler)
+* Common Crawl infrastructure
+* StormCrawler
+
+---
+
+## Distinguished Engineer-Level Focus Areas
+
+At the highest level, discussions focus on:
+
+* **Global URL frontier design at billion-scale URLs**
+* **Politeness + fairness across millions of domains**
+* **Efficient deduplication of near-identical web pages**
+* **Adaptive crawling using ML-based prioritization**
+* **Handling infinite web graphs and crawl traps**
+* **Distributed coordination of frontier without bottlenecks**
+* **Freshness vs cost trade-offs in continuous crawling systems**
+* **Integration with search indexing pipelines (end-to-end web pipeline design)**
+
+---
+
+If you want, I can next:
+
+* draw the **full distributed crawler architecture**
+* explain **URL frontier design in depth (very common Staff+ question)**
+* or compare **web crawler vs search engine vs feed system architectures**
