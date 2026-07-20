@@ -53,7 +53,8 @@ public class ShortestBridge {
 	}
 
 	public static void main(String[] args) {
-		int[][] grid = {{0,1},{1,0}};
+		//int[][] grid = {{0,1},{1,0}};
+		int[][] grid = {{0,1,0},{0,0,0}, {0,0,1}};
 		ShortestBridge bridge = new ShortestBridge();
 		bridge.shortestBridge(grid);
 	}

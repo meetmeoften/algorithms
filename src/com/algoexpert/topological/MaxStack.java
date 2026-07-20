@@ -96,8 +96,8 @@ public class MaxStack {
         MaxStack stack = new MaxStack();
 
         stack.push(5);
-        stack.push(1);
         stack.push(5);
+        stack.push(1);
 
         System.out.println(stack.top());      // 5
         System.out.println(stack.popMax());   // 5

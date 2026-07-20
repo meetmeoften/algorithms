@@ -1,11 +1,8 @@
 package com.algoexpert.topological;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class AllOne {
+class AllOne {
 
     class Node {
         int count;
@@ -18,98 +15,110 @@ public class AllOne {
         }
     }
 
-    Node head;
-    Node tail;
-    Map<String, Node> map;
+    private Map<String, Node> map;
+    private Node head, tail;
 
     public AllOne() {
-        head = new Node(0);
-        tail = new Node(0);
+        map = new HashMap<>();
+        head = new Node(0); // dummy head
+        tail = new Node(0); // dummy tail
         head.next = tail;
         tail.prev = head;
-        map = new HashMap<>();
     }
 
-    public void decr(String key) {
-        Node curr = map.get(key);
-        if (curr.count == 1) {
-            curr.keys.remove(key);
-            map.remove(key);
-            if (curr.keys.isEmpty()) {
-                remove(curr);
+    public void inc(String key) {
+
+        if (!map.containsKey(key)) {
+            if (head.next.count != 1) {
+                addNodeAfter(new Node(1), head);
             }
+            head.next.keys.add(key);
+            map.put(key, head.next);
         } else {
-            Node prev = curr.prev;
-            if (prev == head || prev.count != curr.count - 1) {
-                Node newNode = new Node(curr.count - 1);
-                addAfter(prev, newNode);
-                prev = newNode;
-            }
-            prev.keys.add(key);
-            map.put(key, prev);
-
-            curr.keys.remove(key);
-            if (curr.keys.isEmpty()) {
-                remove(curr);
-            }
-        }
-    }
-
-    public void incr(String key) {
-        if (map.containsKey(key)) {
             Node curr = map.get(key);
             Node next = curr.next;
-
             if (next == tail || next.count != curr.count + 1) {
-                Node newNode = new Node(curr.count + 1);
-                addAfter(curr, newNode);
-                next = newNode;
+                addNodeAfter(new Node(curr.count + 1), curr);
+                next = curr.next;
             }
             next.keys.add(key);
             map.put(key, next);
             curr.keys.remove(key);
             if (curr.keys.isEmpty()) {
-                remove(curr);
+                removeNode(curr);
             }
+        }
+    }
+
+    public void dec(String key) {
+        Node curr = map.get(key);
+        if (curr.count == 1) {
+            map.remove(key);
         } else {
-            Node first = head.next;
-            if (first == tail || first.count != 1) {
-                Node newNode = new Node(1);
-                addAfter(head, newNode);
-                first = newNode;
+            Node prev = curr.prev;
+            if (prev == head || prev.count != curr.count - 1) {
+                addNodeAfter(new Node(curr.count - 1), prev);
+                prev = curr.prev;
             }
-            first.keys.add(key);
-            map.put(key, first);
+            prev.keys.add(key);
+            map.put(key, prev);
+        }
+        curr.keys.remove(key);
+        if (curr.keys.isEmpty()) {
+            removeNode(curr);
         }
     }
 
     public String getMaxKey() {
-        if (tail.prev == head) {
+        if (tail.prev == head)
             return "";
-        }
         return tail.prev.keys.iterator().next();
     }
 
     public String getMinKey() {
-        if (head.next == tail) {
+        if (head.next == tail)
             return "";
-        }
         return head.next.keys.iterator().next();
     }
 
 
-    private void addAfter(Node prevNode, Node newNode) {
+    private void addNodeAfter(Node node, Node prevNode) {
         Node nextNode = prevNode.next;
-        prevNode.next = newNode;
-        newNode.prev = prevNode;
-
-        newNode.next = nextNode;
-        nextNode.prev = newNode;
+        prevNode.next = node;
+        node.prev = prevNode;
+        node.next = nextNode;
+        nextNode.prev = node;
     }
 
-    private void remove(Node node) {
-        node.next.prev = node.next;
-        node.prev.next = node.prev;
+
+    private void removeNode(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    public static void main(String[] args) {
+
+        AllOne ds = new AllOne();
+
+        ds.inc("hello");
+        ds.inc("hello");
+
+        System.out.println(ds.getMaxKey()); // hello
+        System.out.println(ds.getMinKey()); // hello
+
+        ds.inc("leet");
+
+        System.out.println(ds.getMaxKey()); // hello
+        System.out.println(ds.getMinKey()); // leet
+
+        ds.dec("hello");
+
+        System.out.println(ds.getMaxKey()); // hello or leet
+        System.out.println(ds.getMinKey()); // hello or leet
+
+        ds.dec("hello");
+
+        System.out.println(ds.getMaxKey()); // leet
+        System.out.println(ds.getMinKey()); // leet
     }
 }
-
