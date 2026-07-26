@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ShortWordDistance4 {
+public class ShortestWordDistance4 {
 
     private Map<String, List<Integer>> map = new HashMap<>();
 
-    public ShortWordDistance4(String[] wordsDict) {
+    public ShortestWordDistance4(String[] wordsDict) {
         for (int i = 0; i < wordsDict.length; i++) {
             map.computeIfAbsent(wordsDict[i], k -> new ArrayList<>()).add(i);
         }

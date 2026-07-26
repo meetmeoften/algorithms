@@ -29,17 +29,17 @@ public class Permutations2 {
 
 		for (int i = 0; i < nums.length; i++) {
 			//System.out.println(i + " " + temp + "  " + used[i]);
-			if (used[i] || i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {  // should not change order
+			if(used[i]) {
 				continue;
 			}
-
+			if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {  // should not change order
+				continue;
+			}
 			used[i] = true;
 			temp.add(nums[i]);
-
 			helper(nums, result, temp, used);
-
-			used[i] = false;
 			temp.remove(temp.size() - 1);
+			used[i] = false;
 
 			//			while(i+1 < nums.length && nums[i] == nums[i+1]) {
 			//				i++;

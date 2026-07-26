@@ -2,6 +2,8 @@ package com.algoexpert.binarytree;
 
 public class LCA {
 
+	private static int found;
+
 	public static class TreeNode {
 		int data;
 		TreeNode left;
@@ -35,13 +37,36 @@ public class LCA {
 
 	}
 
+	public static TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+		TreeNode ans = dfs(root, p, q);
+		return found == 2 ? ans : null;
+	}
+
+	private static TreeNode dfs(TreeNode root, TreeNode p, TreeNode q) {
+		if (root == null)
+			return null;
+
+		TreeNode left = dfs(root.left, p, q);
+		TreeNode right = dfs(root.right, p, q);
+
+		if (root.data == p.data || root.data == q.data) {
+			found++;
+			return root;      // <-- returns immediately
+		}
+
+		if (left != null && right != null)
+			return root;
+
+		return left != null ? left : right;
+	}
+
 	public static void main(String[] args) {
 		// Creating a binary tree
 		TreeNode rootNode = createBinaryTree();
 		System.out.println("Lowest common ancestor for node 5 and 30:");
-		TreeNode node5 = new TreeNode(20);
-		TreeNode node30 = new TreeNode(60);
-		System.out.println(lowestCommonAncestor(rootNode, node5, node30).data);
+		TreeNode node5 = new TreeNode(40);
+		TreeNode node30 = new TreeNode(20);
+		System.out.println(lowestCommonAncestor2(rootNode, node5, node30).data);
 
 	}
 
@@ -59,16 +84,16 @@ public class LCA {
 		TreeNode node55 = new TreeNode(55);
 
 		rootNode.left = node20;
-		rootNode.right = node60;
-
-		node20.left = node10;
-		node20.right = node30;
-
-		node60.left = node50;
-		node60.right = node70;
-
-		node10.left = node5;
-		node50.right = node55;
+//		rootNode.right = node60;
+//
+//		node20.left = node10;
+//		node20.right = node30;
+//
+//		node60.left = node50;
+//		node60.right = node70;
+//
+//		node10.left = node5;
+//		node50.right = node55;
 		return rootNode;
 	}
 }
